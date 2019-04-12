@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Train.Controllers;
 using Train.Models;
 using System.Linq;
@@ -14,17 +11,17 @@ namespace Train.Tests
     public class ExerciseLibraryControllerShould
     {
         private ServiceProvider _provider;
-        private ExerciseLibraryContext _context;
+        private TrainContext _context;
 
         [SetUp]
         public void Setup()
         {
             var services = new ServiceCollection();
-            services.AddDbContext<ExerciseLibraryContext>(
+            services.AddDbContext<TrainContext>(
                 opt => opt.UseInMemoryDatabase("ExerciseLibrary"), ServiceLifetime.Transient);
 
             _provider = services.BuildServiceProvider();
-            _context = _provider.GetService<ExerciseLibraryContext>();
+            _context = _provider.GetService<TrainContext>();
         }
 
         [TearDown]

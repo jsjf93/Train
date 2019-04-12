@@ -11,9 +11,9 @@ namespace Train.Controllers
     [ApiController]
     public class ExerciseLibraryController : ControllerBase
     {
-        private readonly ExerciseLibraryContext _context;
+        private readonly TrainContext _context;
 
-        public ExerciseLibraryController(ExerciseLibraryContext context)
+        public ExerciseLibraryController(TrainContext context)
         {
             _context = context;
         }

@@ -12,9 +12,9 @@ namespace Train.Controllers
     [ApiController]
     public class WorkoutController : ControllerBase
     {
-        private readonly WorkoutContext _context;
+        private readonly TrainContext _context;
 
-        public WorkoutController(WorkoutContext context)
+        public WorkoutController(TrainContext context)
         {
             _context = context;
         }

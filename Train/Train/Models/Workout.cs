@@ -6,8 +6,6 @@ namespace Train.Models
     {
         public int Id { get; set; }
         public string WorkoutName { get; set; }
-        public List<DurationExercise> DurationExercises { get; set; }
-        public List<IntervalExercise> IntervalExercises { get; set; }
-        public List<StrengthExercise> StrengthExercises { get; set; }
+        public List<Exercise> Exercises { get; set; }
     }
 }

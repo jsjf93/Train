@@ -2,19 +2,19 @@
 
 namespace Train.Models
 {
-    public class WorkoutContext : DbContext
+    public class TrainContext : DbContext
     {
-        public WorkoutContext(DbContextOptions<WorkoutContext> options) : base(options)
+        public TrainContext(DbContextOptions<TrainContext> options) : base(options)
         {
         }
 
+        public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Workout> Workouts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<DurationExercise>();
-            builder.Entity<IntervalExercise>();
-            builder.Entity<StrengthExercise>();
+            builder.Entity<Exercise>();
+            builder.Entity<Workout>();
             base.OnModelCreating(builder);
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
