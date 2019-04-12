@@ -7,22 +7,24 @@ using System.Text;
 using Train.Controllers;
 using Train.Models;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Train.Tests
 {
     public class ExerciseLibraryControllerShould
     {
+        private ServiceProvider _provider;
         private ExerciseLibraryContext _context;
 
         [SetUp]
         public void Setup()
         {
-            var options = new DbContextOptionsBuilder<ExerciseLibraryContext>()
-                .UseInMemoryDatabase("ExerciseLibrary")
-                .Options;
+            var services = new ServiceCollection();
+            services.AddDbContext<ExerciseLibraryContext>(
+                opt => opt.UseInMemoryDatabase("ExerciseLibrary"), ServiceLifetime.Transient);
 
-            _context = new ExerciseLibraryContext(options);
-
+            _provider = services.BuildServiceProvider();
+            _context = _provider.GetService<ExerciseLibraryContext>();
         }
 
         [TearDown]
@@ -91,7 +93,7 @@ namespace Train.Tests
         //}
 
         [Test]
-        public void DeleteAnExercise_Success()
+        public void DeleteAnExercise()
         {
             var sut = new ExerciseLibraryController(_context);
             sut.AddExercise(new Exercise { Name = "Running", ExerciseType = ExerciseType.Duration, Notes = "n/a" });
@@ -102,18 +104,5 @@ namespace Train.Tests
 
             Assert.That(2, Is.EqualTo(_context.Exercises.Count()));
         }
-
-        //[Test]
-        //public void DeleteAnExercise_Failure()
-        //{
-        //    var sut = new ExerciseLibraryController(_context);
-        //    sut.AddExercise(new Exercise { Name = "Running", ExerciseType = ExerciseType.Duration, Notes = "n/a" });
-        //    sut.AddExercise(new Exercise { Name = "Box Jumps", ExerciseType = ExerciseType.Interval, Notes = "150cm" });
-        //    sut.AddExercise(new Exercise { Name = "Shoulder Press", ExerciseType = ExerciseType.Strength, Notes = "n/a" });
-
-        //    var actual = sut.DeleteExercise(4);
-
-        //    Assert.That(actual, Is.EqualTo(_context.Exercises.Count()));
-        //}
     }
 }
