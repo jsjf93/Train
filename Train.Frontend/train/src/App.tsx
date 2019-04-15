@@ -6,9 +6,6 @@ import ExerciseLibraryView from './components/ExerciseLibraryView';
 class App extends Component {
   
   render() {
-
-    
-
     return (
       <div className="App">
         <h3>Exercises</h3>

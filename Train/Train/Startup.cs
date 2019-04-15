@@ -20,6 +20,15 @@ namespace Train
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy",
+                  builder => builder.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader()
+                  .AllowCredentials());
+            });
+
             services.AddDbContext<TrainContext>(opt => opt.UseInMemoryDatabase("Train"));
             //services.AddDbContext<ExerciseLibraryContext>(opt => opt.UseInMemoryDatabase("ExerciseLibrary"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -37,6 +46,7 @@ namespace Train
                 app.UseHsts();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();
         }
