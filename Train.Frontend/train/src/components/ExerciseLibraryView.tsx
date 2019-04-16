@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from '../../node_modules/react-bootstrap';
+import { Table, Form } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 
 const data = [
@@ -19,16 +19,20 @@ interface IProps {
 }
 
 interface IState {
+    initialExerciseList: Exercise[];
     exerciseList: Exercise[];
     sortDirection: string;
+    input: string;
 }
 
 class ExerciseLibraryView extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
         this.state = {
+            initialExerciseList: [],
             exerciseList: [],
-            sortDirection: 'asc'
+            sortDirection: 'asc',
+            input: ""
         }
     }
 
@@ -48,14 +52,16 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             const exerciseList: Exercise[] = [];
             data.map((row: Exercise) => exerciseList.push(row))
             this.setState({ 
-                exerciseList: exerciseList.sort(this.sortAscending('name')) 
+                initialExerciseList: exerciseList,
+                exerciseList: exerciseList.sort(this.sortAscending('name'))
             });
-            console.log("[ExerciseLibraryView] fetch. ", this.state.exerciseList);
+            console.log("[ExerciseLibraryView] fetch. ", this.state.initialExerciseList);
         })
         // temporary code that just adds in test data hardcoded at top of file
-        if (this.state.exerciseList.length == 0) 
+        if (this.state.initialExerciseList.length === 0) 
             this.setState({ 
-                exerciseList: data.sort(this.sortAscending('name')) 
+                initialExerciseList: data,
+                exerciseList: data.sort(this.sortAscending('name'))
             });
     }
 
@@ -87,9 +93,31 @@ class ExerciseLibraryView extends Component<IProps, IState> {
         }
     }
 
+    private search = (event: any) => {
+        const input = event.target.value.toLowerCase();
+        this.setState({ input });
+
+        const exerciseList = this.state.initialExerciseList.filter(exercise => 
+            exercise.name.toLowerCase().includes(input)
+        );
+
+        this.setState({
+            exerciseList
+        });
+    }
+
     render() {
         return ( 
             <div className="exercise-library-view-container">
+                <Form>
+                    <Form.Group>
+                        <Form.Control 
+                            type="text" 
+                            placeholder="Search exercises" 
+                            onChange={this.search}
+                        />
+                    </Form.Group>
+                </Form>
                 <Table striped bordered hover variant="dark" size="sm">
                     <thead>
                         <tr>
