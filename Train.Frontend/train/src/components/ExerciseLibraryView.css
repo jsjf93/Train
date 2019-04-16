@@ -1,0 +1,20 @@
+.exercise-library-view-container {
+    width: 100%;
+}
+
+.exercise-library-search-add-container {
+    display: inline;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.exercise-library-search {
+    width: 79%;
+    float: left;
+}
+
+.exercise-library-add-button {
+    margin-left: 1%;
+    width: 20%;
+    float: left;
+}

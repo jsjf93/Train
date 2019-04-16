@@ -60,8 +60,7 @@ class ExerciseListTable extends Component<IProps, IState>{
             <Table striped bordered hover variant="dark" size="sm">
                 <thead>
                     <tr>
-                        <td onClick={() => this.sortBy('name')}>Name</td>
-                        <td onClick={() => this.sortBy('notes')}>Notes</td>                            
+                        <td onClick={() => this.sortBy('name')}>Name</td>                          
                     </tr>
                 </thead>
                 <tbody>
@@ -69,7 +68,6 @@ class ExerciseListTable extends Component<IProps, IState>{
                         return [
                             <tr key={exercise.id}>
                                 <td>{exercise.name}</td>
-                                <td>{exercise.notes}</td>
                             </tr>
                         ]
                     })}

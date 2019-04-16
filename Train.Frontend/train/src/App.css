@@ -1,2 +1,19 @@
+.app-content {
+    margin: 20px 30% 0px 30%;
+}
 
+.exercise-library-container {
+    width:100%;
+}
 
+.exercise-library-container thead {
+    font-size: 20px;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */  
+}
+
+.exercise-library-container thead:hover {
+    cursor: pointer;
+}
