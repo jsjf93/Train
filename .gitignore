@@ -1,2 +1,15 @@
 .vs/
 node_modules/
+
+# Logs and databases #
+######################
+*.log
+
+# OS generated files #
+######################
+.DS_Store?
+
+# .NET Specific Folders #
+#########################
+bin/
+obj/
