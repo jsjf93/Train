@@ -54,6 +54,10 @@ class ExerciseListTable extends Component<IProps, IState>{
             this.setState({ exerciseList, sortDirection: 'desc' });
         }
     }
+
+    private handleShow = () => {
+        this.setState({});
+    }
     
     render() {
         return (
@@ -66,7 +70,7 @@ class ExerciseListTable extends Component<IProps, IState>{
                 <tbody>
                     {this.state.exerciseList.map(exercise => {
                         return [
-                            <tr key={exercise.id}>
+                            <tr key={exercise.id} onClick={this.handleShow}>
                                 <td>{exercise.name}</td>
                             </tr>
                         ]

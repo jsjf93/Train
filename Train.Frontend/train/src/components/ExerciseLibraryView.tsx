@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Button } from '../../node_modules/react-bootstrap';
+import { Form, Button, Modal } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './ExerciseLibraryView.css'
 
@@ -27,17 +27,21 @@ interface IState {
     exerciseList: Exercise[];
     sortDirection: string;
     input: string;
+    showExerciseModal: boolean;
 }
 
 class ExerciseLibraryView extends Component<IProps, IState> {
+    exerciseNameInput: any;
     constructor(props: IProps) {
         super(props);
         this.state = {
             initialExerciseList: [],
             exerciseList: [],
             sortDirection: 'asc',
-            input: ""
+            input: "",
+            showExerciseModal: false
         }
+        this.exerciseNameInput = React.createRef();
     }
 
     componentDidMount() {
@@ -79,28 +83,94 @@ class ExerciseLibraryView extends Component<IProps, IState> {
         });
     }
 
+    private handleClose = () => {
+        this.setState({showExerciseModal: false });
+    }
+
+    private handleShow = () => {
+        this.setState({showExerciseModal: true });
+    }
+
+    private addExercise = () => {
+        const newExercise = this.exerciseNameInput.current.value;
+
+        fetch('https://localhost:44303/api/exerciselibrary', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: newExercise,
+                notes: 'test',
+            })
+        })
+        .then(result => {
+            if (result.ok) {
+                return result.json();
+            }
+        })
+        .then(data => {
+            if (!data) {
+                return;
+            }
+            const exerciseList = this.state.exerciseList;
+            exerciseList.push(data);
+            this.setState({initialExerciseList: exerciseList, exerciseList});
+        })
+
+        this.handleClose();
+    }
+
     render() {
         return ( 
-            <div className="exercise-library-view-container">
-                <div className="exercise-library-search-add-container">
-                    <Form className="exercise-library-search">
-                        <Form.Group>
-                            <Form.Control 
-                                type="text" 
-                                placeholder="Search exercises" 
-                                onChange={this.search}
-                            />
-                        </Form.Group>
-                    </Form>
-                    <Button 
-                        className="exercise-library-add-button"
-                        variant="success"
-                    >
-                        Add
-                    </Button>
+            <>
+                <Modal show={this.state.showExerciseModal} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Add Exercise</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label>Exercise Name</Form.Label>
+                                <Form.Control 
+                                    type="text" 
+                                    placeholder=""
+                                    ref={this.exerciseNameInput}
+                                />
+                            </Form.Group>
+                        </Form>
+                        <Button 
+                            variant="success" 
+                            type="submit"
+                            onClick={this.addExercise}
+                        >
+                            Add Exercise
+                        </Button>
+                    </Modal.Body>
+                </Modal>
+                <div className="exercise-library-view-container">
+                    <div className="exercise-library-search-add-container">
+                        <Form className="exercise-library-search">
+                            <Form.Group>
+                                <Form.Control 
+                                    type="text" 
+                                    placeholder="Search exercises" 
+                                    onChange={this.search}
+                                />
+                            </Form.Group>
+                        </Form>
+                        <Button 
+                            className="exercise-library-add-button"
+                            variant="success"
+                            onClick={this.handleShow}
+                        >
+                            Add
+                        </Button>
+                    </div>
+                    <ExerciseListTable exerciseList={this.state.exerciseList} />
                 </div>
-                <ExerciseListTable exerciseList={this.state.exerciseList} />
-            </div>
+            </>
         )
     }
 }
