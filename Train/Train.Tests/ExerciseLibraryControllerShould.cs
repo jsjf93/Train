@@ -71,23 +71,27 @@ namespace Train.Tests
 
         /// Temporarily removed until I can find a fix. Controller works using postman
         /// but fails in unit test during the UpdateExercise function
-        //[Test]
-        //public void UpdateAnExercise_Success()
-        //{
-        //    var sut = new ExerciseLibraryController(_context);
-        //    sut.AddExercise(new Exercise { Name = "Running", ExerciseType = ExerciseType.Duration, Notes = "n/a" });
-        //    sut.AddExercise(new Exercise { Name = "Box Jumps", ExerciseType = ExerciseType.Interval, Notes = "150cm" });
-        //    sut.AddExercise(new Exercise { Name = "Shoulder Press", ExerciseType = ExerciseType.Strength, Notes = "n/a" });
+        [Test]
+        public void UpdateAnExercise_Success()
+        {
+            var sut = new ExerciseLibraryController(_context);
+            sut.AddExercise(new Exercise { Name = "Running", ExerciseType = ExerciseType.Duration, Notes = "n/a" });
+            sut.AddExercise(new Exercise { Name = "Box Jumps", ExerciseType = ExerciseType.Interval, Notes = "150cm" });
+            sut.AddExercise(new Exercise { Name = "Shoulder Press", ExerciseType = ExerciseType.Strength, Notes = "n/a" });
 
-        //    sut.UpdateExercise(3, new Exercise { Id = 3, Name = "Dumbbell Shoulder Press", ExerciseType = ExerciseType.Strength,
-        //        Notes = "n/a"
-        //    });
+            sut.UpdateExercise(3, new Exercise
+            {
+                Id = 3,
+                Name = "Dumbbell Shoulder Press",
+                ExerciseType = ExerciseType.Strength,
+                Notes = "n/a"
+            });
 
-        //    var actual = sut.GetExercise(3).Value;
-        //    var expected = new Exercise { Name = "Dumbbell Shoulder Press", ExerciseType = ExerciseType.Strength, Notes = "Test data" };
+            var actual = sut.GetExercise(3).Value;
+            var expected = new Exercise { Name = "Dumbbell Shoulder Press", ExerciseType = ExerciseType.Strength, Notes = "n/a" };
 
-        //    Assert.That(actual, Is.EqualTo(expected));
-        //}
+            Assert.That(actual, Is.EqualTo(expected));
+        }
 
         [Test]
         public void DeleteAnExercise()

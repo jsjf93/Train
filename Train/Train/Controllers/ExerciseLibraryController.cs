@@ -51,11 +51,20 @@ namespace Train.Controllers
 
         // PUT: api/ExerciseLibrary/5
         [HttpPut("{id}")]
-        public ActionResult<Exercise> UpdateExercise(int id, [FromBody] Exercise exercise)
+        public ActionResult UpdateExercise(int id, [FromBody] Exercise exercise)
         {
             if (id != exercise.Id)
             {
                 return BadRequest();
+            }
+
+            var local = _context.Set<Exercise>()
+                .Local
+                .FirstOrDefault(e => e.Id.Equals(id));
+
+            if(local != null)
+            {
+                _context.Entry(local).State = EntityState.Detached;
             }
 
             _context.Entry(exercise).State = EntityState.Modified;

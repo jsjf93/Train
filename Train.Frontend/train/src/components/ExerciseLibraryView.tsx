@@ -134,8 +134,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                             <Form.Group>
                                 <Form.Label>Exercise Name</Form.Label>
                                 <Form.Control 
-                                    type="text" 
-                                    placeholder=""
+                                    type="text"
                                     ref={this.exerciseNameInput}
                                 />
                             </Form.Group>
