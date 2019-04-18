@@ -6,18 +6,6 @@ import './ExerciseLibraryView.css'
 import { Exercise } from './index';
 import ExerciseListTable from './ExerciseListTable';
 
-const data = [
-    { id: 1, name: "Running", notes: "n/a" }, 
-    { id: 2, name: "Bicep Curls", notes: "Seated" }, 
-    { id: 3, name: "Box Jumps", notes: "High reps" },
-    { id: 4, name: "Climbing", notes: "n/a" }, 
-    { id: 5, name: "Shoulder Press", notes: "Seated" }, 
-    { id: 6, name: "Handstand", notes: "n/a" },
-    { id: 7, name: "Boxing", notes: "n/a" }, 
-    { id: 8, name: "Deadlift", notes: "n/a" }, 
-    { id: 9, name: "Sprints", notes: "n/a" },
-];
-
 interface IProps {
 
 }
@@ -31,7 +19,8 @@ interface IState {
 }
 
 class ExerciseLibraryView extends Component<IProps, IState> {
-    exerciseNameInput: any;
+    private exerciseNameInput: any;
+    
     constructor(props: IProps) {
         super(props);
         this.state = {
@@ -65,9 +54,6 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             });
             console.log("[ExerciseLibraryView] fetch. ", this.state.initialExerciseList);
         })
-        // temporary code that just adds in test data hardcoded at top of file
-        if (this.state.initialExerciseList.length === 0) 
-            this.setState({ initialExerciseList: data, exerciseList: data });
     }
 
     private search = (event: any) => {
@@ -122,6 +108,24 @@ class ExerciseLibraryView extends Component<IProps, IState> {
         this.handleClose();
     }
 
+    private handleRemoveClick = (id: number) => {
+        fetch('https://localhost:44303/api/exerciselibrary/' + id, {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(result => {
+            if (result.ok) {
+                this.setState({ 
+                    initialExerciseList: this.state.initialExerciseList.filter(exercise => exercise.id !== id),
+                    exerciseList: this.state.exerciseList.filter(exercise => exercise.id !== id)
+                });
+            }
+        })
+    }
+
     render() {
         return ( 
             <>
@@ -167,7 +171,10 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                             Add
                         </Button>
                     </div>
-                    <ExerciseListTable exerciseList={this.state.exerciseList} />
+                    <ExerciseListTable 
+                        exerciseList={this.state.exerciseList} 
+                        handleRemoveClick={this.handleRemoveClick}
+                    />
                 </div>
             </>
         )

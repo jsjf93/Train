@@ -2,16 +2,19 @@ import React, { Component } from 'react';
 import { Table, Modal, Form, Button } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Exercise } from './index';
-import { nfapply } from 'q';
+import './ExerciseListTable.css';
+import { MdDelete } from 'react-icons/md';
 
 interface IProps {
     exerciseList: Exercise[];
+    handleRemoveClick: (id: number) => void;
 }
 
 interface IState {
     exerciseList: Exercise[];
     sortDirection: string;
     showExerciseModal: boolean;
+    showRemoveExerciseModal: boolean;
     selectedExercise?: Exercise;
     input: string;
 }
@@ -22,9 +25,10 @@ class ExerciseListTable extends Component<IProps, IState>{
     constructor(props: IProps) {
         super(props);
         this.state = {
-            exerciseList: [],
+            exerciseList: this.props.exerciseList,
             sortDirection: 'asc',
             showExerciseModal: false,
+            showRemoveExerciseModal: false,
             selectedExercise: undefined,
             input: ""
         }
@@ -73,6 +77,19 @@ class ExerciseListTable extends Component<IProps, IState>{
         this.setState({ showExerciseModal: true, selectedExercise: exercise, input: exercise.name});
     }
 
+    private handleCloseRemoveExerciseModal = () => {
+        this.setState({ showRemoveExerciseModal: false});
+    }
+
+    private handleShowRemoveExerciseModal = (exercise: Exercise) => {
+        this.setState({ showRemoveExerciseModal: true, selectedExercise: exercise, input: exercise.name});
+    }
+
+    private handleRemove = () => {
+        this.props.handleRemoveClick(this.state.selectedExercise!.id);
+        this.handleCloseRemoveExerciseModal();
+    }
+
     private updateExercise = () => {
         const updatedExerciseId = this.state.selectedExercise!.id;
         const updatedExercise = this.exerciseNameInput.current.value;
@@ -92,8 +109,11 @@ class ExerciseListTable extends Component<IProps, IState>{
         .then(result => {
             if (result.ok) {
                 const exerciseList: Exercise[] = [];
-                exerciseList.push({ id: updatedExerciseId, name: updatedExercise, notes: this.state.selectedExercise!.notes});
-
+                exerciseList.push({ 
+                    id: updatedExerciseId, 
+                    name: updatedExercise, 
+                    notes: this.state.selectedExercise!.notes
+                });
                 this.setState({ exerciseList: Object.assign(this.state.exerciseList, exerciseList)});
             }
         })
@@ -105,7 +125,7 @@ class ExerciseListTable extends Component<IProps, IState>{
         const input = event.target.value;
         this.setState({ input });
     }
-    
+
     render() {
         return (
             <>
@@ -134,17 +154,45 @@ class ExerciseListTable extends Component<IProps, IState>{
                         </Button>
                     </Modal.Body>
                 </Modal>
+
+                <Modal show={this.state.showRemoveExerciseModal} onHide={this.handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Remove Exercise</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>Are you sure you want to remove this exercise?</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={this.handleCloseRemoveExerciseModal}>
+                            Cancel
+                        </Button>
+                        <Button variant="danger" onClick={this.handleRemove}>
+                            Remove
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+
                 <Table striped bordered hover variant="dark" size="sm">
                     <thead>
                         <tr>
-                            <td onClick={() => this.sortBy('name')}>Name</td>                          
+                            <td onClick={() => this.sortBy('name')}>Name</td> 
+                            <td></td>                        
                         </tr>
                     </thead>
                     <tbody>
                         {this.state.exerciseList.map(exercise => {
                             return [
-                                <tr key={exercise.id} onClick={() => this.handleShow(exercise)}>
-                                    <td>{exercise.name}</td>
+                                <tr key={exercise.id}>
+                                    <td onClick={() => this.handleShow(exercise)}>
+                                        {exercise.name}
+                                    </td>
+                                    <td className="exercise-remove-icon-container">
+                                        <MdDelete 
+                                            className="exercise-remove-icon"
+                                            size={20}
+                                            onClick={() => this.handleShowRemoveExerciseModal(exercise)}
+                                        />
+                                    </td>
                                 </tr>
                             ]
                         })}
