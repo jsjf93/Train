@@ -3,7 +3,7 @@ import { Table } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Exercise } from './index';
 import './ExerciseListTable.css';
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import ExerciseUpdateModal from './Modals/ExerciseUpdateModal';
 import ExerciseRemoveModal from './Modals/ExerciseRemoveModal';
 
@@ -13,11 +13,11 @@ interface IProps {
     handleUpdateClick: (exercise: Exercise) => void;
     exerciseNameInput: any;
     handleSortClick: (column: string) => void;
+    sortDirection: string;
 }
 
 interface IState {
     exerciseList: Exercise[];
-    sortDirection: string;
     showExerciseModal: boolean;
     showRemoveExerciseModal: boolean;
     selectedExercise?: Exercise;
@@ -30,7 +30,6 @@ class ExerciseListTable extends Component<IProps, IState>{
         super(props);
         this.state = {
             exerciseList: this.props.exerciseList,
-            sortDirection: 'asc',
             showExerciseModal: false,
             showRemoveExerciseModal: false,
             selectedExercise: undefined,
@@ -96,7 +95,10 @@ class ExerciseListTable extends Component<IProps, IState>{
                 <Table striped bordered hover variant="dark" size="sm">
                     <thead>
                         <tr>
-                            <td onClick={() => this.props.handleSortClick('name')}>Name</td> 
+                            <td onClick={() => this.props.handleSortClick('name')}>
+                                Name 
+                                {this.props.sortDirection === 'asc' ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
+                            </td> 
                             <td />                        
                         </tr>
                     </thead>

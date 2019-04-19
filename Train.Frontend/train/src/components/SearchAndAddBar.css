@@ -1,10 +1,15 @@
+.exercise-library-search-add-container {
+    width: 100%;
+}
+
 .exercise-library-search {
-    width: 79%;
-    float: left;
+    width: auto;
+    overflow: hidden;
 }
 
 .exercise-library-add-button {
     margin-left: 1%;
     width: 20%;
-    float: left;
+    max-width: 100px;
+    float: right;
 }

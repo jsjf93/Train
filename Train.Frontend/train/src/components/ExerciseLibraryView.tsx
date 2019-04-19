@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
+import { Alert } from 'react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-import './ExerciseLibraryView.css'
 
+import './ExerciseLibraryView.css'
 import { Exercise } from './index';
 import ExerciseListTable from './ExerciseListTable';
 import ExerciseAddModal from './Modals/ExerciseAddModal';
@@ -17,6 +18,9 @@ interface IState {
     sortDirection: string;
     input: string;
     showExerciseModal: boolean;
+    showExerciseAddError: boolean;
+    showExerciseUpdateError: boolean;
+    showExerciseRemoveError: boolean;
 }
 
 class ExerciseLibraryView extends Component<IProps, IState> {
@@ -29,7 +33,10 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             exerciseList: [],
             sortDirection: 'asc',
             input: "",
-            showExerciseModal: false
+            showExerciseModal: false,
+            showExerciseAddError: false,
+            showExerciseUpdateError: false,
+            showExerciseRemoveError: false
         }
         this.exerciseNameInput = React.createRef();
     }
@@ -143,6 +150,10 @@ class ExerciseLibraryView extends Component<IProps, IState> {
 
             this.setState({ initialExerciseList, exerciseList });
         })
+        .catch(err => {
+            console.log(err);
+            this.setState({ showExerciseAddError: true });
+        })
         this.handleClose();
     }
 
@@ -179,6 +190,10 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                 this.setState({ initialExerciseList, exerciseList});
             }
         })
+        .catch(err => {
+            console.log(err);
+            this.setState({ showExerciseUpdateError: true });
+        })
     }
 
     private handleRemoveClick = (id: number) => {
@@ -197,11 +212,42 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                 });
             }
         })
+        .catch(err => {
+            console.log(err);
+            this.setState({ showExerciseRemoveError: true });
+        })
+    }
+
+    private hideExerciseAddError = () => {
+        this.setState({ showExerciseAddError: false });
+    }
+
+    private hideExerciseUpdateError = () => {
+        this.setState({ showExerciseUpdateError: false });
+    }
+
+    private hideExerciseRemoveError = () => {
+        this.setState({ showExerciseRemoveError: false });
     }
 
     render() {
         return ( 
             <>
+                {this.state.showExerciseAddError && 
+                    <Alert onClick={this.hideExerciseAddError} variant="danger">
+                        Unable to add exercise. <b>Click to dismiss.</b>
+                    </Alert>
+                }
+                {this.state.showExerciseUpdateError && 
+                    <Alert onClick={this.hideExerciseUpdateError} variant="danger">
+                        Unable to update exercise. <b>Click to dismiss.</b>
+                    </Alert>
+                }
+                {this.state.showExerciseRemoveError && 
+                    <Alert onClick={this.hideExerciseRemoveError} variant="danger">
+                        Unable to remove exercise. <b>Click to dismiss.</b>
+                    </Alert>
+                }
                 <ExerciseAddModal 
                     showExerciseModal={this.state.showExerciseModal}
                     handleClose={this.handleClose}
@@ -219,6 +265,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                         handleUpdateClick={this.handleUpdateClick}
                         exerciseNameInput={this.exerciseNameInput}
                         handleSortClick={this.sortBy}
+                        sortDirection={this.state.sortDirection}
                     />
                 </div>
             </>

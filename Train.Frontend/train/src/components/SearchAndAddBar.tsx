@@ -11,6 +11,13 @@ interface IProps {
 const SearchAndAddBar = (props: IProps) => {
     return (
         <div className="exercise-library-search-add-container">
+            <Button 
+                className="exercise-library-add-button"
+                variant="success"
+                onClick={props.handleShow}
+            >
+                Add
+            </Button>
             <Form className="exercise-library-search">
                 <Form.Group>
                     <Form.Control 
@@ -20,13 +27,6 @@ const SearchAndAddBar = (props: IProps) => {
                     />
                 </Form.Group>
             </Form>
-            <Button 
-                className="exercise-library-add-button"
-                variant="success"
-                onClick={props.handleShow}
-            >
-                Add
-            </Button>
         </div>
     );
 }
