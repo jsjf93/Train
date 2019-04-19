@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Form, Button, Modal } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './ExerciseLibraryView.css'
 
 import { Exercise } from './index';
 import ExerciseListTable from './ExerciseListTable';
+import ExerciseAddModal from './Modals/ExerciseAddModal';
+import SearchAndAddBar from './SearchAndAddBar';
 
 interface IProps {
 
@@ -172,6 +173,8 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                 exerciseList = this.state.input ?
                     initialExerciseList.filter(exercise => exercise.name.toLowerCase().includes(this.state.input)) :
                     initialExerciseList;
+                
+                exerciseList.sort(this.state.sortDirection === "asc" ? this.sortAscending('name') : this.sortDescending('name'));
 
                 this.setState({ initialExerciseList, exerciseList});
             }
@@ -199,48 +202,17 @@ class ExerciseLibraryView extends Component<IProps, IState> {
     render() {
         return ( 
             <>
-                <Modal show={this.state.showExerciseModal} onHide={this.handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add Exercise</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label>Exercise Name</Form.Label>
-                                <Form.Control 
-                                    type="text"
-                                    ref={this.exerciseNameInput}
-                                />
-                            </Form.Group>
-                        </Form>
-                        <Button 
-                            variant="success" 
-                            type="submit"
-                            onClick={this.addExercise}
-                        >
-                            Add Exercise
-                        </Button>
-                    </Modal.Body>
-                </Modal>
+                <ExerciseAddModal 
+                    showExerciseModal={this.state.showExerciseModal}
+                    handleClose={this.handleClose}
+                    exerciseNameInput={this.exerciseNameInput}
+                    addExercise={this.addExercise}
+                />
                 <div className="exercise-library-view-container">
-                    <div className="exercise-library-search-add-container">
-                        <Form className="exercise-library-search">
-                            <Form.Group>
-                                <Form.Control 
-                                    type="text" 
-                                    placeholder="Search exercises" 
-                                    onChange={this.search}
-                                />
-                            </Form.Group>
-                        </Form>
-                        <Button 
-                            className="exercise-library-add-button"
-                            variant="success"
-                            onClick={this.handleShow}
-                        >
-                            Add
-                        </Button>
-                    </div>
+                    <SearchAndAddBar 
+                        handleSearch={(event: any) => this.search(event)}
+                        handleShow={this.handleShow}
+                    />
                     <ExerciseListTable 
                         exerciseList={this.state.exerciseList} 
                         handleRemoveClick={this.handleRemoveClick}

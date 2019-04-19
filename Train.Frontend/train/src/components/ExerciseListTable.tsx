@@ -4,6 +4,8 @@ import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Exercise } from './index';
 import './ExerciseListTable.css';
 import { MdDelete } from 'react-icons/md';
+import ExerciseUpdateModal from './Modals/ExerciseUpdateModal';
+import ExerciseRemoveModal from './Modals/ExerciseRemoveModal';
 
 interface IProps {
     exerciseList: Exercise[];
@@ -50,17 +52,17 @@ class ExerciseListTable extends Component<IProps, IState>{
         this.setState({ showExerciseModal: true, selectedExercise: exercise, input: exercise.name});
     }
 
-    private handleCloseRemoveExerciseModal = () => {
+    private handleCloseRemoveModal = () => {
         this.setState({ showRemoveExerciseModal: false});
     }
 
-    private handleShowRemoveExerciseModal = (exercise: Exercise) => {
+    private handleShowRemoveModal = (exercise: Exercise) => {
         this.setState({ showRemoveExerciseModal: true, selectedExercise: exercise, input: exercise.name});
     }
 
     private handleRemove = () => {
         this.props.handleRemoveClick(this.state.selectedExercise!.id);
-        this.handleCloseRemoveExerciseModal();
+        this.handleCloseRemoveModal();
     }
 
     private handleUpdate = () => {
@@ -77,57 +79,33 @@ class ExerciseListTable extends Component<IProps, IState>{
     render() {
         return (
             <>
-                <Modal show={this.state.showExerciseModal} onHide={this.handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Update Exercise</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form>
-                            <Form.Group>
-                                <Form.Label>Exercise Name</Form.Label>
-                                <Form.Control 
-                                    type="text"
-                                    value={this.state.input}
-                                    ref={this.props.exerciseNameInput}
-                                    onChange={this.onChangeHandler}
-                                />
-                            </Form.Group>
-                        </Form>
-                        <Button 
-                            variant="success" 
-                            type="submit"
-                            onClick={this.handleUpdate}
-                        >
-                            Update Exercise
-                        </Button>
-                    </Modal.Body>
-                </Modal>
-
-                <Modal show={this.state.showRemoveExerciseModal} onHide={this.handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Remove Exercise</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <p>Are you sure you want to remove this exercise?</p>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={this.handleCloseRemoveExerciseModal}>
-                            Cancel
-                        </Button>
-                        <Button variant="danger" onClick={this.handleRemove}>
-                            Remove
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
+                <ExerciseUpdateModal 
+                    showExerciseModal={this.state.showExerciseModal}
+                    handleClose={this.handleClose}
+                    value={this.state.input}
+                    exerciseNameInput={this.props.exerciseNameInput}
+                    onChangeHandler={this.onChangeHandler}
+                    handleUpdate={this.handleUpdate}
+                />
+                <ExerciseRemoveModal 
+                    showRemoveExerciseModal={this.state.showRemoveExerciseModal}
+                    handleCloseRemoveModal={this.handleCloseRemoveModal}
+                    handleRemove={this.handleRemove}
+                />
 
                 <Table striped bordered hover variant="dark" size="sm">
                     <thead>
                         <tr>
                             <td onClick={() => this.props.handleSortClick('name')}>Name</td> 
-                            <td></td>                        
+                            <td />                        
                         </tr>
                     </thead>
                     <tbody>
+                        {this.state.exerciseList.length === 0 &&
+                            <tr>
+                                <td>No exercise were found</td>
+                                <td />
+                            </tr>}
                         {this.state.exerciseList.map(exercise => {
                             return [
                                 <tr key={exercise.id}>
@@ -138,7 +116,7 @@ class ExerciseListTable extends Component<IProps, IState>{
                                         <MdDelete 
                                             className="exercise-remove-icon"
                                             size={20}
-                                            onClick={() => this.handleShowRemoveExerciseModal(exercise)}
+                                            onClick={() => this.handleShowRemoveModal(exercise)}
                                         />
                                     </td>
                                 </tr>
