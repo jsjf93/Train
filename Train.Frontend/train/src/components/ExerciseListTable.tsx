@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Modal, Form, Button } from '../../node_modules/react-bootstrap';
+import { Table } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import { Exercise } from './index';
 import './ExerciseListTable.css';
