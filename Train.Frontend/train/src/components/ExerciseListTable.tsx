@@ -8,6 +8,8 @@ import { MdDelete } from 'react-icons/md';
 interface IProps {
     exerciseList: Exercise[];
     handleRemoveClick: (id: number) => void;
+    handleUpdateClick: (exercise: Exercise) => void;
+    exerciseNameInput: any;
 }
 
 interface IState {
@@ -20,7 +22,6 @@ interface IState {
 }
 
 class ExerciseListTable extends Component<IProps, IState>{
-    exerciseNameInput: any;
 
     constructor(props: IProps) {
         super(props);
@@ -32,7 +33,6 @@ class ExerciseListTable extends Component<IProps, IState>{
             selectedExercise: undefined,
             input: ""
         }
-        this.exerciseNameInput = React.createRef();
     }
 
     componentDidUpdate() {
@@ -90,34 +90,9 @@ class ExerciseListTable extends Component<IProps, IState>{
         this.handleCloseRemoveExerciseModal();
     }
 
-    private updateExercise = () => {
-        const updatedExerciseId = this.state.selectedExercise!.id;
-        const updatedExercise = this.exerciseNameInput.current.value;
-
-        fetch('https://localhost:44303/api/exerciselibrary/' + updatedExerciseId , {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: updatedExerciseId,
-                name: updatedExercise,
-                notes: this.state.selectedExercise!.notes
-            })
-        })
-        .then(result => {
-            if (result.ok) {
-                const exerciseList: Exercise[] = [];
-                exerciseList.push({ 
-                    id: updatedExerciseId, 
-                    name: updatedExercise, 
-                    notes: this.state.selectedExercise!.notes
-                });
-                this.setState({ exerciseList: Object.assign(this.state.exerciseList, exerciseList)});
-            }
-        })
-
+    private handleUpdate = () => {
+        console.log(this.state.selectedExercise);
+        this.props.handleUpdateClick(this.state.selectedExercise!);
         this.handleClose();
     }
 
@@ -140,7 +115,7 @@ class ExerciseListTable extends Component<IProps, IState>{
                                 <Form.Control 
                                     type="text"
                                     value={this.state.input}
-                                    ref={this.exerciseNameInput}
+                                    ref={this.props.exerciseNameInput}
                                     onChange={this.onChangeHandler}
                                 />
                             </Form.Group>
@@ -148,7 +123,7 @@ class ExerciseListTable extends Component<IProps, IState>{
                         <Button 
                             variant="success" 
                             type="submit"
-                            onClick={this.updateExercise}
+                            onClick={this.handleUpdate}
                         >
                             Update Exercise
                         </Button>

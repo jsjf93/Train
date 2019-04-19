@@ -64,9 +64,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             exercise.name.toLowerCase().includes(input)
         );
 
-        this.setState({
-            exerciseList
-        });
+        this.setState({ exerciseList });
     }
 
     private handleClose = () => {
@@ -100,12 +98,49 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             if (!data) {
                 return;
             }
-            const exerciseList = this.state.exerciseList;
+            let exerciseList: Exercise[] = [];
             exerciseList.push(data);
-            this.setState({initialExerciseList: exerciseList, exerciseList});
-        })
+            const initialExerciseList = this.state.initialExerciseList.concat(exerciseList);
+            exerciseList = this.state.input ?
+                initialExerciseList.filter(exercise => exercise.name.toLowerCase().includes(this.state.input)) :
+                initialExerciseList;
 
+            this.setState({ initialExerciseList, exerciseList });
+        })
         this.handleClose();
+    }
+
+    private handleUpdateClick = (selectedExercise: Exercise) => {
+        const updatedExerciseId = selectedExercise.id;
+        const updatedExercise = this.exerciseNameInput.current.value;
+
+        fetch('https://localhost:44303/api/exerciselibrary/' + updatedExerciseId , {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: updatedExerciseId,
+                name: updatedExercise,
+                notes: selectedExercise.notes
+            })
+        })
+        .then(result => {
+            if (result.ok) {
+                let exerciseList: Exercise[] = [];
+                exerciseList.push({ id: updatedExerciseId, name: updatedExercise, notes: selectedExercise.notes });
+
+                const initialExerciseList = this.state.initialExerciseList.filter(exercise => exercise.id !== updatedExerciseId);
+                initialExerciseList.push(exerciseList[0]);
+
+                exerciseList = this.state.input ?
+                    initialExerciseList.filter(exercise => exercise.name.toLowerCase().includes(this.state.input)) :
+                    initialExerciseList;
+
+                this.setState({ initialExerciseList, exerciseList});
+            }
+        })
     }
 
     private handleRemoveClick = (id: number) => {
@@ -174,6 +209,8 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                     <ExerciseListTable 
                         exerciseList={this.state.exerciseList} 
                         handleRemoveClick={this.handleRemoveClick}
+                        handleUpdateClick={this.handleUpdateClick}
+                        exerciseNameInput={this.exerciseNameInput}
                     />
                 </div>
             </>
