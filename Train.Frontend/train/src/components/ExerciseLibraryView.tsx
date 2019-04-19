@@ -48,12 +48,44 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             }
             const exerciseList: Exercise[] = [];
             data.map((row: Exercise) => exerciseList.push(row))
+            exerciseList.sort(this.state.sortDirection === "asc"?
+                this.sortAscending('name') :
+                this.sortDescending('name'));
+
             this.setState({ 
                 initialExerciseList: exerciseList,
                 exerciseList
             });
             console.log("[ExerciseLibraryView] fetch. ", this.state.initialExerciseList);
         })
+    }
+
+    private sortAscending = (column: string) => {
+        return function (a: any, b: any) {
+            if (a[column].toLowerCase() < b[column].toLowerCase()) return -1;
+            if (a[column].toLowerCase() > b[column].toLowerCase()) return 1;
+            return 0;
+        };
+    }
+
+    private sortDescending = (column: string) => {
+        return function (a: any, b: any) {
+            if (a[column].toLowerCase() > b[column].toLowerCase()) return -1;
+            if (a[column].toLowerCase() < b[column].toLowerCase()) return 1;
+            return 0;
+        };
+    }
+
+    private sortBy = (column: string) => {
+        const exerciseList = this.state.exerciseList;
+        if (this.state.sortDirection === 'desc') {
+            exerciseList.sort(this.sortAscending(column));
+            this.setState({ exerciseList, sortDirection: 'asc' });
+        }
+        if (this.state.sortDirection === 'asc') {
+            exerciseList.sort(this.sortDescending(column));
+            this.setState({ exerciseList, sortDirection: 'desc' });
+        }
     }
 
     private search = (event: any) => {
@@ -63,6 +95,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
         const exerciseList = this.state.initialExerciseList.filter(exercise => 
             exercise.name.toLowerCase().includes(input)
         );
+        exerciseList.sort(this.state.sortDirection === "asc" ? this.sortAscending('name') : this.sortDescending('name'));
 
         this.setState({ exerciseList });
     }
@@ -104,6 +137,8 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             exerciseList = this.state.input ?
                 initialExerciseList.filter(exercise => exercise.name.toLowerCase().includes(this.state.input)) :
                 initialExerciseList;
+
+            exerciseList.sort(this.state.sortDirection === "asc" ? this.sortAscending('name') : this.sortDescending('name'));
 
             this.setState({ initialExerciseList, exerciseList });
         })
@@ -211,6 +246,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                         handleRemoveClick={this.handleRemoveClick}
                         handleUpdateClick={this.handleUpdateClick}
                         exerciseNameInput={this.exerciseNameInput}
+                        handleSortClick={this.sortBy}
                     />
                 </div>
             </>
