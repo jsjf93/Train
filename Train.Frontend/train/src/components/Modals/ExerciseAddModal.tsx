@@ -18,15 +18,15 @@ const ExerciseAddModal = (props: IProps) => {
                 <Form>
                     <Form.Group>
                         <Form.Label>Exercise Name</Form.Label>
-                        <Form.Control 
-                            type="text"
+                        <Form.Control
+                            type='text'
                             ref={props.exerciseNameInput}
                         />
                     </Form.Group>
                 </Form>
-                <Button 
-                    variant="success" 
-                    type="submit"
+                <Button
+                    variant='success'
+                    type='submit'
                     onClick={props.addExercise}
                 >
                     Add Exercise
@@ -34,6 +34,6 @@ const ExerciseAddModal = (props: IProps) => {
             </Modal.Body>
         </Modal>
     );
-}
+};
 
 export default ExerciseAddModal;

@@ -20,17 +20,17 @@ const ExerciseUpdateModal = (props: IProps) => {
                 <Form>
                     <Form.Group>
                         <Form.Label>Exercise Name</Form.Label>
-                        <Form.Control 
-                            type="text"
+                        <Form.Control
+                            type='text'
                             value={props.value}
                             ref={props.exerciseNameInput}
                             onChange={props.onChangeHandler}
                         />
                     </Form.Group>
                 </Form>
-                <Button 
-                    variant="success" 
-                    type="submit"
+                <Button
+                    variant='success'
+                    type='submit'
                     onClick={props.handleUpdate}
                 >
                     Update Exercise
@@ -38,6 +38,6 @@ const ExerciseUpdateModal = (props: IProps) => {
             </Modal.Body>
         </Modal>
     );
-}
+};
 
 export default ExerciseUpdateModal;

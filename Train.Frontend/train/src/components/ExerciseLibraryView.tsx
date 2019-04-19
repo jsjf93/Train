@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 
-import './ExerciseLibraryView.css'
-import { Exercise } from './index';
+import './ExerciseLibraryView.css';
+import { IExercise } from './index';
 import ExerciseListTable from './ExerciseListTable';
 import ExerciseAddModal from './Modals/ExerciseAddModal';
 import SearchAndAddBar from './SearchAndAddBar';
@@ -13,8 +13,8 @@ interface IProps {
 }
 
 interface IState {
-    initialExerciseList: Exercise[];
-    exerciseList: Exercise[];
+    initialExerciseList: IExercise[];
+    exerciseList: IExercise[];
     sortDirection: string;
     input: string;
     showExerciseModal: boolean;
@@ -25,51 +25,48 @@ interface IState {
 
 class ExerciseLibraryView extends Component<IProps, IState> {
     private exerciseNameInput: any;
-    
+
     constructor(props: IProps) {
         super(props);
         this.state = {
             initialExerciseList: [],
             exerciseList: [],
             sortDirection: 'asc',
-            input: "",
+            input: '',
             showExerciseModal: false,
             showExerciseAddError: false,
             showExerciseUpdateError: false,
-            showExerciseRemoveError: false
-        }
+            showExerciseRemoveError: false,
+        };
         this.exerciseNameInput = React.createRef();
     }
 
-    componentDidMount() {
+    public componentDidMount() {
         fetch('https://localhost:44303/api/exerciselibrary')
-        .then(result => {
+        .then((result) => {
             if (result.ok) {
                 return result.json();
-            } else {
-                console.log(`[ExerciseLibraryView] componentDidMount() Request rejected. Status: ${result.status}`);
             }
         })
-        .then(data => {
+        .then((data) => {
             if (!data) {
                 return;
             }
-            const exerciseList: Exercise[] = [];
-            data.map((row: Exercise) => exerciseList.push(row))
-            exerciseList.sort(this.state.sortDirection === "asc"?
+            const exerciseList: IExercise[] = [];
+            data.map((row: IExercise) => exerciseList.push(row));
+            exerciseList.sort(this.state.sortDirection === 'asc' ?
                 this.sortAscending('name') :
                 this.sortDescending('name'));
 
-            this.setState({ 
+            this.setState({
                 initialExerciseList: exerciseList,
-                exerciseList
+                exerciseList,
             });
-            console.log("[ExerciseLibraryView] fetch. ", this.state.initialExerciseList);
-        })
+        });
     }
 
     private sortAscending = (column: string) => {
-        return function (a: any, b: any) {
+        return (a: any, b: any) => {
             if (a[column].toLowerCase() < b[column].toLowerCase()) return -1;
             if (a[column].toLowerCase() > b[column].toLowerCase()) return 1;
             return 0;
@@ -77,7 +74,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
     }
 
     private sortDescending = (column: string) => {
-        return function (a: any, b: any) {
+        return (a: any, b: any) => {
             if (a[column].toLowerCase() > b[column].toLowerCase()) return -1;
             if (a[column].toLowerCase() < b[column].toLowerCase()) return 1;
             return 0;
@@ -100,10 +97,12 @@ class ExerciseLibraryView extends Component<IProps, IState> {
         const input = event.target.value.toLowerCase();
         this.setState({ input });
 
-        const exerciseList = this.state.initialExerciseList.filter(exercise => 
-            exercise.name.toLowerCase().includes(input)
+        const exerciseList = this.state.initialExerciseList.filter((exercise) =>
+            exercise.name.toLowerCase().includes(input),
         );
-        exerciseList.sort(this.state.sortDirection === "asc" ? this.sortAscending('name') : this.sortDescending('name'));
+        exerciseList.sort(this.state.sortDirection === 'asc' ?
+            this.sortAscending('name') :
+            this.sortDescending('name'));
 
         this.setState({ exerciseList });
     }
@@ -128,36 +127,37 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             body: JSON.stringify({
                 name: newExercise,
                 notes: 'test',
-            })
+            }),
         })
-        .then(result => {
+        .then((result) => {
             if (result.ok) {
                 return result.json();
             }
         })
-        .then(data => {
+        .then((data) => {
             if (!data) {
                 return;
             }
-            let exerciseList: Exercise[] = [];
+            let exerciseList: IExercise[] = [];
             exerciseList.push(data);
             const initialExerciseList = this.state.initialExerciseList.concat(exerciseList);
             exerciseList = this.state.input ?
-                initialExerciseList.filter(exercise => exercise.name.toLowerCase().includes(this.state.input)) :
+                initialExerciseList.filter((exercise) => exercise.name.toLowerCase().includes(this.state.input)) :
                 initialExerciseList;
 
-            exerciseList.sort(this.state.sortDirection === "asc" ? this.sortAscending('name') : this.sortDescending('name'));
+            exerciseList.sort(this.state.sortDirection === 'asc' ?
+                this.sortAscending('name') :
+                this.sortDescending('name'));
 
             this.setState({ initialExerciseList, exerciseList });
         })
-        .catch(err => {
-            console.log(err);
+        .catch(() => {
             this.setState({ showExerciseAddError: true });
-        })
+        });
         this.handleClose();
     }
 
-    private handleUpdateClick = (selectedExercise: Exercise) => {
+    private handleUpdateClick = (selectedExercise: IExercise) => {
         const updatedExerciseId = selectedExercise.id;
         const updatedExercise = this.exerciseNameInput.current.value;
 
@@ -170,30 +170,33 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             body: JSON.stringify({
                 id: updatedExerciseId,
                 name: updatedExercise,
-                notes: selectedExercise.notes
-            })
+                notes: selectedExercise.notes,
+            }),
         })
-        .then(result => {
+        .then((result) => {
             if (result.ok) {
-                let exerciseList: Exercise[] = [];
+                let exerciseList: IExercise[] = [];
                 exerciseList.push({ id: updatedExerciseId, name: updatedExercise, notes: selectedExercise.notes });
 
-                const initialExerciseList = this.state.initialExerciseList.filter(exercise => exercise.id !== updatedExerciseId);
+                const initialExerciseList = this.state.initialExerciseList.filter((exercise) =>
+                    exercise.id !== updatedExerciseId,
+                );
                 initialExerciseList.push(exerciseList[0]);
 
                 exerciseList = this.state.input ?
-                    initialExerciseList.filter(exercise => exercise.name.toLowerCase().includes(this.state.input)) :
+                    initialExerciseList.filter((exercise) => exercise.name.toLowerCase().includes(this.state.input)) :
                     initialExerciseList;
-                
-                exerciseList.sort(this.state.sortDirection === "asc" ? this.sortAscending('name') : this.sortDescending('name'));
+
+                exerciseList.sort(this.state.sortDirection === 'asc' ?
+                    this.sortAscending('name') :
+                    this.sortDescending('name'));
 
                 this.setState({ initialExerciseList, exerciseList});
             }
         })
-        .catch(err => {
-            console.log(err);
+        .catch(() => {
             this.setState({ showExerciseUpdateError: true });
-        })
+        });
     }
 
     private handleRemoveClick = (id: number) => {
@@ -202,20 +205,19 @@ class ExerciseLibraryView extends Component<IProps, IState> {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-            }
+            },
         })
-        .then(result => {
+        .then((result) => {
             if (result.ok) {
-                this.setState({ 
-                    initialExerciseList: this.state.initialExerciseList.filter(exercise => exercise.id !== id),
-                    exerciseList: this.state.exerciseList.filter(exercise => exercise.id !== id)
+                this.setState({
+                    initialExerciseList: this.state.initialExerciseList.filter((exercise) => exercise.id !== id),
+                    exerciseList: this.state.exerciseList.filter((exercise) => exercise.id !== id),
                 });
             }
         })
-        .catch(err => {
-            console.log(err);
+        .catch(() => {
             this.setState({ showExerciseRemoveError: true });
-        })
+        });
     }
 
     private hideExerciseAddError = () => {
@@ -230,37 +232,37 @@ class ExerciseLibraryView extends Component<IProps, IState> {
         this.setState({ showExerciseRemoveError: false });
     }
 
-    render() {
-        return ( 
+    public render() {
+        return (
             <>
-                {this.state.showExerciseAddError && 
-                    <Alert onClick={this.hideExerciseAddError} variant="danger">
+                {this.state.showExerciseAddError &&
+                    <Alert onClick={this.hideExerciseAddError} variant='danger'>
                         Unable to add exercise. <b>Click to dismiss.</b>
                     </Alert>
                 }
-                {this.state.showExerciseUpdateError && 
-                    <Alert onClick={this.hideExerciseUpdateError} variant="danger">
+                {this.state.showExerciseUpdateError &&
+                    <Alert onClick={this.hideExerciseUpdateError} variant='danger'>
                         Unable to update exercise. <b>Click to dismiss.</b>
                     </Alert>
                 }
-                {this.state.showExerciseRemoveError && 
-                    <Alert onClick={this.hideExerciseRemoveError} variant="danger">
+                {this.state.showExerciseRemoveError &&
+                    <Alert onClick={this.hideExerciseRemoveError} variant='danger'>
                         Unable to remove exercise. <b>Click to dismiss.</b>
                     </Alert>
                 }
-                <ExerciseAddModal 
+                <ExerciseAddModal
                     showExerciseModal={this.state.showExerciseModal}
                     handleClose={this.handleClose}
                     exerciseNameInput={this.exerciseNameInput}
                     addExercise={this.addExercise}
                 />
-                <div className="exercise-library-view-container">
-                    <SearchAndAddBar 
+                <div className='exercise-library-view-container'>
+                    <SearchAndAddBar
                         handleSearch={(event: any) => this.search(event)}
                         handleShow={this.handleShow}
                     />
-                    <ExerciseListTable 
-                        exerciseList={this.state.exerciseList} 
+                    <ExerciseListTable
+                        exerciseList={this.state.exerciseList}
                         handleRemoveClick={this.handleRemoveClick}
                         handleUpdateClick={this.handleUpdateClick}
                         exerciseNameInput={this.exerciseNameInput}
@@ -269,7 +271,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
                     />
                 </div>
             </>
-        )
+        );
     }
 }
 

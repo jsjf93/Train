@@ -17,15 +17,15 @@ const ExerciseRemoveModal = (props: IProps) => {
                 <p>Are you sure you want to remove this exercise?</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={props.handleCloseRemoveModal}>
+                <Button variant='secondary' onClick={props.handleCloseRemoveModal}>
                     Cancel
                 </Button>
-                <Button variant="danger" onClick={props.handleRemove}>
+                <Button variant='danger' onClick={props.handleRemove}>
                     Remove
                 </Button>
             </Modal.Footer>
         </Modal>
     );
-}
+};
 
 export default ExerciseRemoveModal;

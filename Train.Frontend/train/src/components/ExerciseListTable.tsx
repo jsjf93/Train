@@ -1,30 +1,30 @@
 import React, { Component } from 'react';
 import { Table } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
-import { Exercise } from './index';
+import { IExercise } from './index';
 import './ExerciseListTable.css';
 import { MdDelete, MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import ExerciseUpdateModal from './Modals/ExerciseUpdateModal';
 import ExerciseRemoveModal from './Modals/ExerciseRemoveModal';
 
 interface IProps {
-    exerciseList: Exercise[];
+    exerciseList: IExercise[];
     handleRemoveClick: (id: number) => void;
-    handleUpdateClick: (exercise: Exercise) => void;
+    handleUpdateClick: (exercise: IExercise) => void;
     exerciseNameInput: any;
     handleSortClick: (column: string) => void;
     sortDirection: string;
 }
 
 interface IState {
-    exerciseList: Exercise[];
+    exerciseList: IExercise[];
     showExerciseModal: boolean;
     showRemoveExerciseModal: boolean;
-    selectedExercise?: Exercise;
+    selectedExercise?: IExercise;
     input: string;
 }
 
-class ExerciseListTable extends Component<IProps, IState>{
+class ExerciseListTable extends Component<IProps, IState> {
 
     constructor(props: IProps) {
         super(props);
@@ -33,11 +33,11 @@ class ExerciseListTable extends Component<IProps, IState>{
             showExerciseModal: false,
             showRemoveExerciseModal: false,
             selectedExercise: undefined,
-            input: ""
-        }
+            input: '',
+        };
     }
 
-    componentDidUpdate() {
+    public componentDidUpdate() {
         if (this.state.exerciseList !== this.props.exerciseList) {
             this.setState({ exerciseList: this.props.exerciseList });
         }
@@ -47,7 +47,7 @@ class ExerciseListTable extends Component<IProps, IState>{
         this.setState({ showExerciseModal: false});
     }
 
-    private handleShow = (exercise: Exercise) => {
+    private handleShow = (exercise: IExercise) => {
         this.setState({ showExerciseModal: true, selectedExercise: exercise, input: exercise.name});
     }
 
@@ -55,7 +55,7 @@ class ExerciseListTable extends Component<IProps, IState>{
         this.setState({ showRemoveExerciseModal: false});
     }
 
-    private handleShowRemoveModal = (exercise: Exercise) => {
+    private handleShowRemoveModal = (exercise: IExercise) => {
         this.setState({ showRemoveExerciseModal: true, selectedExercise: exercise, input: exercise.name});
     }
 
@@ -65,7 +65,6 @@ class ExerciseListTable extends Component<IProps, IState>{
     }
 
     private handleUpdate = () => {
-        console.log(this.state.selectedExercise);
         this.props.handleUpdateClick(this.state.selectedExercise!);
         this.handleClose();
     }
@@ -75,10 +74,10 @@ class ExerciseListTable extends Component<IProps, IState>{
         this.setState({ input });
     }
 
-    render() {
+    public render() {
         return (
             <>
-                <ExerciseUpdateModal 
+                <ExerciseUpdateModal
                     showExerciseModal={this.state.showExerciseModal}
                     handleClose={this.handleClose}
                     value={this.state.input}
@@ -86,20 +85,20 @@ class ExerciseListTable extends Component<IProps, IState>{
                     onChangeHandler={this.onChangeHandler}
                     handleUpdate={this.handleUpdate}
                 />
-                <ExerciseRemoveModal 
+                <ExerciseRemoveModal
                     showRemoveExerciseModal={this.state.showRemoveExerciseModal}
                     handleCloseRemoveModal={this.handleCloseRemoveModal}
                     handleRemove={this.handleRemove}
                 />
 
-                <Table striped bordered hover variant="dark" size="sm">
+                <Table striped bordered hover variant='dark' size='sm'>
                     <thead>
                         <tr>
                             <td onClick={() => this.props.handleSortClick('name')}>
-                                Name 
+                                Name
                                 {this.props.sortDirection === 'asc' ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
-                            </td> 
-                            <td />                        
+                            </td>
+                            <td />
                         </tr>
                     </thead>
                     <tbody>
@@ -108,21 +107,21 @@ class ExerciseListTable extends Component<IProps, IState>{
                                 <td>No exercise were found</td>
                                 <td />
                             </tr>}
-                        {this.state.exerciseList.map(exercise => {
+                        {this.state.exerciseList.map((exercise) => {
                             return [
                                 <tr key={exercise.id}>
                                     <td onClick={() => this.handleShow(exercise)}>
                                         {exercise.name}
                                     </td>
-                                    <td className="exercise-remove-icon-container">
-                                        <MdDelete 
-                                            className="exercise-remove-icon"
+                                    <td className='exercise-remove-icon-container'>
+                                        <MdDelete
+                                            className='exercise-remove-icon'
                                             size={20}
                                             onClick={() => this.handleShowRemoveModal(exercise)}
                                         />
                                     </td>
-                                </tr>
-                            ]
+                                </tr>,
+                            ];
                         })}
                     </tbody>
                 </Table>
