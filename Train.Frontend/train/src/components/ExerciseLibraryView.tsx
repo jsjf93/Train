@@ -42,7 +42,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
     }
 
     public componentDidMount() {
-        fetch('https://localhost:44303/api/exerciselibrary')
+        fetch('https://exerciselibrarytest.azurewebsites.net/api/exerciselibrary')
         .then((result) => {
             if (result.ok) {
                 return result.json();
@@ -118,7 +118,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
     private addExercise = () => {
         const newExercise = this.exerciseNameInput.current.value;
 
-        fetch('https://localhost:44303/api/exerciselibrary', {
+        fetch('https://exerciselibrarytest.azurewebsites.net/api/exerciselibrary', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -161,7 +161,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
         const updatedExerciseId = selectedExercise.id;
         const updatedExercise = this.exerciseNameInput.current.value;
 
-        fetch('https://localhost:44303/api/exerciselibrary/' + updatedExerciseId , {
+        fetch('https://exerciselibrarytest.azurewebsites.net/api/exerciselibrary/' + updatedExerciseId , {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -200,7 +200,7 @@ class ExerciseLibraryView extends Component<IProps, IState> {
     }
 
     private handleRemoveClick = (id: number) => {
-        fetch('https://localhost:44303/api/exerciselibrary/' + id, {
+        fetch('https://exerciselibrarytest.azurewebsites.net/api/exerciselibrary/' + id, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
