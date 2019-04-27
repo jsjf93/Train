@@ -9,7 +9,7 @@ namespace Train.Models
         public string Notes { get; set; }
         public ExerciseType ExerciseType { get; set; }
 
-        public override bool Equals(Object obj)
+        public override bool Equals(object obj)
         {
             if (obj == null || !obj.GetType().Equals(this.GetType())){
                 return false;
