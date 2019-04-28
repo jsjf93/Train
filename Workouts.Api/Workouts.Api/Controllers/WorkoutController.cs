@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Workouts.Api.Models;
@@ -58,21 +56,30 @@ namespace Workouts.Api.Controllers
                 return BadRequest();
             }
 
-            var local = _context.Set<Workout>()
+            var localWorkout = _context.Set<Workout>()
                 .Local
                 .FirstOrDefault(e => e.Id.Equals(id));
 
-            if (local != null)
+            if (localWorkout != null)
             {
-                _context.Entry(local).State = EntityState.Detached;
+                _context.Entry(localWorkout).State = EntityState.Detached;
             }
-
-            _context.Entry(workout).State = EntityState.Modified;
 
             foreach (var exercise in workout.Exercises)
             {
+                var localExercise = _context.Set<Exercise>()
+                    .Local
+                    .FirstOrDefault(e => e.Id.Equals(exercise.Id));
+
+                if (localExercise != null)
+                {
+                    _context.Entry(localExercise).State = EntityState.Detached;
+                }
+
                 _context.Entry(exercise).State = EntityState.Modified;
             }
+
+            _context.Entry(workout).State = EntityState.Modified;
             
             _context.SaveChanges();
 

@@ -68,9 +68,7 @@ namespace Train.Tests
 
             Assert.That(1, Is.EqualTo(_context.Exercises.Count()));
         }
-
-        /// Temporarily removed until I can find a fix. Controller works using postman
-        /// but fails in unit test during the UpdateExercise function
+        
         [Test]
         public void UpdateAnExercise_Success()
         {
