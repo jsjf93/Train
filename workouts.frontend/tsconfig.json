@@ -21,5 +21,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "typescript.preferences.importModuleSpecifier": "non-relative"
 }

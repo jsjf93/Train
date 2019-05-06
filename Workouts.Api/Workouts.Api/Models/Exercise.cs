@@ -12,9 +12,9 @@ namespace Workouts.Api.Models
         public TimeSpan? RestDuration { get; set; }
         public int? Reps { get; set; }
         public int? Sets { get; set; }
+
         public Workout Workout;
         public int WorkoutId { get; set; }
-        //public List<WorkoutExercise> WorkoutExercises { get; set; }
 
         public override bool Equals(object obj)
         {
