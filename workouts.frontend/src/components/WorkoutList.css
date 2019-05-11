@@ -2,9 +2,24 @@
     float: left;
     margin-right: 30px;
     margin-bottom: 30px;
+    width: 18rem; 
+    height: 13rem;
 }
 
 .workout-card p {
     padding: 0;
     margin: 0;
+}
+
+.workout-card .card-body {
+    padding: 10px 0 0 0;
+}
+
+.workout-card .btn {
+    padding: 1px 5px 1px 5px;
+}
+
+.workout-card .card-footer {
+    height: 40px;
+    padding: 6px 0 0 0;
 }
