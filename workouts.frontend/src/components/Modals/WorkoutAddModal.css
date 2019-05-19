@@ -1,0 +1,17 @@
+.workout-modal-sub-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.workout-modal-add-button {
+    float: right;
+}
+
+.workout-modal-add-exercise-button-container {
+    width: 100%;
+    display: inline-block;
+}
+
+.workout-add-modal-list-item {
+    padding: 0.2rem 1.25rem !important;
+}

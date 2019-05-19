@@ -1,7 +1,7 @@
 export interface IExercise {
-    id: number;
+    id?: number;
     name: string;
-    exerciseType: ExerciseType;
+    exerciseType: number;
     exerciseDuration?: Date;
     restDuration?: Date;
     reps?: number;
@@ -10,11 +10,13 @@ export interface IExercise {
 
 export interface IWorkout {
     id: number;
-    name: string;
+    workoutName: string;
     exercises: IExercise[];
 }
 
 // order of exercise types is the same as Workouts.Api ExerciseType definition
 export enum ExerciseType {
-    Duration, Interval, Strength
+    Duration, 
+    Interval, 
+    Strength
 }
