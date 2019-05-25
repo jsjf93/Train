@@ -3,6 +3,7 @@ import { Form, Button, Modal, Col, ListGroup } from '../../../node_modules/react
 
 import './WorkoutAddModal.css';
 import { IExercise } from '../index';
+import AutoSuggest from './AutoSuggest';
 
 const exerciseTypes = {
     0: 'Duration', 
@@ -17,6 +18,8 @@ interface IProps {
     addWorkout: () => void;
     onChangeWorkoutExercises: (exercises: IExercise) => void;
     newWorkoutExercises: IExercise[];
+    exerciseNameList: string[];
+    updateExerciseNameList: (exerciseName: string) => void;
 }
 
 interface IState {
@@ -36,12 +39,40 @@ class WorkoutAddModal extends Component<IProps, IState> {
 
     private addExercise = () => {
         const exerciseType = Object.values(exerciseTypes).indexOf(this.state.exerciseType);
-        debugger;
         this.props.onChangeWorkoutExercises({ name: this.state.exerciseNameInput, exerciseType });
+
+        if (!this.props.exerciseNameList.includes(this.state.exerciseNameInput)) {
+            fetch('https://localhost:44303/api/exerciselibrary', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: this.state.exerciseNameInput,
+                    notes: 'test',
+                }),
+            })
+            .then((result) => {
+                if (result.ok) {
+                    return result.json();
+                }
+            })
+            .then((data) => {
+                if (!data) {
+                    return;
+                }
+                this.props.updateExerciseNameList(data.name);
+            })
+            .catch(() => {
+                //this.setState({ showExerciseAddError: true });
+            });
+        }
+
         this.resetExerciseFields();
     }
 
-    private onChangeExerciseName(exerciseNameInput: string) {
+    private onChangeExerciseNameField(exerciseNameInput: string) {
         this.setState({ exerciseNameInput });
     }
 
@@ -50,10 +81,23 @@ class WorkoutAddModal extends Component<IProps, IState> {
     }
 
     private resetExerciseFields() {
-        this.setState({ exerciseNameInput: '', exerciseType: 'Duration'});
+        this.setState({ 
+            exerciseNameInput: '', 
+            exerciseType: 'Duration'
+        });
+    }
+
+    private autoSuggestItemSelect = (exerciseName: string) => {
+        this.onChangeExerciseNameField(exerciseName);
     }
 
     public render() {
+        let autoSuggestExerciseNameList: string[] = [];
+        if (this.state.exerciseNameInput.length >= 1) {
+            autoSuggestExerciseNameList = this.props.exerciseNameList.filter(e =>
+                e.toLowerCase().includes(this.state.exerciseNameInput.toLowerCase()));
+        }
+
         return (
             <div className="workout-add-modal-container">
                 <Modal show={this.props.showWorkoutModal} onHide={this.props.handleClose}>
@@ -76,23 +120,29 @@ class WorkoutAddModal extends Component<IProps, IState> {
                                     <ListGroup.Item className="workout-add-modal-list-item">
                                         No exercises added yet
                                     </ListGroup.Item> :
-                                    this.props.newWorkoutExercises.map(exercise => 
-                                        <ListGroup.Item className="workout-add-modal-list-item">{exercise.name}</ListGroup.Item>
+                                    this.props.newWorkoutExercises.map((exercise, id) => 
+                                        <ListGroup.Item key={id} className="workout-add-modal-list-item">{exercise.name}</ListGroup.Item>
                                     )}
                             </ListGroup>
                             
                             <hr />
 
                             <Form.Row>
+
                                 <Form.Group as={Col}>
                                     <Form.Label className="workout-modal-sub-label">Exercise Name</Form.Label>
                                     <Form.Control 
                                         type='text' 
                                         placeholder="Exercise name" 
                                         value={this.state.exerciseNameInput} 
-                                        onChange={(event: any) => this.onChangeExerciseName(event.target.value)}
+                                        onChange={(event: any) => this.onChangeExerciseNameField(event.target.value)}
+                                    />
+                                    <AutoSuggest 
+                                        exerciseNameList={autoSuggestExerciseNameList}
+                                        onItemSelect={this.autoSuggestItemSelect}
                                     />
                                 </Form.Group>
+
                                 <Form.Group as={Col}>
                                     <Form.Label className="workout-modal-sub-label">Exercise Type</Form.Label>
                                     <Form.Control as="select" onChange={(event: any) => this.onChangeExerciseType(event.target.value)}>
@@ -104,6 +154,14 @@ class WorkoutAddModal extends Component<IProps, IState> {
                                             - Interval: exerciseDuration, restDuration, sets
                                             - Strength: reps, sets, restDuration
                                         */}
+                                    </Form.Control>
+                                </Form.Group>
+                            </Form.Row>
+
+                            <Form.Row>
+                                <Form.Group as={Col}>
+                                    <Form.Label className="workout-modal-sub-label">Exercise Duration</Form.Label>
+                                    <Form.Control>
                                     </Form.Control>
                                 </Form.Group>
                             </Form.Row>
