@@ -4,73 +4,11 @@ import WorkoutListTable from './WorkoutListTable';
 import SearchAndAddBar from './SearchAndAddBar';
 import WorkoutAddModal from './Modals/WorkoutAddModal';
 
-// const data: IWorkout[] = [
-//     {
-//         id: 1,
-//         workoutName: 'Back Day',
-//         exercises: [
-//             { id: 1, name: 'Weighted Pullups', exerciseType: ExerciseType.Strength },
-//             { id: 2, name: 'Deadlifts', exerciseType: ExerciseType.Strength },
-//             { id: 3, name: 'Renegade Rows', exerciseType: ExerciseType.Interval }
-//         ],
-//     },
-//     {
-//         id: 2,
-//         workoutName: 'Core Day',
-//         exercises: [
-//             { id: 1, name: 'Hanging Leg Raises', exerciseType: ExerciseType.Strength },
-//             { id: 2, name: 'Mountain Climbers', exerciseType: ExerciseType.Interval },
-//             { id: 3, name: 'Plank', exerciseType: ExerciseType.Duration }
-//         ],
-//     },
-//     {
-//         id: 3,
-//         workoutName: 'Leg Day',
-//         exercises: [
-//             { id: 1, name: 'Squats', exerciseType: ExerciseType.Strength },
-//             { id: 2, name: 'Running', exerciseType: ExerciseType.Duration },
-//             { id: 3, name: 'Bulgarian Split Squats', exerciseType: ExerciseType.Strength }
-//         ],
-//     },
-//     {
-//         id: 4,
-//         workoutName: 'Bouldering A',
-//         exercises: [
-//             { id: 1, name: '4x4 Boulders', exerciseType: ExerciseType.Interval },
-//             { id: 2, name: 'Max Strength Hangboarding', exerciseType: ExerciseType.Interval }
-//         ],
-//     },
-//     {
-//         id: 5,
-//         workoutName: 'Bouldering B',
-//         exercises: [
-//             { id: 1, name: 'Lead Climbing', exerciseType: ExerciseType.Interval },
-//             { id: 2, name: 'Power Endurance Hangboarding', exerciseType: ExerciseType.Interval }
-//         ],
-//     },
-//     {
-//         id: 6,
-//         workoutName: 'Day 1',
-//         exercises: [
-//             { id: 1, name: 'Weighted Pullups', exerciseType: ExerciseType.Strength },
-//             { id: 2, name: 'OHP', exerciseType: ExerciseType.Strength },
-//             { id: 3, name: 'Dumbbell Rows', exerciseType: ExerciseType.Strength },
-//             { id: 4, name: 'Reverse Flyes', exerciseType: ExerciseType.Strength },
-//             { id: 5, name: 'Seated Curls', exerciseType: ExerciseType.Strength },
-//         ],
-//     },
-//     {
-//         id: 7,
-//         workoutName: 'Day 2',
-//         exercises: [
-//             { id: 1, name: 'Incline Bench Press', exerciseType: ExerciseType.Strength },
-//             { id: 2, name: 'Barbell Rows', exerciseType: ExerciseType.Strength },
-//             { id: 3, name: 'Dips', exerciseType: ExerciseType.Strength },
-//             { id: 4, name: 'Lateral Raises', exerciseType: ExerciseType.Strength },
-//             { id: 5, name: 'Tricep Extensions', exerciseType: ExerciseType.Strength },
-//         ],
-//     },
-// ];
+interface IExerciseApiResult {
+    id: number;
+    name: string;
+    notes: string;
+}
 
 interface IProps {
 
@@ -83,6 +21,7 @@ interface IState {
     input: string;
     showWorkoutModal: boolean;
     newWorkoutExercises: IExercise[];
+    exerciseNameList: string[];
 }
 
 class WorkoutLibraryView extends Component<IProps, IState> {
@@ -97,11 +36,17 @@ class WorkoutLibraryView extends Component<IProps, IState> {
             input: '',
             showWorkoutModal: false,
             newWorkoutExercises: [],
+            exerciseNameList: [],
         };
         this.workoutNameInput = React.createRef();
     }
 
     public componentDidMount() {
+        this.fetchWorkouts();
+        this.fetchExercises();
+    }
+
+    private fetchWorkouts() {
         fetch('https://localhost:44391/api/workout')
         .then((result) => {
             if (result.ok) {
@@ -121,7 +66,25 @@ class WorkoutLibraryView extends Component<IProps, IState> {
                 workoutList: workoutList
             });
         });
-        
+    }
+
+    private fetchExercises() {
+        fetch('https://localhost:44303/api/exerciselibrary')
+        .then((result) => {
+            if (result.ok) {
+                return result.json();
+            }
+        })
+        .then((data) => {
+            if (!data) {
+                return;
+            }
+            const exerciseNameList: string[] = [];
+            data.map((row: IExerciseApiResult) => exerciseNameList.push(row.name));
+            exerciseNameList.sort();
+
+            this.setState({ exerciseNameList });
+        });
     }
 
     private sortAscending = (column: string) => {
@@ -203,12 +166,12 @@ class WorkoutLibraryView extends Component<IProps, IState> {
             workoutList.sort(this.state.sortAscending ? this.sortAscending('workoutName') : this.sortDescending('workoutName'));
 
             this.setState({ initialWorkoutList, workoutList });
-            })
-            .catch(() => {
-                // Setstate of a show add error modal 
-            });
+        })
+        .catch(() => {
+            // Setstate of a show add error modal 
+        });
 
-        
+        this.setState({ newWorkoutExercises: [] });
 
         this.handleClose();
     }
@@ -217,6 +180,12 @@ class WorkoutLibraryView extends Component<IProps, IState> {
         const newWorkoutExercises = this.state.newWorkoutExercises; 
         newWorkoutExercises.push(exercise);
         this.setState({ newWorkoutExercises });
+    }
+
+    public updateExerciseNameList = (exerciseName: string) => {
+        const { exerciseNameList } = this.state;
+        exerciseNameList.push(exerciseName);
+        this.setState({ exerciseNameList });
     }
 
     public render() {
@@ -229,6 +198,8 @@ class WorkoutLibraryView extends Component<IProps, IState> {
                     addWorkout={this.addWorkout}
                     onChangeWorkoutExercises={this.onChangeWorkoutExercises}
                     newWorkoutExercises={this.state.newWorkoutExercises}
+                    exerciseNameList={this.state.exerciseNameList}
+                    updateExerciseNameList={this.updateExerciseNameList}
                 />
                 <div className="workout-library-container">
                     <SearchAndAddBar
