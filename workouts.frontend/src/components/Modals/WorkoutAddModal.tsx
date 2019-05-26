@@ -4,6 +4,9 @@ import { Form, Button, Modal, Col, ListGroup } from '../../../node_modules/react
 import './WorkoutAddModal.css';
 import { IExercise } from '../index';
 import AutoSuggest from './AutoSuggest';
+import DurationFields from './ModalComponents/DurationFields';
+import IntervalFields from './ModalComponents/IntervalFields';
+import StrengthFields from './ModalComponents/StrengthFields';
 
 const exerciseTypes = {
     0: 'Duration', 
@@ -25,6 +28,10 @@ interface IProps {
 interface IState {
     exerciseNameInput: string;
     exerciseType: string;
+    exerciseDuration?: number;
+    restDuration?: number;
+    reps?: number;
+    sets?: number;
 }
 
 class WorkoutAddModal extends Component<IProps, IState> {
@@ -113,22 +120,10 @@ class WorkoutAddModal extends Component<IProps, IState> {
                                     ref={this.props.workoutNameInput} 
                                 />
                             </Form.Group>
-        
-                            <Form.Label>Exercises</Form.Label>
-                            <ListGroup>
-                                {this.props.newWorkoutExercises.length === 0 ?
-                                    <ListGroup.Item className="workout-add-modal-list-item">
-                                        No exercises added yet
-                                    </ListGroup.Item> :
-                                    this.props.newWorkoutExercises.map((exercise, id) => 
-                                        <ListGroup.Item key={id} className="workout-add-modal-list-item">{exercise.name}</ListGroup.Item>
-                                    )}
-                            </ListGroup>
                             
                             <hr />
 
                             <Form.Row>
-
                                 <Form.Group as={Col}>
                                     <Form.Label className="workout-modal-sub-label">Exercise Name</Form.Label>
                                     <Form.Control 
@@ -145,26 +140,15 @@ class WorkoutAddModal extends Component<IProps, IState> {
 
                                 <Form.Group as={Col}>
                                     <Form.Label className="workout-modal-sub-label">Exercise Type</Form.Label>
-                                    <Form.Control as="select" onChange={(event: any) => this.onChangeExerciseType(event.target.value)}>
-                                        {Object.values(exerciseTypes).map((type, id) => 
-                                            <option key={id}>{type}</option>    
-                                        )}
-                                        {/* TODO: Conditional rendering of other fields depending on exercise type selected 
-                                            - Duration: exerciseDuration
-                                            - Interval: exerciseDuration, restDuration, sets
-                                            - Strength: reps, sets, restDuration
-                                        */}
+                                    <Form.Control as="select" value={this.state.exerciseType} onChange={(event: any) => this.onChangeExerciseType(event.target.value)}>
+                                        {Object.values(exerciseTypes).map((type, id) => <option key={id}>{type}</option>)}
                                     </Form.Control>
                                 </Form.Group>
                             </Form.Row>
 
-                            <Form.Row>
-                                <Form.Group as={Col}>
-                                    <Form.Label className="workout-modal-sub-label">Exercise Duration</Form.Label>
-                                    <Form.Control>
-                                    </Form.Control>
-                                </Form.Group>
-                            </Form.Row>
+                            {this.state.exerciseType === 'Duration' && <DurationFields />}
+                            {this.state.exerciseType === 'Interval' && <IntervalFields />}
+                            {this.state.exerciseType === 'Strength' && <StrengthFields />}
                             
                             <div className="workout-modal-add-exercise-button-container">
                                 <Button 
@@ -176,6 +160,20 @@ class WorkoutAddModal extends Component<IProps, IState> {
                                 </Button>
                             </div>
                         </Form>
+
+                        <hr />
+        
+                        <Form.Label>Exercises</Form.Label>
+                        <ListGroup>
+                            {this.props.newWorkoutExercises.length === 0 ?
+                                <ListGroup.Item className="workout-add-modal-list-item">
+                                    No exercises added yet
+                                </ListGroup.Item> :
+                                this.props.newWorkoutExercises.map((exercise, id) => 
+                                    <ListGroup.Item key={id} className="workout-add-modal-list-item">{exercise.name}</ListGroup.Item>
+                                )}
+                        </ListGroup>
+
                         <hr />
                         <Button
                             className="workout-modal-add-button"
