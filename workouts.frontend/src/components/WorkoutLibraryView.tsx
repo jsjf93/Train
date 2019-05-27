@@ -59,7 +59,9 @@ class WorkoutLibraryView extends Component<IProps, IState> {
             }
             const workoutList: IWorkout[] = [];
             data.map((row: IWorkout) => workoutList.push(row));
-            workoutList.sort(this.state.sortAscending ? this.sortAscending('workoutName') : this.sortDescending('workoutName'));
+            workoutList.sort(this.state.sortAscending ? 
+                this.sortAscending('workoutName') : 
+                this.sortDescending('workoutName'));
 
             this.setState({ 
                 initialWorkoutList: workoutList,
@@ -132,13 +134,13 @@ class WorkoutLibraryView extends Component<IProps, IState> {
     }
 
     private addWorkout = () => {
-        const newWorkout = this.workoutNameInput.current.value;
+        const newWorkoutName = this.workoutNameInput.current.value;
 
         const data = JSON.stringify({
-            workoutName: newWorkout,
+            workoutName: newWorkoutName,
             exercises: this.state.newWorkoutExercises
         });
-
+        
         fetch('https://localhost:44391/api/workout', {
             method: 'POST',
             headers: {

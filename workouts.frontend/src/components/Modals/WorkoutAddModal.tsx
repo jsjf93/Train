@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Button, Modal, Col, ListGroup } from '../../../node_modules/react-bootstrap';
 
 import './WorkoutAddModal.css';
-import { IExercise } from '../index';
+import { IExercise, IDuration } from '../index';
 import AutoSuggest from './AutoSuggest';
 import DurationFields from './ModalComponents/DurationFields';
 import IntervalFields from './ModalComponents/IntervalFields';
@@ -28,8 +28,8 @@ interface IProps {
 interface IState {
     exerciseNameInput: string;
     exerciseType: string;
-    exerciseDuration?: number;
-    restDuration?: number;
+    exerciseDuration?: IDuration;
+    restDuration?: IDuration;
     reps?: number;
     sets?: number;
 }
@@ -44,9 +44,20 @@ class WorkoutAddModal extends Component<IProps, IState> {
         };
     }
 
+    private formatDuration(duration: IDuration | undefined) {
+        return duration ? (duration.hours + ":" + duration.minutes + ":" + duration.seconds) : "";
+    }
+
     private addExercise = () => {
         const exerciseType = Object.values(exerciseTypes).indexOf(this.state.exerciseType);
-        this.props.onChangeWorkoutExercises({ name: this.state.exerciseNameInput, exerciseType });
+        this.props.onChangeWorkoutExercises({ 
+            name: this.state.exerciseNameInput, 
+            exerciseType, 
+            exerciseDuration: this.formatDuration(this.state.exerciseDuration),
+            restDuration: this.formatDuration(this.state.restDuration),
+            sets: this.state.sets,
+            reps: this.state.reps,
+        });
 
         if (!this.props.exerciseNameList.includes(this.state.exerciseNameInput)) {
             fetch('https://localhost:44303/api/exerciselibrary', {
@@ -98,6 +109,22 @@ class WorkoutAddModal extends Component<IProps, IState> {
         this.onChangeExerciseNameField(exerciseName);
     }
 
+    private updateExerciseDurationFields = (hours: number, minutes: number, seconds: number) => {
+        this.setState({ exerciseDuration: { hours, minutes, seconds }});
+    }
+
+    private updateRestDurationFields = (hours: number, minutes: number, seconds: number) => {
+        this.setState({ restDuration: { hours, minutes, seconds }});
+    }
+
+    private updateSetsField = (sets: number) => {
+        this.setState({ sets });
+    }
+
+    private updateRepsField = (reps: number) => {
+        this.setState({ reps });
+    }
+
     public render() {
         let autoSuggestExerciseNameList: string[] = [];
         if (this.state.exerciseNameInput.length >= 1) {
@@ -146,9 +173,22 @@ class WorkoutAddModal extends Component<IProps, IState> {
                                 </Form.Group>
                             </Form.Row>
 
-                            {this.state.exerciseType === 'Duration' && <DurationFields />}
-                            {this.state.exerciseType === 'Interval' && <IntervalFields />}
-                            {this.state.exerciseType === 'Strength' && <StrengthFields />}
+                            {this.state.exerciseType === 'Duration' && 
+                                <DurationFields 
+                                    updateExerciseDurationFields={this.updateExerciseDurationFields}
+                                />}
+                            {this.state.exerciseType === 'Interval' && 
+                                <IntervalFields 
+                                    updateExerciseDurationFields={this.updateExerciseDurationFields}
+                                    updateRestDurationFields={this.updateRestDurationFields}
+                                    updateSetsField={this.updateSetsField}
+                                />}
+                            {this.state.exerciseType === 'Strength' && 
+                                <StrengthFields 
+                                    updateRestDurationFields={this.updateRestDurationFields}
+                                    updateSetsField={this.updateSetsField}
+                                    updateRepsField={this.updateRepsField}
+                                />}
                             
                             <div className="workout-modal-add-exercise-button-container">
                                 <Button 
