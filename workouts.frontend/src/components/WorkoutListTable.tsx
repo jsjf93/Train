@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { IWorkout } from './index';
+import { IWorkout, } from './index';
 import { Table } from '../../node_modules/react-bootstrap';
 import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 import './WorkoutListTable.css';
@@ -9,14 +9,10 @@ interface IProps {
     workoutList: IWorkout[];
     handleSortClick: (column: string) => void;
     sortAscending: boolean;
+    handleShowUpdateModal: (workout: IWorkout) => void;
 }
 
-interface IState {
-
-}
-
-class WorkoutListTable extends Component<IProps, IState> {
-
+class WorkoutListTable extends Component<IProps> {
     public render() {
         return (
             <div className="workout-list-container">
@@ -25,7 +21,7 @@ class WorkoutListTable extends Component<IProps, IState> {
                         <tr>
                             <td onClick={() => this.props.handleSortClick('workoutName')}>
                                 Name
-                                {this.props.sortAscending === true ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
+                                {this.props.sortAscending ? <MdKeyboardArrowDown /> : <MdKeyboardArrowUp />}
                             </td>
                             <td />
                         </tr>
@@ -39,10 +35,7 @@ class WorkoutListTable extends Component<IProps, IState> {
                         {this.props.workoutList.map((workout, id) => {
                             return [
                                 <tr key={id}>
-                                    {/* <td onClick={() => this.handleShow(workout)}>
-                                        {workout.workoutName}
-                                    </td> */}
-                                    <td>
+                                    <td onClick={() => this.props.handleShowUpdateModal(workout)}>
                                         {workout.workoutName}
                                     </td>
                                     <td className='workout-remove-icon-container'>

@@ -3,6 +3,7 @@ import { IWorkout, IExercise } from './index';
 import WorkoutListTable from './WorkoutListTable';
 import SearchAndAddBar from './SearchAndAddBar';
 import WorkoutAddModal from './Modals/WorkoutAddModal';
+import WorkoutUpdateModal from './Modals/WorkoutUpdateModal';
 
 interface IExerciseApiResult {
     id: number;
@@ -22,6 +23,8 @@ interface IState {
     showWorkoutModal: boolean;
     newWorkoutExercises: IExercise[];
     exerciseNameList: string[];
+    showUpdateWorkoutModal: boolean;
+    selectedWorkout?: IWorkout;
 }
 
 class WorkoutLibraryView extends Component<IProps, IState> {
@@ -37,6 +40,7 @@ class WorkoutLibraryView extends Component<IProps, IState> {
             showWorkoutModal: false,
             newWorkoutExercises: [],
             exerciseNameList: [],
+            showUpdateWorkoutModal: false,
         };
         this.workoutNameInput = React.createRef();
     }
@@ -190,6 +194,57 @@ class WorkoutLibraryView extends Component<IProps, IState> {
         this.setState({ exerciseNameList });
     }
 
+    public updateWorkout = (id: number) => {
+        const workoutName = this.workoutNameInput.current.value;
+
+        const data = JSON.stringify({
+            id,
+            workoutName,
+            exercises: this.state.newWorkoutExercises
+        });
+        
+        fetch('https://localhost:44391/api/workout/' + id, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: data,
+        })
+        .then((result) => {
+            if (result.ok) {
+                let workoutList: IWorkout[] = [];
+                workoutList.push({ id, workoutName, exercises: this.state.newWorkoutExercises });
+
+                const initialWorkoutList = this.state.initialWorkoutList.filter(w => w.id !== id);
+                initialWorkoutList.push(workoutList[0]);
+
+                workoutList = this.state.input ?
+                    initialWorkoutList.filter(w => w.workoutName.toLowerCase().includes(this.state.input)) :
+                    initialWorkoutList;
+
+                workoutList.sort(this.state.sortAscending ? 
+                    this.sortAscending('workoutName') : 
+                    this.sortDescending('workoutName'));
+
+                this.setState({ initialWorkoutList, workoutList, showUpdateWorkoutModal: false});
+            }
+        })
+        .catch(() => {
+            // Setstate of a show add error modal 
+        });
+
+        this.setState({ newWorkoutExercises: [] });
+    }
+
+    private handleUpdateModalClose = () => {
+        this.setState({ showUpdateWorkoutModal: false });
+    }
+
+    private handleUpdateModalShow = (workout: IWorkout) => {
+        this.setState({ showUpdateWorkoutModal: true, selectedWorkout: workout });
+    }
+
     public render() {
         return (
             <>
@@ -203,6 +258,16 @@ class WorkoutLibraryView extends Component<IProps, IState> {
                     exerciseNameList={this.state.exerciseNameList}
                     updateExerciseNameList={this.updateExerciseNameList}
                 />
+                <WorkoutUpdateModal 
+                    showWorkoutModal={this.state.showUpdateWorkoutModal}
+                    handleClose={this.handleUpdateModalClose}
+                    workout={this.state.selectedWorkout!}
+                    workoutNameInput={this.workoutNameInput}
+                    exerciseNameList={this.state.exerciseNameList}
+                    onChangeWorkoutExercises={this.onChangeWorkoutExercises}
+                    updateExerciseNameList={this.updateExerciseNameList}
+                    updateWorkout={this.updateWorkout}
+                />
                 <div className="workout-library-container">
                     <SearchAndAddBar
                         handleSearch={(event: any) => this.search(event)}
@@ -212,6 +277,7 @@ class WorkoutLibraryView extends Component<IProps, IState> {
                         workoutList={this.state.workoutList}
                         handleSortClick={this.sortBy}
                         sortAscending={this.state.sortAscending}
+                        handleShowUpdateModal={this.handleUpdateModalShow}
                     />
                 </div>
             </>
