@@ -196,11 +196,12 @@ class WorkoutLibraryView extends Component<IProps, IState> {
 
     public updateWorkout = (id: number) => {
         const workoutName = this.workoutNameInput.current.value;
+        const exercises = this.state.newWorkoutExercises;
 
         const data = JSON.stringify({
             id,
             workoutName,
-            exercises: this.state.newWorkoutExercises
+            exercises
         });
         
         fetch('https://localhost:44391/api/workout/' + id, {
@@ -214,7 +215,7 @@ class WorkoutLibraryView extends Component<IProps, IState> {
         .then((result) => {
             if (result.ok) {
                 let workoutList: IWorkout[] = [];
-                workoutList.push({ id, workoutName, exercises: this.state.newWorkoutExercises });
+                workoutList.push({ id, workoutName, exercises });
 
                 const initialWorkoutList = this.state.initialWorkoutList.filter(w => w.id !== id);
                 initialWorkoutList.push(workoutList[0]);
@@ -242,7 +243,7 @@ class WorkoutLibraryView extends Component<IProps, IState> {
     }
 
     private handleUpdateModalShow = (workout: IWorkout) => {
-        this.setState({ showUpdateWorkoutModal: true, selectedWorkout: workout });
+        this.setState({ showUpdateWorkoutModal: true, selectedWorkout: workout, newWorkoutExercises: workout.exercises });
     }
 
     public render() {

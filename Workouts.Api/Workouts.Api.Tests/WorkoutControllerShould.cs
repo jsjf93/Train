@@ -1,12 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using Workouts.Api.Controllers;
 using Workouts.Api.Models;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
 
 namespace Workouts.Api.Tests
 {
@@ -86,7 +84,11 @@ namespace Workouts.Api.Tests
         public void AddAWorkout()
         {
             var sut = new WorkoutController(_context);
-            sut.AddWorkout(new Workout());
+            sut.AddWorkout(new Workout
+            {
+                WorkoutName = "Back Day",
+                Exercises = new List<Exercise> { new Exercise { Name = "Pullups", ExerciseType = ExerciseType.Strength } }
+            });
 
             var actual = sut.GetAllWorkouts().Value.Count();
             var expected = 1;
@@ -119,14 +121,18 @@ namespace Workouts.Api.Tests
             {
                 Id = 3,
                 WorkoutName = "Cardio Day 2",
-                Exercises = new List<Exercise> { new Exercise { Id = 3, Name = "Jump Rope", ExerciseType = ExerciseType.Interval} }
+                Exercises = new List<Exercise>
+                {
+                    new Exercise { Id = 3, Name = "Running", ExerciseType = ExerciseType.Duration, WorkoutId = 3 },
+                    new Exercise { Id = 4, Name = "Jump Rope", ExerciseType = ExerciseType.Interval, WorkoutId = 3},
+                }
             });
 
             var actual = sut.GetWorkout(3).Value;
 
             Assert.That(actual.WorkoutName == "Cardio Day 2" &&
                 actual.Exercises.Any(e => e.Name == "Jump Rope" && e.ExerciseType == ExerciseType.Interval));
-            Assert.That(actual.Exercises.Count() == 1);
+            Assert.That(actual.Exercises.Count() == 2);
         }
 
         [Test]
