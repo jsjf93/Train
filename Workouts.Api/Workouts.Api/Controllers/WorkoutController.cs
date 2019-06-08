@@ -56,31 +56,36 @@ namespace Workouts.Api.Controllers
                 return BadRequest();
             }
 
-            var localWorkout = _context.Set<Workout>()
-                .Local
-                .FirstOrDefault(e => e.Id.Equals(id));
+            var workoutEntity = _context.Workouts.FirstOrDefault(w => w.Id == id);
 
-            if (localWorkout != null)
+            if (workoutEntity != null)
             {
-                _context.Entry(localWorkout).State = EntityState.Detached;
-            }
+                var exerciseToRemove = _context.Exercises
+                    .Where(e => e.WorkoutId == id)
+                    .Except(workout.Exercises)
+                    .ToList();
+                _context.Exercises.RemoveRange(exerciseToRemove);
 
-            foreach (var exercise in workout.Exercises)
-            {
-                var localExercise = _context.Set<Exercise>()
-                    .Local
-                    .FirstOrDefault(e => e.Id.Equals(exercise.Id));
+                workoutEntity.WorkoutName = workout.WorkoutName;
 
-                if (localExercise != null)
+                workout.Exercises.ForEach(e =>
                 {
-                    _context.Entry(localExercise).State = EntityState.Detached;
-                }
+                    e.WorkoutId = id;
+                    var exerciseEntity = _context.Exercises.FirstOrDefault(ex => ex.Id == e.Id);
 
-                _context.Entry(exercise).State = EntityState.Modified;
+                    if (exerciseEntity != null)
+                    {
+                        _context.Entry(exerciseEntity).State = EntityState.Detached;
+                        _context.Entry(e).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        _context.Exercises.Add(e);
+                    }
+                });
+
+                _context.Workouts.Update(workoutEntity);
             }
-
-            _context.Entry(workout).State = EntityState.Modified;
-            
             _context.SaveChanges();
 
             return NoContent();

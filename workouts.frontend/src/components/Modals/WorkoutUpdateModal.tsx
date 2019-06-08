@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { Form, Button, Modal, Col, ListGroup } from '../../../node_modules/react-bootstrap';
 
 import './WorkoutAddModal.css';
-import { IExercise, IDuration } from '../index';
+import { IExercise, IDuration, IWorkout } from '../index';
 import AutoSuggest from './AutoSuggest';
 import DurationFields from './ModalComponents/DurationFields';
 import IntervalFields from './ModalComponents/IntervalFields';
 import StrengthFields from './ModalComponents/StrengthFields';
+import { MdDelete } from 'react-icons/md';
 
 const exerciseTypes = {
     0: 'Duration', 
@@ -15,14 +16,15 @@ const exerciseTypes = {
 };
 
 interface IProps {
+    workout: IWorkout;
     showWorkoutModal: boolean;
     handleClose: () => void;
     workoutNameInput: () => void;
-    addWorkout: () => void;
     onChangeWorkoutExercises: (exercises: IExercise) => void;
-    newWorkoutExercises: IExercise[];
     exerciseNameList: string[];
     updateExerciseNameList: (exerciseName: string) => void;
+    updateWorkout: (id: number) => void;
+    removeExercise: (exercise: IExercise) => void;
 }
 
 interface IState {
@@ -35,7 +37,7 @@ interface IState {
     showAutoSuggest: boolean;
 }
 
-class WorkoutAddModal extends Component<IProps, IState> {
+class WorkoutUpdateModal extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
 
@@ -109,7 +111,6 @@ class WorkoutAddModal extends Component<IProps, IState> {
 
     private autoSuggestItemSelect = (exerciseName: string) => {
         this.onChangeExerciseNameField(exerciseName);
-        
         this.setState({ showAutoSuggest: false })
     }
 
@@ -135,12 +136,12 @@ class WorkoutAddModal extends Component<IProps, IState> {
             autoSuggestExerciseNameList = this.props.exerciseNameList.filter(e =>
                 e.toLowerCase().includes(this.state.exerciseNameInput.toLowerCase()));
         }
-
+        
         return (
             <div className="workout-add-modal-container">
                 <Modal show={this.props.showWorkoutModal} onHide={this.props.handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Add Workout</Modal.Title>
+                        <Modal.Title>Update Workout</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
@@ -149,6 +150,7 @@ class WorkoutAddModal extends Component<IProps, IState> {
                                 <Form.Control 
                                     type='text' 
                                     ref={this.props.workoutNameInput} 
+                                    defaultValue={this.props.workout ? this.props.workout.workoutName : ''}
                                 />
                             </Form.Group>
                             
@@ -210,15 +212,22 @@ class WorkoutAddModal extends Component<IProps, IState> {
                         </Form>
 
                         <hr />
-        
+                        
                         <Form.Label>Exercises</Form.Label>
                         <ListGroup>
-                            {this.props.newWorkoutExercises.length === 0 ?
+                            {!this.props.workout || this.props.workout.exercises.length === 0 ?
                                 <ListGroup.Item className="workout-add-modal-list-item">
                                     No exercises added yet
                                 </ListGroup.Item> :
-                                this.props.newWorkoutExercises.map((exercise, id) => 
-                                    <ListGroup.Item key={id} className="workout-add-modal-list-item">{exercise.name}</ListGroup.Item>
+                                this.props.workout.exercises.map((exercise, id) => 
+                                    <ListGroup.Item key={id} className="workout-add-modal-list-item">
+                                        {exercise.name}
+                                        <MdDelete
+                                            className='exercise-remove-icon'
+                                            size={20}
+                                            onClick={() => this.props.removeExercise(exercise)}
+                                        />
+                                    </ListGroup.Item>
                                 )}
                         </ListGroup>
 
@@ -227,15 +236,15 @@ class WorkoutAddModal extends Component<IProps, IState> {
                             className="workout-modal-add-button"
                             variant='success'
                             type='submit'
-                            onClick={this.props.addWorkout}
+                            onClick={() => this.props.updateWorkout(this.props.workout!.id)}
                         >
-                            Add Workout
+                            Update Workout
                         </Button>
                     </Modal.Body>
                 </Modal>
             </div>
         );
     }
-};
+}
 
-export default WorkoutAddModal;
+export default WorkoutUpdateModal;
