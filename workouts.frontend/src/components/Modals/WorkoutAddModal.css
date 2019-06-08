@@ -15,3 +15,14 @@
 .workout-add-modal-list-item {
     padding: 0.2rem 1.25rem !important;
 }
+
+.exercise-remove-icon {
+    float: right;
+    margin-top: 2px;
+    opacity: 0.7;
+}
+
+.exercise-remove-icon:hover {
+    opacity: 1;
+    cursor: pointer;
+}

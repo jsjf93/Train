@@ -17,7 +17,7 @@ const AutoSuggest = (props: IProps) => {
                         <ListGroup.Item 
                             key={key} 
                             className="autosuggest-item"
-                            onClick={(event: any) => props.onItemSelect(e)}
+                            onClick={() => props.onItemSelect(e)}
                         >
                             {e}
                         </ListGroup.Item>

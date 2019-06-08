@@ -60,6 +60,12 @@ namespace Workouts.Api.Controllers
 
             if (workoutEntity != null)
             {
+                var exerciseToRemove = _context.Exercises
+                    .Where(e => e.WorkoutId == id)
+                    .Except(workout.Exercises)
+                    .ToList();
+                _context.Exercises.RemoveRange(exerciseToRemove);
+
                 workoutEntity.WorkoutName = workout.WorkoutName;
 
                 workout.Exercises.ForEach(e =>
@@ -80,7 +86,6 @@ namespace Workouts.Api.Controllers
 
                 _context.Workouts.Update(workoutEntity);
             }
-            
             _context.SaveChanges();
 
             return NoContent();

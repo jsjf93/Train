@@ -7,6 +7,7 @@ import AutoSuggest from './AutoSuggest';
 import DurationFields from './ModalComponents/DurationFields';
 import IntervalFields from './ModalComponents/IntervalFields';
 import StrengthFields from './ModalComponents/StrengthFields';
+import { MdDelete } from 'react-icons/md';
 
 const exerciseTypes = {
     0: 'Duration', 
@@ -23,6 +24,7 @@ interface IProps {
     exerciseNameList: string[];
     updateExerciseNameList: (exerciseName: string) => void;
     updateWorkout: (id: number) => void;
+    removeExercise: (exercise: IExercise) => void;
 }
 
 interface IState {
@@ -32,6 +34,7 @@ interface IState {
     restDuration?: IDuration;
     reps?: number;
     sets?: number;
+    showAutoSuggest: boolean;
 }
 
 class WorkoutUpdateModal extends Component<IProps, IState> {
@@ -41,6 +44,7 @@ class WorkoutUpdateModal extends Component<IProps, IState> {
         this.state = {
             exerciseNameInput: '', 
             exerciseType: 'Duration',
+            showAutoSuggest: false,
         };
     }
 
@@ -107,6 +111,7 @@ class WorkoutUpdateModal extends Component<IProps, IState> {
 
     private autoSuggestItemSelect = (exerciseName: string) => {
         this.onChangeExerciseNameField(exerciseName);
+        this.setState({ showAutoSuggest: false })
     }
 
     private updateExerciseDurationFields = (hours: number, minutes: number, seconds: number) => {
@@ -136,7 +141,7 @@ class WorkoutUpdateModal extends Component<IProps, IState> {
             <div className="workout-add-modal-container">
                 <Modal show={this.props.showWorkoutModal} onHide={this.props.handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Add Workout</Modal.Title>
+                        <Modal.Title>Update Workout</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
@@ -159,11 +164,15 @@ class WorkoutUpdateModal extends Component<IProps, IState> {
                                         placeholder="Exercise name" 
                                         value={this.state.exerciseNameInput} 
                                         onChange={(event: any) => this.onChangeExerciseNameField(event.target.value)}
+                                        onFocus={() => this.setState({ showAutoSuggest: true })}
+                                        // setTimeout used to get around issue where onBlur was called before AutoSuggest
+                                        // could select an item
+                                        onBlur={() => setTimeout(() => this.setState({ showAutoSuggest: false }), 100) }
                                     />
-                                    <AutoSuggest 
+                                    {this.state.showAutoSuggest && <AutoSuggest 
                                         exerciseNameList={autoSuggestExerciseNameList}
                                         onItemSelect={this.autoSuggestItemSelect}
-                                    />
+                                    />}
                                 </Form.Group>
 
                                 <Form.Group as={Col}>
@@ -211,7 +220,14 @@ class WorkoutUpdateModal extends Component<IProps, IState> {
                                     No exercises added yet
                                 </ListGroup.Item> :
                                 this.props.workout.exercises.map((exercise, id) => 
-                                    <ListGroup.Item key={id} className="workout-add-modal-list-item">{exercise.name}</ListGroup.Item>
+                                    <ListGroup.Item key={id} className="workout-add-modal-list-item">
+                                        {exercise.name}
+                                        <MdDelete
+                                            className='exercise-remove-icon'
+                                            size={20}
+                                            onClick={() => this.props.removeExercise(exercise)}
+                                        />
+                                    </ListGroup.Item>
                                 )}
                         </ListGroup>
 

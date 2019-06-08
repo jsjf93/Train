@@ -32,6 +32,7 @@ interface IState {
     restDuration?: IDuration;
     reps?: number;
     sets?: number;
+    showAutoSuggest: boolean;
 }
 
 class WorkoutAddModal extends Component<IProps, IState> {
@@ -41,6 +42,7 @@ class WorkoutAddModal extends Component<IProps, IState> {
         this.state = {
             exerciseNameInput: '', 
             exerciseType: 'Duration',
+            showAutoSuggest: false,
         };
     }
 
@@ -107,6 +109,8 @@ class WorkoutAddModal extends Component<IProps, IState> {
 
     private autoSuggestItemSelect = (exerciseName: string) => {
         this.onChangeExerciseNameField(exerciseName);
+        
+        this.setState({ showAutoSuggest: false })
     }
 
     private updateExerciseDurationFields = (hours: number, minutes: number, seconds: number) => {
@@ -158,11 +162,15 @@ class WorkoutAddModal extends Component<IProps, IState> {
                                         placeholder="Exercise name" 
                                         value={this.state.exerciseNameInput} 
                                         onChange={(event: any) => this.onChangeExerciseNameField(event.target.value)}
+                                        onFocus={() => this.setState({ showAutoSuggest: true })}
+                                        // setTimeout used to get around issue where onBlur was called before AutoSuggest
+                                        // could select an item
+                                        onBlur={() => setTimeout(() => this.setState({ showAutoSuggest: false }), 100) }
                                     />
-                                    <AutoSuggest 
+                                    {this.state.showAutoSuggest && <AutoSuggest 
                                         exerciseNameList={autoSuggestExerciseNameList}
                                         onItemSelect={this.autoSuggestItemSelect}
-                                    />
+                                    />}
                                 </Form.Group>
 
                                 <Form.Group as={Col}>
