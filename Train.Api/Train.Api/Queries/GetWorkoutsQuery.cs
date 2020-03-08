@@ -2,6 +2,6 @@
 {
   public class GetWorkoutsQuery
   {
-    public int UserId { get; set; }
+    public string UserId { get; set; }
   }
 }

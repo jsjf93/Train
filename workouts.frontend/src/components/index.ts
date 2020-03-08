@@ -22,7 +22,7 @@ export interface IDuration {
 
 // order of exercise types is the same as Workouts.Api ExerciseType definition
 export enum ExerciseType {
-  Duration,
-  Interval,
-  Strength
+  Duration = 'Duration',
+  Interval = 'Interval',
+  Strength = 'Strength'
 }
