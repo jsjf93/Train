@@ -1,0 +1,33 @@
+.card_container {
+  border: 1px solid black;
+  height: 150px;
+  width: 200px;
+  min-width: 200px;
+  margin: 15px;
+  padding: 5px;
+  text-align: left;
+  position: relative;
+}
+
+.card_container h4 {
+  margin: 0;
+  padding: 0;
+}
+
+.card_container span {
+  font-style: italic;
+}
+
+.card_more-options {
+  position: absolute;
+  transform: translate(725%, 10%);
+}
+
+.card_start-workout {
+  position: absolute;
+  bottom: 10px;
+  width: 100px;
+  border: 1px solid red;
+  left: 50px;
+  text-align: center;
+}
