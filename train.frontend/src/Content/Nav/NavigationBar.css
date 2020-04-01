@@ -3,15 +3,16 @@
   height: 50px;
   position: fixed;
   background-color: white;
-  border: 1px solid rgb(168, 168, 168);
+  border: 1px solid rgba(153, 153, 153, 0.178);
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   border-radius: 25px;
-  filter: drop-shadow(0px 0px 5px rgba(163, 163, 163, 0.74));
+  box-shadow: 0px 0px 10px rgb(151, 151, 151);
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
+  z-index: 9999;
 }
 
 #navigationBar_container > nav {

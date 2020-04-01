@@ -13,11 +13,11 @@ const fetchExercises = (): string[] => {
 
 const fetchWorkouts = (): Workout[] => {
   return [
-    { name: 'Push Day', lastPerformed: new Date(), bodyPartsUsed: ['Chest, Shoulders, Triceps, Core'] },
-    { name: 'Pull Day' },
-    { name: 'Leg Day' },
-    { name: 'Arm Day' },
-    { name: 'Bodyweight Day' },
+    { id: 1, name: 'Push Day', lastPerformed: new Date(), bodyPartsUsed: ['Chest, Shoulders, Triceps, Core'] },
+    { id: 2, name: 'Pull Day' },
+    { id: 3, name: 'Leg Day' },
+    { id: 4, name: 'Arm Day' },
+    { id: 5, name: 'Bodyweight Day' },
   ];
 };
 
@@ -36,7 +36,12 @@ const App = (): JSX.Element => {
 
       <Router>
         <RouterPage path={'/'} pageComponent={<HomeView />} />
-        <RouterPage path={'/workouts'} pageComponent={<WorkoutsView workouts={workouts} />} />
+        <RouterPage
+          path={'/workouts'}
+          pageComponent={
+            <WorkoutsView workouts={workouts} onChange={(workouts: Workout[]): void => setWorkouts(workouts)} />
+          }
+        />
         <RouterPage path={'/exercises'} pageComponent={<ExercisesView exercises={exercises} />} />
       </Router>
     </div>
