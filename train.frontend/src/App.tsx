@@ -1,37 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
 import { Router, RouteComponentProps } from '@reach/router';
 import ExercisesView from './Content/Exercises/ExerciseList/ExercisesView';
 import WorkoutsView from './Content/Workouts/WorkoutsList/WorkoutsView';
 import NavigationBar from './Content/Nav/NavigationBar';
 import HomeView from './Content/Home/Home';
-import { Workout } from './Interfaces/Interfaces';
+import { Workout, Exercise } from './Interfaces/Interfaces';
+import { Box } from '@material-ui/core';
+import { observer } from 'mobx-react-lite';
+import { useStore } from '.';
 
-const fetchExercises = (): string[] => {
-  return ['Pushup', 'Pullup', 'Squat'];
-};
-
-const fetchWorkouts = (): Workout[] => {
-  return [
-    { id: 1, name: 'Push Day', lastPerformed: new Date(), bodyPartsUsed: ['Chest, Shoulders, Triceps, Core'] },
-    { id: 2, name: 'Pull Day' },
-    { id: 3, name: 'Leg Day' },
-    { id: 4, name: 'Arm Day' },
-    { id: 5, name: 'Bodyweight Day' },
-  ];
-};
-
-const App = (): JSX.Element => {
-  const initialExercises: string[] = [];
-  const initialWorkouts: Workout[] = [];
-  const [exercises, setExercises] = useState(initialExercises);
-  const [workouts, setWorkouts] = useState(initialWorkouts);
-
-  useEffect(() => setExercises(fetchExercises()), []);
-  useEffect(() => setWorkouts(fetchWorkouts()), []);
+const App = observer(() => {
+  const store = useStore();
 
   return (
-    <div className="App">
+    <Box>
       <NavigationBar />
 
       <Router>
@@ -39,14 +22,25 @@ const App = (): JSX.Element => {
         <RouterPage
           path={'/workouts'}
           pageComponent={
-            <WorkoutsView workouts={workouts} onChange={(workouts: Workout[]): void => setWorkouts(workouts)} />
+            <WorkoutsView
+              workouts={store.workouts}
+              onChange={(workouts: Workout[]): void => store.setWorkouts(workouts)}
+            />
           }
         />
-        <RouterPage path={'/exercises'} pageComponent={<ExercisesView exercises={exercises} />} />
+        <RouterPage
+          path={'/exercises'}
+          pageComponent={
+            <ExercisesView
+              exercises={store.exercises}
+              onChange={(exercises: Exercise[]) => store.setExercises(exercises)}
+            />
+          }
+        />
       </Router>
-    </div>
+    </Box>
   );
-};
+});
 
 const RouterPage = (props: { pageComponent: JSX.Element } & RouteComponentProps): JSX.Element => props.pageComponent;
 

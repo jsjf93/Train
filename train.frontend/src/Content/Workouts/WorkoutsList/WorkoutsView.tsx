@@ -12,7 +12,7 @@ type Props = {
 };
 
 const WorkoutsView = (props: Props): JSX.Element => {
-  const [showAddWorkoutModal, setShowAddWorkoutModal] = useState(true);
+  const [showAddWorkoutModal, setShowAddWorkoutModal] = useState(false);
 
   const onAddWorkout = (workout: Workout): void => props.onChange(props.workouts.concat(workout));
   const onDeleteWorkout = (id: number): void => props.onChange(props.workouts.filter(w => w.id !== id));
@@ -30,7 +30,11 @@ const WorkoutsView = (props: Props): JSX.Element => {
   ));
 
   workouts.push(
-    <div key={'add-workout-key'} className={'card_container'} onClick={(): void => setShowAddWorkoutModal(true)}>
+    <div
+      key={'add-workout-key'}
+      className={'card_container'}
+      onClick={() => setShowAddWorkoutModal(!showAddWorkoutModal)}
+    >
       <div id={'card_add-container'}>
         <Add />
       </div>

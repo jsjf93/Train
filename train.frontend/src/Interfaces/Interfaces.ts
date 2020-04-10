@@ -4,3 +4,9 @@ export interface Workout {
   lastPerformed?: Date;
   bodyPartsUsed?: string[];
 }
+
+export interface Exercise {
+  id: number;
+  name: string;
+  bodyPartsUsed: string[];
+}

@@ -1,17 +1,19 @@
 import * as React from 'react';
+import { Container } from '@material-ui/core';
+import { Exercise } from '../../../Interfaces/Interfaces';
 
 type Props = {
-  exercises: string[];
+  exercises: Exercise[];
+  onChange: (exercises: Exercise[]) => void;
 };
 
 const ExercisesView = (props: Props): JSX.Element => {
   return (
-    <>
-      <h1>Exercises</h1>
-      {props.exercises.map((e, i) => (
-        <div key={e + i}>{e}</div>
+    <Container>
+      {props.exercises.map(e => (
+        <div key={e.id}>{e}</div>
       ))}
-    </>
+    </Container>
   );
 };
 

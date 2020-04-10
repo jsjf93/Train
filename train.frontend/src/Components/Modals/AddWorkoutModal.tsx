@@ -11,6 +11,8 @@ const AddWorkoutModal = (props: Props): JSX.Element => {
   const initialWorkout: Workout = { id: props.newWorkoutId, name: '' };
   const [newWorkout, setCurrentWorkout] = useState(initialWorkout);
 
+  console.log(newWorkout, setCurrentWorkout);
+
   return (
     <div className={'modal_overlay'}>
       <div className={'addWorkoutModal_container'}>
