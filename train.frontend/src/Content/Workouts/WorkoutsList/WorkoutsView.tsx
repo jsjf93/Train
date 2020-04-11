@@ -6,12 +6,12 @@ import { Add } from '@material-ui/icons';
 import { useState } from 'react';
 import AddWorkoutModal from '../../../Components/Modals/AddWorkoutModal';
 
-type Props = {
+interface IProps {
   workouts: Workout[];
   onChange: (workouts: Workout[]) => void;
-};
+}
 
-const WorkoutsView = (props: Props): JSX.Element => {
+const WorkoutsView: React.FC<IProps> = (props: IProps) => {
   const [showAddWorkoutModal, setShowAddWorkoutModal] = useState(false);
 
   const onAddWorkout = (workout: Workout): void => props.onChange(props.workouts.concat(workout));
@@ -44,7 +44,6 @@ const WorkoutsView = (props: Props): JSX.Element => {
   return (
     <>
       {showAddWorkoutModal && <AddWorkoutModal newWorkoutId={Math.max(...props.workouts.map(w => w.id)) + 1} />}
-      <h1>Workouts</h1>
       <div id={'workouts-view_container'}>{workouts}</div>
     </>
   );

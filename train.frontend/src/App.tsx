@@ -6,7 +6,6 @@ import WorkoutsView from './Content/Workouts/WorkoutsList/WorkoutsView';
 import NavigationBar from './Content/Nav/NavigationBar';
 import HomeView from './Content/Home/Home';
 import { Workout, Exercise } from './Interfaces/Interfaces';
-import { Box } from '@material-ui/core';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '.';
 
@@ -14,7 +13,7 @@ const App = observer(() => {
   const store = useStore();
 
   return (
-    <Box>
+    <div id={'app-container'}>
       <NavigationBar />
 
       <Router>
@@ -38,7 +37,7 @@ const App = observer(() => {
           }
         />
       </Router>
-    </Box>
+    </div>
   );
 });
 

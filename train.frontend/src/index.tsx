@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { TStore, createStore } from './Store/Store';
 import { useLocalStore } from 'mobx-react-lite';
+import 'mobx-react-lite/batchingForReactDom';
 import { Exercise, Workout } from './Interfaces/Interfaces';
 
 type Props = {
