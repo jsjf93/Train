@@ -12,6 +12,7 @@ import {
   makeStyles,
   createStyles,
   Button,
+  Modal,
 } from '@material-ui/core';
 import { Exercise } from '../../../Interfaces/Interfaces';
 import SearchIcon from '@material-ui/icons/Search';
@@ -42,11 +43,22 @@ const useStyles = makeStyles(() =>
       padding: 10,
     },
     addButton: {},
+    test: {
+      height: 500,
+      width: 500,
+      border: '1 solid rgba(153, 153, 153, 0.178)',
+      boxShadow: '0 0 10 rgb(151, 151, 151)',
+      borderRadius: 25,
+      backgroundColor: 'white',
+      zIndex: 9999,
+      overflowY: 'scroll',
+    },
   }),
 );
 
 const ExercisesView: React.FC<IProps> = (props: IProps) => {
   const [searchInput, setSearchInput] = useState('');
+  const [showExerciseModal, setShowExerciseModal] = useState(false);
   const exercises = props.exercises.filter(e => e.name.toLowerCase().includes(searchInput));
 
   const classes = useStyles();
@@ -66,13 +78,17 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
         <Button
           size="small"
           variant="contained"
-          color="primary"
           className={classes.addButton}
           aria-label="new exercise"
+          onClick={() => setShowExerciseModal(true)}
         >
           New exercise
         </Button>
       </Container>
+
+      <Modal className={classes.test} open={showExerciseModal} onClose={() => setShowExerciseModal(false)}>
+        <div>Test</div>
+      </Modal>
 
       <TableContainer component={Paper} elevation={3}>
         <Table size="small">
