@@ -4,9 +4,7 @@ export function createStore() {
   return {
     exercises: [] as Exercise[],
     workouts: [] as Workout[],
-    setExercises(exercises: Exercise[]) {
-      this.exercises = exercises;
-    },
+    bodyParts: [] as string[],
     setWorkouts(workouts: Workout[]) {
       this.workouts = workouts;
     },

@@ -5,7 +5,7 @@ import ExercisesView from './Content/Exercises/ExerciseList/ExercisesView';
 import WorkoutsView from './Content/Workouts/WorkoutsList/WorkoutsView';
 import NavigationBar from './Content/Nav/NavigationBar';
 import HomeView from './Content/Home/Home';
-import { Workout, Exercise } from './Interfaces/Interfaces';
+import { Workout } from './Interfaces/Interfaces';
 import { observer } from 'mobx-react-lite';
 import { useStore } from '.';
 
@@ -27,15 +27,7 @@ const App = observer(() => {
             />
           }
         />
-        <RouterPage
-          path={'/exercises'}
-          pageComponent={
-            <ExercisesView
-              exercises={store.exercises}
-              onChange={(exercises: Exercise[]) => store.setExercises(exercises)}
-            />
-          }
-        />
+        <RouterPage path={'/exercises'} pageComponent={<ExercisesView exercises={store.exercises} />} />
       </Router>
     </div>
   );

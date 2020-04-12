@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {
+  Checkbox,
   Container,
   TableContainer,
   TableHead,
@@ -13,17 +14,22 @@ import {
   createStyles,
   Button,
   Modal,
+  Backdrop,
+  Fade,
+  Theme,
+  FormGroup,
+  FormControlLabel,
 } from '@material-ui/core';
 import { Exercise } from '../../../Interfaces/Interfaces';
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react';
+import { useStore } from '../../..';
 
 interface IProps {
   exercises: Exercise[];
-  onChange: (exercises: Exercise[]) => void;
 }
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       marginBottom: 20,
@@ -42,23 +48,65 @@ const useStyles = makeStyles(() =>
     iconButton: {
       padding: 10,
     },
-    addButton: {},
-    test: {
-      height: 500,
-      width: 500,
-      border: '1 solid rgba(153, 153, 153, 0.178)',
-      boxShadow: '0 0 10 rgb(151, 151, 151)',
-      borderRadius: 25,
-      backgroundColor: 'white',
-      zIndex: 9999,
-      overflowY: 'scroll',
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    paper: {
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: 10,
+      outline: 'none',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+    formGroupContainer: {
+      maxWidth: 500,
     },
   }),
 );
 
 const ExercisesView: React.FC<IProps> = (props: IProps) => {
+  const store = useStore();
+
   const [searchInput, setSearchInput] = useState('');
   const [showExerciseModal, setShowExerciseModal] = useState(false);
+  const [newExerciseName, setNewExerciseName] = useState('');
+  const [newExerciseBodyParts, setNewExerciseBodyParts] = useState(
+    Object.assign({}, ...store.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
+  );
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewExerciseBodyParts({ ...newExerciseBodyParts, [event.target.name]: { checked: event.target.checked } });
+  };
+
+  const resetState = () => {
+    setNewExerciseName('');
+    setNewExerciseBodyParts(
+      Object.assign({}, ...store.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
+    );
+    setShowExerciseModal(false);
+  };
+
+  const handleAddExercise = () => {
+    const bodyPartsUsed: string[] = [];
+    Object.keys(newExerciseBodyParts).forEach(bodyPartKey => {
+      if (newExerciseBodyParts[bodyPartKey].checked) {
+        bodyPartsUsed.push(bodyPartKey);
+      }
+    });
+
+    if (newExerciseName && bodyPartsUsed.length) {
+      store.exercises.push({
+        id: store.exercises[store.exercises.length - 1].id + 1,
+        name: newExerciseName,
+        bodyPartsUsed,
+      });
+
+      resetState();
+    }
+  };
+
   const exercises = props.exercises.filter(e => e.name.toLowerCase().includes(searchInput));
 
   const classes = useStyles();
@@ -75,19 +123,51 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
             onChange={event => setSearchInput(event.target.value.toLowerCase())}
           />
         </Paper>
-        <Button
-          size="small"
-          variant="contained"
-          className={classes.addButton}
-          aria-label="new exercise"
-          onClick={() => setShowExerciseModal(true)}
-        >
+        <Button size="small" variant="contained" aria-label="new exercise" onClick={() => setShowExerciseModal(true)}>
           New exercise
         </Button>
       </Container>
 
-      <Modal className={classes.test} open={showExerciseModal} onClose={() => setShowExerciseModal(false)}>
-        <div>Test</div>
+      <Modal
+        className={classes.modal}
+        open={showExerciseModal}
+        onClose={() => setShowExerciseModal(false)}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={showExerciseModal}>
+          <div className={classes.paper}>
+            <h2 id="add-new-exercise">New Exercise</h2>
+            <Paper component="form" aria-label="menu" className={classes.inputContainer}>
+              <InputBase
+                className={classes.input}
+                placeholder="Exercise name..."
+                inputProps={{ 'aria-label': 'exercise name...' }}
+                onChange={event => setNewExerciseName(event.target.value)}
+              />
+            </Paper>
+            <h3 id="add-new-exercise">Body Parts</h3>
+            <div className={classes.formGroupContainer}>
+              <FormGroup row>
+                {Object.keys(newExerciseBodyParts).map(key => (
+                  <FormControlLabel
+                    key={key}
+                    control={
+                      <Checkbox checked={newExerciseBodyParts[key].checked} onChange={handleChange} name={key} />
+                    }
+                    label={key}
+                  />
+                ))}
+              </FormGroup>
+            </div>
+            <Button size="small" variant="contained" aria-label="new exercise" onClick={handleAddExercise}>
+              Add exercise
+            </Button>
+          </div>
+        </Fade>
       </Modal>
 
       <TableContainer component={Paper} elevation={3}>

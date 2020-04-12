@@ -30,12 +30,31 @@ const fetchWorkouts = (): Workout[] => {
   ];
 };
 
+const fetchBodyParts = (): string[] => {
+  return [
+    'Abs',
+    'Chest',
+    'Glutes',
+    'Lower Back',
+    'Lats',
+    'Quadriceps',
+    'Triceps',
+    'Hamstrings',
+    'Shoulders',
+    'Biceps',
+    'Forearms',
+    'Trapezius',
+    'Calves',
+  ].sort();
+};
+
 const storeContext = React.createContext<TStore | null>(null);
 
 export const StoreProvider = ({ children }: Props) => {
   const store = useLocalStore(createStore);
   store.exercises = fetchExercises();
   store.workouts = fetchWorkouts();
+  store.bodyParts = fetchBodyParts();
 
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };
