@@ -23,10 +23,11 @@ import {
 import { Exercise } from '../../../Interfaces/Interfaces';
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react';
-import { useStore } from '../../..';
 
 interface IProps {
   exercises: Exercise[];
+  bodyParts: string[];
+  onChange: (exercises: Exercise[]) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -67,13 +68,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const ExercisesView: React.FC<IProps> = (props: IProps) => {
-  const store = useStore();
-
   const [searchInput, setSearchInput] = useState('');
   const [showExerciseModal, setShowExerciseModal] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState('');
   const [newExerciseBodyParts, setNewExerciseBodyParts] = useState(
-    Object.assign({}, ...store.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
+    Object.assign({}, ...props.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -83,7 +82,7 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
   const resetState = () => {
     setNewExerciseName('');
     setNewExerciseBodyParts(
-      Object.assign({}, ...store.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
+      Object.assign({}, ...props.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
     );
     setShowExerciseModal(false);
   };
@@ -97,11 +96,14 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
     });
 
     if (newExerciseName && bodyPartsUsed.length) {
-      store.exercises.push({
-        id: store.exercises[store.exercises.length - 1].id + 1,
+      const exercises = props.exercises;
+      exercises.push({
+        id: props.exercises[props.exercises.length - 1].id + 1,
         name: newExerciseName,
         bodyPartsUsed,
       });
+
+      props.onChange(exercises);
 
       resetState();
     }
@@ -112,18 +114,25 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
   const classes = useStyles();
 
   return (
-    <Container maxWidth="md">
-      <Container className={classes.root}>
+    <Container maxWidth="md" data-testid="outerContainer">
+      <Container className={classes.root} data-testid="inputFieldContainer">
         <Paper component="form" aria-label="menu" className={classes.inputContainer} elevation={3}>
-          <SearchIcon />
+          <SearchIcon data-testid="searchIcon" />
           <InputBase
             className={classes.input}
             placeholder="Search..."
             inputProps={{ 'aria-label': 'search...' }}
             onChange={event => setSearchInput(event.target.value.toLowerCase())}
+            data-testid="inputBase"
           />
         </Paper>
-        <Button size="small" variant="contained" aria-label="new exercise" onClick={() => setShowExerciseModal(true)}>
+        <Button
+          size="small"
+          variant="contained"
+          aria-label="new exercise"
+          onClick={() => setShowExerciseModal(true)}
+          data-testid="newExerciseButton"
+        >
           New exercise
         </Button>
       </Container>
@@ -137,6 +146,7 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
         BackdropProps={{
           timeout: 500,
         }}
+        data-testid="modal"
       >
         <Fade in={showExerciseModal}>
           <div className={classes.paper}>
@@ -170,15 +180,15 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
         </Fade>
       </Modal>
 
-      <TableContainer component={Paper} elevation={3}>
+      <TableContainer component={Paper} elevation={3} data-testid="tableContainer">
         <Table size="small">
           <TableHead>
-            <TableRow>
+            <TableRow data-testid="tableColumnNameRow">
               <TableCell>Exercise name</TableCell>
               <TableCell>Body parts used</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody data-testid="tableBody">
             {exercises.map(exercise => (
               <TableRow key={exercise.name}>
                 <TableCell component="th" scope="row">
