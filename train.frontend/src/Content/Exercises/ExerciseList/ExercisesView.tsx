@@ -71,9 +71,11 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
   const [searchInput, setSearchInput] = useState('');
   const [showExerciseModal, setShowExerciseModal] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState('');
-  const [newExerciseBodyParts, setNewExerciseBodyParts] = useState(
-    Object.assign({}, ...props.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
-  );
+
+  const getInitialBodyPartsCheckboxes = () => {
+    return Object.assign({}, ...props.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } })));
+  };
+  const [newExerciseBodyParts, setNewExerciseBodyParts] = useState(getInitialBodyPartsCheckboxes());
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewExerciseBodyParts({ ...newExerciseBodyParts, [event.target.name]: { checked: event.target.checked } });
@@ -81,9 +83,7 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
 
   const resetState = () => {
     setNewExerciseName('');
-    setNewExerciseBodyParts(
-      Object.assign({}, ...props.bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } }))),
-    );
+    setNewExerciseBodyParts(getInitialBodyPartsCheckboxes());
     setShowExerciseModal(false);
   };
 
