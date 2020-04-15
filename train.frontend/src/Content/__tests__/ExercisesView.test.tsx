@@ -82,4 +82,59 @@ describe('<ExerciseView />', () => {
 
     expect(modal).toBeInTheDocument();
   });
+
+  it('An exercise cannot be added without at least one bodyPart selected', () => {
+    const { getByTestId } = render(
+      <ExercisesView exercises={testExercises} bodyParts={[]} onChange={onExercisesChange} />,
+    );
+    const originalLength = testExercises.length;
+
+    const newExerciseButton = getByTestId('newExerciseButton');
+    fireEvent.click(newExerciseButton);
+
+    const addExerciseButton = getByTestId('addExerciseButton');
+    expect(addExerciseButton).toBeInTheDocument();
+
+    const exerciseNameInput = getByTestId('exerciseNameInput');
+    fireEvent.change(exerciseNameInput, { target: { value: 'a' } });
+
+    fireEvent.click(addExerciseButton);
+
+    expect(testExercises.length).toBe(originalLength);
+  });
+
+  it('Exercise with name and a checkbox selected is added when onChange is called', () => {
+    const { getByTestId } = render(
+      <ExercisesView exercises={testExercises} bodyParts={['Abs']} onChange={onExercisesChange} />,
+    );
+
+    const newExerciseButton = getByTestId('newExerciseButton');
+    fireEvent.click(newExerciseButton);
+
+    const addExerciseButton = getByTestId('addExerciseButton');
+    expect(addExerciseButton).toBeInTheDocument();
+
+    const exerciseNameInput = getByTestId('exerciseNameInput');
+    fireEvent.change(exerciseNameInput, { target: { value: 'a' } });
+    const exerciseCheckbox = getByTestId('AbsCheckbox').querySelector('input[type="checkbox"]');
+    fireEvent.click(exerciseCheckbox!);
+
+    fireEvent.click(addExerciseButton);
+
+    expect(testExercises.length).toBe(4);
+    expect(testExercises[3].name).toBe('a');
+    expect(testExercises[3].bodyPartsUsed[0]).toBe('Abs');
+  });
+
+  it('<Button /> with data-testid addExerciseButton is disabled when exercise name input or checkboxes are empty', () => {
+    const { getByTestId } = render(
+      <ExercisesView exercises={testExercises} bodyParts={[]} onChange={onExercisesChange} />,
+    );
+
+    const newExerciseButton = getByTestId('newExerciseButton');
+    fireEvent.click(newExerciseButton);
+
+    const addExerciseButton = getByTestId('addExerciseButton');
+    expect(addExerciseButton).toBeDisabled();
+  });
 });

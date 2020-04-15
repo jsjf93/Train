@@ -87,13 +87,19 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
     setShowExerciseModal(false);
   };
 
-  const handleAddExercise = () => {
+  const getSelectedBodyParts = (): string[] => {
     const bodyPartsUsed: string[] = [];
     Object.keys(newExerciseBodyParts).forEach(bodyPartKey => {
       if (newExerciseBodyParts[bodyPartKey].checked) {
         bodyPartsUsed.push(bodyPartKey);
       }
     });
+
+    return bodyPartsUsed;
+  };
+
+  const handleAddExercise = () => {
+    const bodyPartsUsed = getSelectedBodyParts();
 
     if (newExerciseName && bodyPartsUsed.length) {
       const exercises = props.exercises;
@@ -155,7 +161,7 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
               <InputBase
                 className={classes.input}
                 placeholder="Exercise name..."
-                inputProps={{ 'aria-label': 'exercise name...' }}
+                inputProps={{ 'aria-label': 'exercise name...', 'data-testid': 'exerciseNameInput' }}
                 onChange={event => setNewExerciseName(event.target.value)}
               />
             </Paper>
@@ -166,14 +172,26 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
                   <FormControlLabel
                     key={key}
                     control={
-                      <Checkbox checked={newExerciseBodyParts[key].checked} onChange={handleChange} name={key} />
+                      <Checkbox
+                        checked={newExerciseBodyParts[key].checked}
+                        onChange={handleChange}
+                        name={key}
+                        data-testid={key + 'Checkbox'}
+                      />
                     }
                     label={key}
                   />
                 ))}
               </FormGroup>
             </div>
-            <Button size="small" variant="contained" aria-label="new exercise" onClick={handleAddExercise}>
+            <Button
+              size="small"
+              variant="contained"
+              aria-label="new exercise"
+              onClick={handleAddExercise}
+              disabled={!newExerciseName && !getSelectedBodyParts().length}
+              data-testid="addExerciseButton"
+            >
               Add exercise
             </Button>
           </div>
