@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Workout } from '../../../Interfaces/Interfaces';
-import { useState } from 'react';
-import { Container, Modal, Backdrop, Fade, makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
+import { Container, makeStyles, Theme, createStyles, Grid, Card, CardContent, IconButton } from '@material-ui/core';
 import WorkoutCard from '../../../Components/WorkoutCard';
+import { Add } from '@material-ui/icons';
+import { Link } from '@reach/router';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,6 +39,13 @@ const useStyles = makeStyles((theme: Theme) =>
     formGroupContainer: {
       maxWidth: 500,
     },
+    addWorkoutCard: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: 150,
+      boxShadow: '0px 0px 5px rgb(151, 151, 151)',
+    },
   }),
 );
 
@@ -49,10 +57,13 @@ interface IProps {
 const WorkoutsView: React.FC<IProps> = (props: IProps) => {
   const classes = useStyles();
 
-  const [showWorkoutModal, setShowWorkoutModal] = useState(false);
+  //const [showWorkoutModal, setShowWorkoutModal] = useState(false);
 
   //const onAddWorkout = (workout: Workout) => props.onChange(props.workouts.concat(workout));
-  const onDeleteWorkout = (id: number) => props.onChange(props.workouts.filter(w => w.id !== id));
+  const onDeleteWorkout = (workout: Workout) => {
+    const workouts = props.workouts.filter(w => w.id !== workout.id);
+    props.onChange(workouts);
+  };
   const onEditWorkout = (workout: Workout) =>
     props.onChange(props.workouts.map(w => (w.id === workout.id ? workout : w)));
 
@@ -62,30 +73,22 @@ const WorkoutsView: React.FC<IProps> = (props: IProps) => {
     </Grid>
   ));
 
-  // workouts.push(
-  //   <Grid key={'add-workout-key'} item xs={12} sm={6} md={4} onClick={() => setShowWorkoutModal(!showWorkoutModal)}>
-
-  //   </Grid>,
-  // );
+  workouts.push(
+    <Grid key={'add-workout-key'} item xs={12} sm={6} md={4}>
+      <Card className={classes.addWorkoutCard}>
+        <CardContent>
+          <Link to={'/addworkout'}>
+            <IconButton>
+              <Add />
+            </IconButton>
+          </Link>
+        </CardContent>
+      </Card>
+    </Grid>,
+  );
 
   return (
     <Container maxWidth="md" data-testid="outerContainer">
-      {/* {showAddWorkoutModal && <AddWorkoutModal newWorkoutId={Math.max(...props.workouts.map(w => w.id)) + 1} />} */}
-      <Modal
-        className={classes.modal}
-        open={showWorkoutModal}
-        onClose={() => setShowWorkoutModal(false)}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-        data-testid="modal"
-      >
-        <Fade in={showWorkoutModal}>
-          <div className={classes.paper}>Workout</div>
-        </Fade>
-      </Modal>
       <Grid container spacing={3} justify="center" alignItems="stretch">
         {workouts}
       </Grid>

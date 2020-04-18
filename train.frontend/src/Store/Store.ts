@@ -5,8 +5,9 @@ export function createStore() {
     exercises: [] as Exercise[],
     workouts: [] as Workout[],
     bodyParts: [] as string[],
-    setWorkouts(workouts: Workout[]) {
-      this.workouts = workouts;
+    // temp function until backend is ready
+    get newWorkoutId() {
+      return Math.max(...this.workouts.map(w => w.id)) + 1;
     },
   };
 }

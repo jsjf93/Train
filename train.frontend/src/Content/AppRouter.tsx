@@ -6,11 +6,13 @@ import WorkoutsView from './Workouts/WorkoutsList/WorkoutsView';
 import { useStore } from '../Context';
 import { Workout, Exercise } from '../Interfaces/Interfaces';
 import ExercisesView from './Exercises/ExerciseList/ExercisesView';
+import { useObserver } from 'mobx-react-lite';
+import AddWorkout from './Workouts/AddWorkout';
 
 const AppRouter = () => {
   const store = useStore();
 
-  return (
+  return useObserver(() => (
     <div id={'app-container'}>
       <NavigationBar />
 
@@ -19,10 +21,7 @@ const AppRouter = () => {
         <RouterPage
           path={'/workouts'}
           pageComponent={
-            <WorkoutsView
-              workouts={store.workouts}
-              onChange={(workouts: Workout[]): void => store.setWorkouts(workouts)}
-            />
+            <WorkoutsView workouts={store.workouts} onChange={(workouts: Workout[]) => (store.workouts = workouts)} />
           }
         />
         <RouterPage
@@ -35,9 +34,10 @@ const AppRouter = () => {
             />
           }
         />
+        <RouterPage path={'/addworkout'} pageComponent={<AddWorkout />} />
       </Router>
     </div>
-  );
+  ));
 };
 
 const RouterPage = (props: { pageComponent: JSX.Element } & RouteComponentProps): JSX.Element => props.pageComponent;

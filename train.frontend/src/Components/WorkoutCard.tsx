@@ -6,7 +6,7 @@ import { Accessibility, MoreVert, WatchLater } from '@material-ui/icons';
 
 interface IProps {
   workout: Workout;
-  onDeleteWorkout: (id: number) => void;
+  onDeleteWorkout: (workout: Workout) => void;
   onEditWorkout: (workout: Workout) => void;
 }
 
@@ -53,7 +53,8 @@ const WorkoutCard: React.FC<IProps> = (props: IProps) => {
       />
       <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleClose}>Edit</MenuItem>
-        <MenuItem onClick={handleClose}>Delete</MenuItem>
+        <MenuItem onClick={() => props.onDeleteWorkout(props.workout)}>Delete</MenuItem>
+        <MenuItem onClick={handleClose}>Start Workout</MenuItem>
       </Menu>
       <CardContent className={classes.contentPadding}>
         {props.workout.lastPerformed && (

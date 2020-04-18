@@ -12,10 +12,9 @@
   bottom: 20px;
   left: 50%;
   transform: translate(-50%, 0);
-  z-index: 9999;
 }
 
-#navigationBar_container > nav {
+#navigationBar_container>nav {
   width: 100%;
   height: 100%;
   display: flex;
