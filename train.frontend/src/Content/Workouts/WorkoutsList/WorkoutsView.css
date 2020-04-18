@@ -1,8 +1,0 @@
-#workouts-view_container {
-  height: calc(100vh - 135px);
-  width: calc(100vw - 20%);
-  margin: 0 auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
