@@ -1,8 +1,25 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Container, makeStyles, createStyles, Paper, InputBase, ButtonGroup, Button } from '@material-ui/core';
+import {
+  Container,
+  makeStyles,
+  createStyles,
+  Paper,
+  InputBase,
+  IconButton,
+  Button,
+  Theme,
+  Modal,
+  Backdrop,
+  Fade,
+} from '@material-ui/core';
+import { Link } from '@reach/router';
+import { Clear, Save } from '@material-ui/icons';
+import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
+import { useStore } from '../../Context';
+import { Exercise } from '../../Interfaces/Interfaces';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       textAlign: 'center',
@@ -17,14 +34,37 @@ const useStyles = makeStyles(() =>
     input: {
       flex: 1,
     },
+    link: {
+      textDecoration: 'none',
+    },
+    modal: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    exercisesViewContainer: {
+      backgroundColor: theme.palette.background.paper,
+      borderRadius: 10,
+      outline: 'none',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 1, 3),
+      height: '80%',
+    },
+    exercisesContainer: {
+      marginTop: 20,
+    },
   }),
 );
 
 const AddWorkout = () => {
+  const initialExercises: Exercise[] = [];
   const classes = useStyles();
+  const store = useStore();
 
   const [workoutName, setWorkoutName] = useState('');
-  console.log(workoutName);
+  const [exercises, setExercises] = useState(initialExercises);
+  const [showExercisesView, setShowExercisesView] = useState(false);
+  console.log(workoutName, showExercisesView);
 
   return (
     <Container className={classes.root} maxWidth="sm" data-testid="outerContainer">
@@ -39,13 +79,53 @@ const AddWorkout = () => {
       </Paper>
 
       <div>
-        <Button variant="contained">Add exercise</Button>
+        <Button variant="contained" onClick={() => setShowExercisesView(true)}>
+          Add exercise
+        </Button>
       </div>
 
-      <ButtonGroup variant="contained">
-        <Button>Cancel</Button>
-        <Button>Save</Button>
-      </ButtonGroup>
+      <Modal
+        className={classes.modal}
+        open={showExercisesView}
+        onClose={() => setShowExercisesView(false)}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+        data-testid="modal"
+      >
+        <Fade in={showExercisesView}>
+          <div className={classes.exercisesViewContainer}>
+            <ExercisesView
+              exercises={store.exercises}
+              bodyParts={store.bodyParts}
+              onChange={(exercises: Exercise[]) => (store.exercises = exercises)}
+              addToWorkout={(exercise: Exercise) => {
+                setExercises(exercises.concat(exercise));
+                setShowExercisesView(false);
+              }}
+            />
+          </div>
+        </Fade>
+      </Modal>
+
+      <Container className={classes.exercisesContainer} maxWidth="sm">
+        {exercises.map(exercise => (
+          <div>{exercise.name}</div>
+        ))}
+      </Container>
+
+      <Link to="/workouts">
+        <IconButton>
+          <Clear />
+        </IconButton>
+      </Link>
+      <Link to="/workouts">
+        <IconButton>
+          <Save />
+        </IconButton>
+      </Link>
     </Container>
   );
 };

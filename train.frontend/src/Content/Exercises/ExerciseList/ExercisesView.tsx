@@ -28,6 +28,7 @@ interface IProps {
   exercises: Exercise[];
   bodyParts: string[];
   onChange: (exercises: Exercise[]) => void;
+  addToWorkout?: (exercise: Exercise) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -112,6 +113,12 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
       props.onChange(exercises);
 
       resetState();
+    }
+  };
+
+  const handleAddToWorkout = (exercise: Exercise) => {
+    if (props.addToWorkout) {
+      props.addToWorkout(exercise);
     }
   };
 
@@ -208,7 +215,7 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
           </TableHead>
           <TableBody data-testid="tableBody">
             {exercises.map(exercise => (
-              <TableRow key={exercise.name}>
+              <TableRow key={exercise.name} onClick={() => handleAddToWorkout(exercise)}>
                 <TableCell component="th" scope="row">
                   {exercise.name}
                 </TableCell>
