@@ -20,7 +20,7 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@material-ui/core';
-import { Exercise } from '../../../Interfaces/Interfaces';
+import { Exercise } from '../../../Definitions/Interfaces';
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react';
 

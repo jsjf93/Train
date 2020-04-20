@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Workout } from '../../../Interfaces/Interfaces';
+import { Workout } from '../../../Definitions/Interfaces';
 import { Container, makeStyles, Theme, createStyles, Grid, Card, CardContent, IconButton } from '@material-ui/core';
 import WorkoutCard from '../../../Components/WorkoutCard';
 import { Add } from '@material-ui/icons';

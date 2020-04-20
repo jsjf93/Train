@@ -4,7 +4,7 @@ import { Router, RouteComponentProps } from '@reach/router';
 import HomeView from './Home/Home';
 import WorkoutsView from './Workouts/WorkoutsList/WorkoutsView';
 import { useStore } from '../Context';
-import { Workout, Exercise } from '../Interfaces/Interfaces';
+import { Workout, Exercise } from '../Definitions/Interfaces';
 import ExercisesView from './Exercises/ExerciseList/ExercisesView';
 import { useObserver } from 'mobx-react-lite';
 import AddWorkout from './Workouts/AddWorkout';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import moment from 'moment';
-import { Workout } from '../Interfaces/Interfaces';
+import { Workout } from '../Definitions/Interfaces';
 import { Card, CardContent, CardHeader, IconButton, makeStyles, Menu, MenuItem } from '@material-ui/core';
 import { Accessibility, MoreVert, WatchLater } from '@material-ui/icons';
 

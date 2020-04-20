@@ -12,18 +12,20 @@ import {
   Modal,
   Backdrop,
   Fade,
+  Grid,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@material-ui/core';
 import { Link } from '@reach/router';
 import { Clear, Save } from '@material-ui/icons';
 import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
 import { useStore } from '../../Context';
-import { Exercise } from '../../Interfaces/Interfaces';
+import { Exercise } from '../../Definitions/Interfaces';
+import { ExerciseType } from '../../Definitions/Enums';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      textAlign: 'center',
-    },
     inputContainer: {
       padding: '0px 4px',
       display: 'flex',
@@ -53,6 +55,13 @@ const useStyles = makeStyles((theme: Theme) =>
     exercisesContainer: {
       marginTop: 20,
     },
+    exerciseNameContainer: {
+      margin: '16px 0 0 16px',
+    },
+    formControl: {
+      margin: theme.spacing(2),
+      minWidth: 120,
+    },
   }),
 );
 
@@ -67,8 +76,7 @@ const AddWorkout = () => {
   console.log(workoutName, showExercisesView);
 
   return (
-    <Container className={classes.root} maxWidth="sm" data-testid="outerContainer">
-      <h1>New Workout</h1>
+    <Container maxWidth="sm" data-testid="outerContainer">
       <Paper component="form" aria-label="menu" className={classes.inputContainer}>
         <InputBase
           className={classes.input}
@@ -112,7 +120,29 @@ const AddWorkout = () => {
 
       <Container className={classes.exercisesContainer} maxWidth="sm">
         {exercises.map(exercise => (
-          <div>{exercise.name}</div>
+          <Grid key={exercise.id} container spacing={3} justify="center" alignItems="stretch">
+            <Grid item xs={12}>
+              <Paper>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <div className={classes.exerciseNameContainer}>
+                      <strong>{exercise.name}</strong>
+                    </div>
+                    <div>
+                      <FormControl className={classes.formControl}>
+                        <Select>
+                          <MenuItem value={ExerciseType.Duration}>Duration</MenuItem>
+                          <MenuItem value={ExerciseType.Interval}>Interval</MenuItem>
+                          <MenuItem value={ExerciseType.Strength}>Strength</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </div>
+                  </Grid>
+                  <Grid>Some other data</Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+          </Grid>
         ))}
       </Container>
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
-import { Exercise } from '../../Interfaces/Interfaces';
+import { Exercise } from '../../Definitions/Interfaces';
 import { render, fireEvent } from '@testing-library/react';
 
 describe('<ExerciseView />', () => {

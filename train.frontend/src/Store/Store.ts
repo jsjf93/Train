@@ -1,4 +1,4 @@
-import { Exercise, Workout } from '../Interfaces/Interfaces';
+import { Exercise, Workout } from '../Definitions/Interfaces';
 
 export function createStore() {
   return {

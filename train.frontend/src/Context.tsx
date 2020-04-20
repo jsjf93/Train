@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Exercise, Workout } from './Interfaces/Interfaces';
+import { Exercise, Workout } from './Definitions/Interfaces';
 import { TStore, createStore } from './Store/Store';
 import { useLocalStore } from 'mobx-react-lite';
 
