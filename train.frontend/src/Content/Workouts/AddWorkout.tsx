@@ -16,6 +16,11 @@ import {
   FormControl,
   Select,
   MenuItem,
+  Table,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableCell,
 } from '@material-ui/core';
 import { Link } from '@reach/router';
 import { Clear, Save } from '@material-ui/icons';
@@ -56,11 +61,13 @@ const useStyles = makeStyles((theme: Theme) =>
       marginTop: 20,
     },
     exerciseNameContainer: {
-      margin: '16px 0 0 16px',
+      margin: '16px 0 16px 16px',
+      display: 'flex',
+      alignItems: 'baseline',
     },
     formControl: {
-      margin: theme.spacing(2),
-      minWidth: 120,
+      marginLeft: 16,
+      minWidth: 90,
     },
   }),
 );
@@ -124,21 +131,29 @@ const AddWorkout = () => {
             <Grid item xs={12}>
               <Paper>
                 <Grid container>
-                  <Grid item xs={6}>
+                  <Grid item xs={12}>
                     <div className={classes.exerciseNameContainer}>
                       <strong>{exercise.name}</strong>
-                    </div>
-                    <div>
                       <FormControl className={classes.formControl}>
-                        <Select>
+                        <Select placeholder="Exercise type">
                           <MenuItem value={ExerciseType.Duration}>Duration</MenuItem>
                           <MenuItem value={ExerciseType.Interval}>Interval</MenuItem>
                           <MenuItem value={ExerciseType.Strength}>Strength</MenuItem>
                         </Select>
                       </FormControl>
                     </div>
+                    <TableContainer component={Paper}>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Set</TableCell>
+                            <TableCell>Weight (kg)</TableCell>
+                            <TableCell>Reps</TableCell>
+                          </TableRow>
+                        </TableHead>
+                      </Table>
+                    </TableContainer>
                   </Grid>
-                  <Grid>Some other data</Grid>
                 </Grid>
               </Paper>
             </Grid>
