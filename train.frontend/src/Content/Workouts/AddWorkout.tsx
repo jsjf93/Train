@@ -16,11 +16,6 @@ import {
   FormControl,
   Select,
   MenuItem,
-  Table,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableCell,
 } from '@material-ui/core';
 import { Link } from '@reach/router';
 import { Clear, Save } from '@material-ui/icons';
@@ -28,6 +23,7 @@ import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
 import { useStore } from '../../Context';
 import { Exercise } from '../../Definitions/Interfaces';
 import { ExerciseType } from '../../Definitions/Enums';
+import StrengthTable from './WorkoutExerciseTables/StrengthTable';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -126,8 +122,8 @@ const AddWorkout = () => {
       </Modal>
 
       <Container className={classes.exercisesContainer} maxWidth="sm">
-        {exercises.map(exercise => (
-          <Grid key={exercise.id} container spacing={3} justify="center" alignItems="stretch">
+        {exercises.map((exercise, key) => (
+          <Grid key={exercise.id + key} container spacing={3} justify="center" alignItems="stretch">
             <Grid item xs={12}>
               <Paper>
                 <Grid container>
@@ -135,31 +131,27 @@ const AddWorkout = () => {
                     <div className={classes.exerciseNameContainer}>
                       <strong>{exercise.name}</strong>
                       <FormControl className={classes.formControl}>
-                        <Select placeholder="Exercise type">
+                        <Select placeholder="Exercise type" value={ExerciseType.Strength}>
                           <MenuItem value={ExerciseType.Duration}>Duration</MenuItem>
                           <MenuItem value={ExerciseType.Interval}>Interval</MenuItem>
                           <MenuItem value={ExerciseType.Strength}>Strength</MenuItem>
                         </Select>
                       </FormControl>
                     </div>
-                    <TableContainer component={Paper}>
-                      <Table>
-                        <TableHead>
-                          <TableRow>
-                            <TableCell>Set</TableCell>
-                            <TableCell>Weight (kg)</TableCell>
-                            <TableCell>Reps</TableCell>
-                          </TableRow>
-                        </TableHead>
-                      </Table>
-                    </TableContainer>
+                    <StrengthTable />
                   </Grid>
                 </Grid>
+                <div>
+                  <Button variant="contained" onClick={() => setShowExercisesView(true)}>
+                    Add Set
+                  </Button>
+                </div>
               </Paper>
             </Grid>
           </Grid>
         ))}
       </Container>
+
 
       <Link to="/workouts">
         <IconButton>

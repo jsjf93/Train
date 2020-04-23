@@ -39,8 +39,10 @@ interface IProps {
 
 const AddWorkoutModal = (props: IProps): JSX.Element => {
   const classes = useStyles();
+  //const initialWorkoutExercises: WorkoutExercise[] = [];
 
   const [workoutName, setWorkoutName] = useState('');
+  //const [workoutExercises, setWorkoutExercises] = useState(initialWorkoutExercises);
   console.log(workoutName);
 
   return (
