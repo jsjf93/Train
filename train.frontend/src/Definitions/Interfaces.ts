@@ -1,39 +1,39 @@
-export interface Workout {
+export interface IWorkout {
   id: number;
   name: string;
   lastPerformed?: Date;
   bodyPartsUsed?: string[];
 }
 
-export interface Exercise {
+export interface IExercise {
   id: number;
   name: string;
   bodyPartsUsed: string[];
 }
 
-export interface WorkoutExercise extends Exercise {
+export interface IWorkoutExercise extends IExercise {
   exerciseType: string;
-  exerciseData: DurationData | IntervalData | StrengthData;
+  exerciseData: IDurationData | IIntervalData | IStrengthData;
 }
 
-export interface DurationData {
-
-}
-
-export interface IntervalData {
+export interface IDurationData {
 
 }
 
-export interface StrengthData {
-  sets: StrengthSet[];
+export interface IIntervalData {
+
 }
 
-export interface DurationSet {
+export interface IStrengthData {
+  sets: IStrengthSet[];
+}
+
+export interface IDurationSet {
   id: number;
   duration: IDuration;
 }
 
-export interface StrengthSet {
+export interface IStrengthSet {
   id: number;
   reps: number;
   weight?: number;

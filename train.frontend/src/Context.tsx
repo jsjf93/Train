@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Exercise, Workout } from './Definitions/Interfaces';
+import { IExercise, IWorkout } from './Definitions/Interfaces';
 import { TStore, createStore } from './Store/Store';
 import { useLocalStore } from 'mobx-react-lite';
 
@@ -7,7 +7,7 @@ type Props = {
   children: ReactNode;
 };
 
-const fetchExercises = (): Exercise[] => {
+const fetchExercises = (): IExercise[] => {
   return [
     { id: 1, name: 'Pushup', bodyPartsUsed: ['Chest', 'Shoulders', 'Triceps'] },
     { id: 2, name: 'Pullup', bodyPartsUsed: ['Back', 'Biceps'] },
@@ -15,7 +15,7 @@ const fetchExercises = (): Exercise[] => {
   ];
 };
 
-const fetchWorkouts = (): Workout[] => {
+const fetchWorkouts = (): IWorkout[] => {
   return [
     { id: 1, name: 'Push Day', lastPerformed: new Date(), bodyPartsUsed: ['Chest, Shoulders, Triceps, Core'] },
     { id: 2, name: 'Pull Day' },

@@ -4,7 +4,7 @@ import { Router, RouteComponentProps } from '@reach/router';
 import HomeView from './Home/Home';
 import WorkoutsView from './Workouts/WorkoutsList/WorkoutsView';
 import { useStore } from '../Context';
-import { Workout, Exercise } from '../Definitions/Interfaces';
+import { IWorkout, IExercise } from '../Definitions/Interfaces';
 import ExercisesView from './Exercises/ExerciseList/ExercisesView';
 import { useObserver } from 'mobx-react-lite';
 import AddWorkout from './Workouts/AddWorkout';
@@ -21,7 +21,7 @@ const AppRouter = () => {
         <RouterPage
           path={'/workouts'}
           pageComponent={
-            <WorkoutsView workouts={store.workouts} onChange={(workouts: Workout[]) => (store.workouts = workouts)} />
+            <WorkoutsView workouts={store.workouts} onChange={(workouts: IWorkout[]) => (store.workouts = workouts)} />
           }
         />
         <RouterPage
@@ -30,7 +30,7 @@ const AppRouter = () => {
             <ExercisesView
               exercises={store.exercises}
               bodyParts={store.bodyParts}
-              onChange={(exercises: Exercise[]) => (store.exercises = exercises)}
+              onChange={(exercises: IExercise[]) => (store.exercises = exercises)}
             />
           }
         />

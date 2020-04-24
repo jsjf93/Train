@@ -1,9 +1,9 @@
-import { Exercise, Workout } from '../Definitions/Interfaces';
+import { IExercise, IWorkout } from '../Definitions/Interfaces';
 
 export function createStore() {
   return {
-    exercises: [] as Exercise[],
-    workouts: [] as Workout[],
+    exercises: [] as IExercise[],
+    workouts: [] as IWorkout[],
     bodyParts: [] as string[],
     // temp function until backend is ready
     get newWorkoutId() {

@@ -21,7 +21,7 @@ import { Link } from '@reach/router';
 import { Clear, Save } from '@material-ui/icons';
 import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
 import { useStore } from '../../Context';
-import { Exercise } from '../../Definitions/Interfaces';
+import { IExercise } from '../../Definitions/Interfaces';
 import { ExerciseType } from '../../Definitions/Enums';
 import StrengthTable from './WorkoutExerciseTables/StrengthTable';
 
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const AddWorkout = () => {
-  const initialExercises: Exercise[] = [];
+  const initialExercises: IExercise[] = [];
   const classes = useStyles();
   const store = useStore();
 
@@ -111,8 +111,8 @@ const AddWorkout = () => {
             <ExercisesView
               exercises={store.exercises}
               bodyParts={store.bodyParts}
-              onChange={(exercises: Exercise[]) => (store.exercises = exercises)}
-              addToWorkout={(exercise: Exercise) => {
+              onChange={(exercises: IExercise[]) => (store.exercises = exercises)}
+              addToWorkout={(exercise: IExercise) => {
                 setExercises(exercises.concat(exercise));
                 setShowExercisesView(false);
               }}

@@ -20,15 +20,15 @@ import {
   FormGroup,
   FormControlLabel,
 } from '@material-ui/core';
-import { Exercise } from '../../../Definitions/Interfaces';
+import { IExercise } from '../../../Definitions/Interfaces';
 import SearchIcon from '@material-ui/icons/Search';
 import { useState } from 'react';
 
 interface IProps {
-  exercises: Exercise[];
+  exercises: IExercise[];
   bodyParts: string[];
-  onChange: (exercises: Exercise[]) => void;
-  addToWorkout?: (exercise: Exercise) => void;
+  onChange: (exercises: IExercise[]) => void;
+  addToWorkout?: (exercise: IExercise) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -116,7 +116,7 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
     }
   };
 
-  const handleAddToWorkout = (exercise: Exercise) => {
+  const handleAddToWorkout = (exercise: IExercise) => {
     if (props.addToWorkout) {
       props.addToWorkout(exercise);
     }

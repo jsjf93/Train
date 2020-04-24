@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './AddWorkoutModal.css';
 import { useState } from 'react';
-import { Workout } from '../../Definitions/Interfaces';
+import { IWorkout } from '../../Definitions/Interfaces';
 import { Modal, Backdrop, Fade, createStyles, Theme, makeStyles, Paper, InputBase, Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  onAddWorkout: (workout: Workout) => void;
+  onAddWorkout: (workout: IWorkout) => void;
   showModal: boolean;
   closeModal: () => void;
 }

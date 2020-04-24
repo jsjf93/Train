@@ -1,12 +1,12 @@
 import * as React from 'react';
 import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
-import { Exercise } from '../../Definitions/Interfaces';
+import { IExercise } from '../../Definitions/Interfaces';
 import { render, fireEvent } from '@testing-library/react';
 
 describe('<ExerciseView />', () => {
-  let testExercises: Exercise[] = [];
+  let testExercises: IExercise[] = [];
 
-  const onExercisesChange = (exercises: Exercise[]) => (testExercises = exercises);
+  const onExercisesChange = (exercises: IExercise[]) => (testExercises = exercises);
 
   beforeEach(() => {
     testExercises = [

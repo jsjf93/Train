@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Workout } from '../../../Definitions/Interfaces';
+import { IWorkout } from '../../../Definitions/Interfaces';
 import { Container, makeStyles, Theme, createStyles, Grid, Card, CardContent, IconButton } from '@material-ui/core';
 import WorkoutCard from '../../../Components/WorkoutCard';
 import { Add } from '@material-ui/icons';
@@ -50,8 +50,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IProps {
-  workouts: Workout[];
-  onChange: (workouts: Workout[]) => void;
+  workouts: IWorkout[];
+  onChange: (workouts: IWorkout[]) => void;
 }
 
 const WorkoutsView: React.FC<IProps> = (props: IProps) => {
@@ -60,11 +60,11 @@ const WorkoutsView: React.FC<IProps> = (props: IProps) => {
   //const [showWorkoutModal, setShowWorkoutModal] = useState(false);
 
   //const onAddWorkout = (workout: Workout) => props.onChange(props.workouts.concat(workout));
-  const onDeleteWorkout = (workout: Workout) => {
+  const onDeleteWorkout = (workout: IWorkout) => {
     const workouts = props.workouts.filter(w => w.id !== workout.id);
     props.onChange(workouts);
   };
-  const onEditWorkout = (workout: Workout) =>
+  const onEditWorkout = (workout: IWorkout) =>
     props.onChange(props.workouts.map(w => (w.id === workout.id ? workout : w)));
 
   const workouts = props.workouts.map((w, key) => (
