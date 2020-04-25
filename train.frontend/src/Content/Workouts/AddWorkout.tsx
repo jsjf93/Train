@@ -21,7 +21,7 @@ import { Link } from '@reach/router';
 import { Clear, Save } from '@material-ui/icons';
 import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
 import { useStore } from '../../Context';
-import { IExercise } from '../../Definitions/Interfaces';
+import { IExercise, IWorkoutExercise, IStrengthData } from '../../Definitions/Interfaces';
 import { ExerciseType } from '../../Definitions/Enums';
 import StrengthTable from './WorkoutExerciseTables/StrengthTable';
 
@@ -69,14 +69,43 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const AddWorkout = () => {
-  const initialExercises: IExercise[] = [];
   const classes = useStyles();
   const store = useStore();
 
   const [workoutName, setWorkoutName] = useState('');
-  const [exercises, setExercises] = useState(initialExercises);
   const [showExercisesView, setShowExercisesView] = useState(false);
+  const [workoutExercises, setWorkoutExercises] = useState<IWorkoutExercise[]>([]);
   console.log(workoutName, showExercisesView);
+
+  const handleExerciseAdd = (exercise: IExercise) => {
+    const { id, name, bodyPartsUsed } = exercise;
+    const workoutExercise: IWorkoutExercise = { 
+      id, 
+      name, 
+      bodyPartsUsed, 
+      exerciseType: ExerciseType.Strength, 
+      exerciseData: { sets: [{ id: 1 }]} as IStrengthData };
+    setWorkoutExercises(workoutExercises.concat(workoutExercise));
+    setShowExercisesView(false);
+  };
+
+  const handleWorkoutExerciseUpdate = (updatedExercise: IWorkoutExercise) => {
+    setWorkoutExercises(workoutExercises.map(e => e.id === updatedExercise.id ? updatedExercise : e));
+  }
+
+  const handleAddNewSet = (workoutExercise: IWorkoutExercise) => {
+    switch(workoutExercise.exerciseType) {
+      case ExerciseType.Strength:
+        const data = workoutExercise.exerciseData as IStrengthData;
+        const id = Math.max(...data.sets.map(s => s.id)) + 1;
+        data.sets.push({ id });
+        workoutExercise.exerciseData = data;
+        handleWorkoutExerciseUpdate(workoutExercise);
+        break;
+      default:
+        console.log(`ExerciseType ${workoutExercise.exerciseType} has not been implemented.`);
+    }
+  }
 
   return (
     <Container maxWidth="sm" data-testid="outerContainer">
@@ -112,17 +141,14 @@ const AddWorkout = () => {
               exercises={store.exercises}
               bodyParts={store.bodyParts}
               onChange={(exercises: IExercise[]) => (store.exercises = exercises)}
-              addToWorkout={(exercise: IExercise) => {
-                setExercises(exercises.concat(exercise));
-                setShowExercisesView(false);
-              }}
+              addToWorkout={handleExerciseAdd}
             />
           </div>
         </Fade>
       </Modal>
 
       <Container className={classes.exercisesContainer} maxWidth="sm">
-        {exercises.map((exercise, key) => (
+        {workoutExercises.map((exercise, key) => (
           <Grid key={exercise.id + key} container spacing={3} justify="center" alignItems="stretch">
             <Grid item xs={12}>
               <Paper>
@@ -138,11 +164,14 @@ const AddWorkout = () => {
                         </Select>
                       </FormControl>
                     </div>
-                    <StrengthTable />
+                    <StrengthTable
+                      workoutExercise={exercise}
+                      onChange={handleWorkoutExerciseUpdate} 
+                    />
                   </Grid>
                 </Grid>
                 <div>
-                  <Button variant="contained" onClick={() => setShowExercisesView(true)}>
+                  <Button variant="contained" onClick={() => handleAddNewSet(exercise)}>
                     Add Set
                   </Button>
                 </div>

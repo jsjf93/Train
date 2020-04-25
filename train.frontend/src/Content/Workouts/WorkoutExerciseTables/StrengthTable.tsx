@@ -1,37 +1,42 @@
 import * as React from 'react';
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, FormControl, Input, InputAdornment, createStyles, makeStyles, IconButton } from '@material-ui/core';
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, FormControl, Input, InputAdornment, createStyles, makeStyles, IconButton, TextField } from '@material-ui/core';
 import { Alarm } from '@material-ui/icons';
-import { IStrengthSet } from '../../../Definitions/Interfaces';
-import { useState } from 'react';
+import { IStrengthSet, IStrengthData, IWorkoutExercise } from '../../../Definitions/Interfaces';
 
 const useStyles = makeStyles(() => 
   createStyles({
     formControl: {
       maxWidth: 70,
     },
+    timeForm: {
+      display: 'flex'
+    },
+    timeField: {
+      marginLeft: 10
+    }
   })
 )
 
-interface IState {
-  sets: IStrengthSet[];
+interface IProps {
+  workoutExercise: IWorkoutExercise;
+  onChange: (workoutExercise: IWorkoutExercise) => void;
 }
 
-const StrengthTable = () => {
+const StrengthTable = (props: IProps) => {
   const classes = useStyles();
-  
-  const [exerciseSets, updateExerciseSets] = useState<IState>({
-    sets: [{ id: 1, reps: 0, weight: 0, restDuration: {} }]
-  }); 
-  console.log(exerciseSets, updateExerciseSets);
+
+  const exerciseData = props.workoutExercise.exerciseData as IStrengthData;
 
   const handleChange = (rowId: number, prop: keyof IStrengthSet) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    let exerciseSet = exerciseSets.sets.find(s => s.id === rowId);
+    const { workoutExercise } = props;
+    const workoutData = workoutExercise.exerciseData as IStrengthData;
+    let exerciseSet = workoutData.sets.find(s => s.id === rowId);
 
     if (exerciseSet) {
       exerciseSet = { ...exerciseSet, [prop]: event.target.value };
-      const sets = exerciseSets.sets.map(set => set.id === exerciseSet!.id ? exerciseSet : set) as IStrengthSet[];
-      const newState: IState = { sets };
-      updateExerciseSets(newState);
+      workoutData.sets = workoutData.sets.map(set => set.id === exerciseSet!.id ? exerciseSet : set) as IStrengthSet[];
+      workoutExercise.exerciseData = workoutData;
+      props.onChange(workoutExercise);
     }
   };
   
@@ -51,7 +56,7 @@ const StrengthTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {exerciseSets.sets.map(set => (
+          {exerciseData.sets.map(set => (
             <TableRow key={set.id}>
               <TableCell>{set.id}</TableCell>
               <TableCell>
@@ -72,7 +77,11 @@ const StrengthTable = () => {
                 </FormControl>
               </TableCell>
               <TableCell>
-                {set.restDuration?.minutes}
+                <form className={classes.timeForm}>
+                  <TextField className={classes.timeField} placeholder="hours" />
+                  <TextField className={classes.timeField} placeholder="minutes" />
+                  <TextField className={classes.timeField} placeholder="seconds" />
+                </form>
               </TableCell>
             </TableRow>
           ))}

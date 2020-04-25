@@ -12,16 +12,16 @@ export interface IExercise {
 }
 
 export interface IWorkoutExercise extends IExercise {
-  exerciseType: string;
+  exerciseType?: string;
   exerciseData: IDurationData | IIntervalData | IStrengthData;
 }
 
 export interface IDurationData {
-
+  sets: IDurationSet;
 }
 
 export interface IIntervalData {
-
+  sets: IIntervalSet[];
 }
 
 export interface IStrengthData {
@@ -33,9 +33,16 @@ export interface IDurationSet {
   duration: IDuration;
 }
 
+export interface IIntervalSet {
+  id: number;
+  weight?: number;
+  exerciseDuration?: IDuration;
+  restDuration?: IDuration;
+}
+
 export interface IStrengthSet {
   id: number;
-  reps: number;
+  reps?: number;
   weight?: number;
   restDuration?: IDuration;
 }
