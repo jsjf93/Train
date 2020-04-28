@@ -3,6 +3,7 @@ export interface IWorkout {
   name: string;
   lastPerformed?: Date;
   bodyPartsUsed?: string[];
+  exercises?: IWorkoutExercise[];
 }
 
 export interface IExercise {

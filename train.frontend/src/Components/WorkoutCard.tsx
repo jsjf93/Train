@@ -67,7 +67,7 @@ const WorkoutCard: React.FC<IProps> = (props: IProps) => {
         {props.workout.bodyPartsUsed && (
           <div className={classes.contentAligned}>
             <Accessibility className={classes.icon} />
-            <span>{props.workout.bodyPartsUsed}</span>
+            <span>{props.workout.bodyPartsUsed.join(', ')}</span>
           </div>
         )}
       </CardContent>

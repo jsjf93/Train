@@ -21,7 +21,7 @@ import { Link } from '@reach/router';
 import { Clear, Save } from '@material-ui/icons';
 import ExercisesView from '../Exercises/ExerciseList/ExercisesView';
 import { useStore } from '../../Context';
-import { IExercise, IWorkoutExercise, IStrengthData } from '../../Definitions/Interfaces';
+import { IExercise, IWorkoutExercise, IStrengthData, IWorkout } from '../../Definitions/Interfaces';
 import { ExerciseType } from '../../Definitions/Enums';
 import StrengthTable from './WorkoutExerciseTables/StrengthTable';
 
@@ -107,6 +107,19 @@ const AddWorkout = () => {
     }
   }
 
+  const saveWorkout = () => {
+    let bodyPartsUsed: string[] = workoutExercises.map(e => e.bodyPartsUsed).reduce((total, current) => total.concat(current));
+    //bodyPartsUsed.filter((v, i, a) => a.indexOf(v) === i);
+    const workout: IWorkout = {
+      id: store.newWorkoutId,
+      name: workoutName,
+      exercises: workoutExercises,
+      bodyPartsUsed
+    };
+
+    store.workouts.push(workout);
+  }
+
   return (
     <Container maxWidth="sm" data-testid="outerContainer">
       <Paper component="form" aria-label="menu" className={classes.inputContainer}>
@@ -187,7 +200,7 @@ const AddWorkout = () => {
           <Clear />
         </IconButton>
       </Link>
-      <Link to="/workouts">
+      <Link onClick={saveWorkout} to="/workouts">
         <IconButton>
           <Save />
         </IconButton>
