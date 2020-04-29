@@ -75,7 +75,6 @@ const AddWorkout = () => {
   const [workoutName, setWorkoutName] = useState('');
   const [showExercisesView, setShowExercisesView] = useState(false);
   const [workoutExercises, setWorkoutExercises] = useState<IWorkoutExercise[]>([]);
-  console.log(workoutName, showExercisesView);
 
   const handleExerciseAdd = (exercise: IExercise) => {
     const { id, name, bodyPartsUsed } = exercise;
@@ -84,7 +83,8 @@ const AddWorkout = () => {
       name, 
       bodyPartsUsed, 
       exerciseType: ExerciseType.Strength, 
-      exerciseData: { sets: [{ id: 1 }]} as IStrengthData };
+      exerciseData: { sets: [{ id: 1 }] } as IStrengthData 
+    };
     setWorkoutExercises(workoutExercises.concat(workoutExercise));
     setShowExercisesView(false);
   };
@@ -109,7 +109,6 @@ const AddWorkout = () => {
 
   const saveWorkout = () => {
     let bodyPartsUsed: string[] = workoutExercises.map(e => e.bodyPartsUsed).reduce((total, current) => total.concat(current));
-    //bodyPartsUsed.filter((v, i, a) => a.indexOf(v) === i);
     const workout: IWorkout = {
       id: store.newWorkoutId,
       name: workoutName,

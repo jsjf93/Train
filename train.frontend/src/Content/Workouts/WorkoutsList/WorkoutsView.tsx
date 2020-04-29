@@ -57,13 +57,11 @@ interface IProps {
 const WorkoutsView: React.FC<IProps> = (props: IProps) => {
   const classes = useStyles();
 
-  //const [showWorkoutModal, setShowWorkoutModal] = useState(false);
-
-  //const onAddWorkout = (workout: Workout) => props.onChange(props.workouts.concat(workout));
   const onDeleteWorkout = (workout: IWorkout) => {
     const workouts = props.workouts.filter(w => w.id !== workout.id);
     props.onChange(workouts);
   };
+  
   const onEditWorkout = (workout: IWorkout) =>
     props.onChange(props.workouts.map(w => (w.id === workout.id ? workout : w)));
 

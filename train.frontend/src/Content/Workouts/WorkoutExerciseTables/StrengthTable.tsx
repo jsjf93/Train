@@ -78,7 +78,6 @@ const StrengthTable = (props: IProps) => {
               </TableCell>
               <TableCell>
                 <form className={classes.timeForm}>
-                  <TextField className={classes.timeField} placeholder="hours" />
                   <TextField className={classes.timeField} placeholder="minutes" />
                   <TextField className={classes.timeField} placeholder="seconds" />
                 </form>

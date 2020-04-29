@@ -49,7 +49,6 @@ export interface IStrengthSet {
 }
 
 export interface IDuration {
-  hours?: number;
   minutes?: number;
   seconds?: number;
 }
