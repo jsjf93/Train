@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, FormControl, Input, InputAdornment, createStyles, makeStyles, IconButton, TextField } from '@material-ui/core';
 import { Alarm } from '@material-ui/icons';
-import { IStrengthSet, IStrengthData, IWorkoutExercise } from '../../../Definitions/Interfaces';
+import { IStrengthSet, IStrengthData, IWorkoutExercise, IDuration } from '../../../Definitions/Interfaces';
 
 const useStyles = makeStyles(() => 
   createStyles({
@@ -27,13 +27,18 @@ const StrengthTable = (props: IProps) => {
 
   const exerciseData = props.workoutExercise.exerciseData as IStrengthData;
 
-  const handleChange = (rowId: number, prop: keyof IStrengthSet) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (rowId: number, prop: keyof IStrengthSet, durationProp?: keyof IDuration) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const { workoutExercise } = props;
     const workoutData = workoutExercise.exerciseData as IStrengthData;
     let exerciseSet = workoutData.sets.find(s => s.id === rowId);
 
     if (exerciseSet) {
-      exerciseSet = { ...exerciseSet, [prop]: event.target.value };
+      if (prop === 'restDuration' && durationProp) {
+        let duration = { ...exerciseSet.restDuration, [durationProp]: event.target.value };
+        exerciseSet = { ...exerciseSet, [prop]: duration };
+      } else {
+        exerciseSet = { ...exerciseSet, [prop]: event.target.value };
+      }
       workoutData.sets = workoutData.sets.map(set => set.id === exerciseSet!.id ? exerciseSet : set) as IStrengthSet[];
       workoutExercise.exerciseData = workoutData;
       props.onChange(workoutExercise);
@@ -78,8 +83,18 @@ const StrengthTable = (props: IProps) => {
               </TableCell>
               <TableCell>
                 <form className={classes.timeForm}>
-                  <TextField className={classes.timeField} placeholder="minutes" />
-                  <TextField className={classes.timeField} placeholder="seconds" />
+                  <TextField 
+                    defaultValue={set.restDuration?.minutes || ''}
+                    className={classes.timeField} 
+                    placeholder="minutes" 
+                    onChange={handleChange(set.id, 'restDuration', 'minutes')} 
+                  />
+                  <TextField 
+                    defaultValue={set.restDuration?.seconds || ''}
+                    className={classes.timeField} 
+                    placeholder="seconds" 
+                    onChange={handleChange(set.id, 'restDuration', 'seconds')} 
+                  />
                 </form>
               </TableCell>
             </TableRow>
