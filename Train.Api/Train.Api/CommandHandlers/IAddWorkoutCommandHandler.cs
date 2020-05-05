@@ -6,6 +6,6 @@ namespace Train.Api.CommandHandlers
 {
     public interface IAddWorkoutCommandHandler
     {
-        public Task<HttpStatusCode> ExecuteAsync(AddWorkoutCommand command);
+        public HttpStatusCode Execute(AddWorkoutCommand command);
     }
 }

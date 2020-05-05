@@ -1,10 +1,11 @@
 ﻿using System;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Train.Api.CommandHandlers;
-using Train.Api.Helpers;
-using Train.Api.QueryHandlers;
+using Train.Api.Data;
+using Train.Api.Factories;
+using Train.Api.Repository;
 
 [assembly: FunctionsStartup(typeof(Train.Api.Startup))]
 
@@ -19,13 +20,12 @@ namespace Train.Api
       //builder.Services.AddSingleton((s) => {
       //    return new MyService();
       //});
-      var test = Environment.GetEnvironmentVariable("CosmosContainerId");
-      builder.Services.AddSingleton<IAddWorkoutCommandHandler, AddWorkoutCommandHandler>();
-      builder.Services.AddSingleton<IGetWorkoutsQueryHandler>(s =>
-        new GetWorkoutsQueryHandler(
-          CosmosDbHelper.Client.GetContainer(
-            Environment.GetEnvironmentVariable("CosmosDatabaseId"),
-            Environment.GetEnvironmentVariable("CosmosContainerId"))));
+      string SqlConnection = Environment.GetEnvironmentVariable("SqlConnection");
+      builder.Services.AddDbContext<TrainContext>(
+          options => options.UseSqlServer(SqlConnection));
+      builder.Services.AddScoped<IAddWorkoutCommandHandler, AddWorkoutCommandHandler>();
+      builder.Services.AddScoped<IWorkoutFactory, WorkoutFactory>();
+      builder.Services.AddScoped<IDataRepository, DataRepository>();
     }
   }
 }

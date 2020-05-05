@@ -3,14 +3,12 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Azure.Cosmos;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Train.Api.CommandHandlers;
 using Train.Api.Commands;
-using Train.Api.Helpers;
 
 namespace Train.Api.Api
 {
@@ -31,13 +29,13 @@ namespace Train.Api.Api
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
       var command = JsonConvert.DeserializeObject<AddWorkoutCommand>(requestBody);
 
-      if (command?.UserId == null || command?.Workouts == null)
+      if (command?.UserId == null || command?.WorkoutDto == null)
       {
         // todo: create argumentnullexception
         throw new Exception();
       }
 
-      return await _handler.ExecuteAsync(command);
+      return _handler.Execute(command);
     }
   }
 }

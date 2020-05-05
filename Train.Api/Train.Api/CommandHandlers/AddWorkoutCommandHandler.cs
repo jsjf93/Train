@@ -1,20 +1,30 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Azure.Cosmos;
 using Train.Api.Commands;
-using Train.Api.Helpers;
+using Train.Api.Factories;
+using Train.Api.Models;
+using Train.Api.Repository;
 
 namespace Train.Api.CommandHandlers
 {
   public class AddWorkoutCommandHandler : IAddWorkoutCommandHandler
   {
-    public async Task<HttpStatusCode> ExecuteAsync(AddWorkoutCommand command)
+    private readonly IDataRepository repository;
+    private readonly IWorkoutFactory factory;
+
+    public AddWorkoutCommandHandler(IDataRepository repository, IWorkoutFactory factory)
     {
-      var container = CosmosDbHelper.Client.GetContainer("Train", "Workouts");
+      this.repository = repository;
+      this.factory = factory;
+    }
 
-      var result = await container.UpsertItemAsync(command, new PartitionKey(command.PartitionKey));
+    public HttpStatusCode Execute(AddWorkoutCommand command)
+    {
+      var workout = this.factory.Create(command.WorkoutDto);
 
-      return result.StatusCode;
+      this.repository.AddWorkout(workout);
+
+      return HttpStatusCode.OK;
     }
   }
 }
