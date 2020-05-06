@@ -15,3 +15,4 @@ bin/
 obj/
 
 /notes.txt
+/Train.Api/Train.Api/appsettings.json

@@ -3,16 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Train.Api.Data;
-using Train.Api.Models.Enums;
 
 namespace Train.Api.Migrations
 {
     [DbContext(typeof(TrainContext))]
-    partial class TrainContextModelSnapshot : ModelSnapshot
+    [Migration("20200505070554_BodyPartsDbSet")]
+    partial class BodyPartsDbSet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,20 +23,18 @@ namespace Train.Api.Migrations
 
             modelBuilder.Entity("Train.Api.Models.BodyPart", b =>
                 {
-                    b.Property<int>("BodyPartId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ExerciseId")
+                    b.Property<int?>("ExerciseId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BodyPartId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExerciseId");
 
@@ -44,17 +43,15 @@ namespace Train.Api.Migrations
 
             modelBuilder.Entity("Train.Api.Models.Exercise", b =>
                 {
-                    b.Property<int>("ExerciseId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ExerciseName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ExerciseId");
+                    b.HasKey("Id");
 
                     b.ToTable("Exercises");
                 });
@@ -79,24 +76,25 @@ namespace Train.Api.Migrations
 
             modelBuilder.Entity("Train.Api.Models.Sets.ExerciseSet", b =>
                 {
-                    b.Property<int>("ExerciseSetId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ExerciseType")
-                        .HasColumnType("int");
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("WorkoutExerciseId")
                         .HasColumnType("int");
 
-                    b.HasKey("ExerciseSetId");
+                    b.HasKey("Id");
 
                     b.HasIndex("WorkoutExerciseId");
 
                     b.ToTable("ExerciseSets");
 
-                    b.HasDiscriminator<int>("ExerciseType");
+                    b.HasDiscriminator<string>("Discriminator").HasValue("ExerciseSet");
                 });
 
             modelBuilder.Entity("Train.Api.Models.Workout", b =>
@@ -146,7 +144,7 @@ namespace Train.Api.Migrations
 
                     b.HasIndex("DurationId");
 
-                    b.HasDiscriminator().HasValue(0);
+                    b.HasDiscriminator().HasValue("DurationSet");
                 });
 
             modelBuilder.Entity("Train.Api.Models.Sets.IntervalSet", b =>
@@ -166,7 +164,7 @@ namespace Train.Api.Migrations
 
                     b.HasIndex("RestDurationId");
 
-                    b.HasDiscriminator().HasValue(1);
+                    b.HasDiscriminator().HasValue("IntervalSet");
                 });
 
             modelBuilder.Entity("Train.Api.Models.Sets.StrengthSet", b =>
@@ -186,16 +184,14 @@ namespace Train.Api.Migrations
 
                     b.HasIndex("RestDurationId");
 
-                    b.HasDiscriminator().HasValue(2);
+                    b.HasDiscriminator().HasValue("StrengthSet");
                 });
 
             modelBuilder.Entity("Train.Api.Models.BodyPart", b =>
                 {
                     b.HasOne("Train.Api.Models.Exercise", null)
                         .WithMany("BodyPartsUsed")
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExerciseId");
                 });
 
             modelBuilder.Entity("Train.Api.Models.Sets.ExerciseSet", b =>

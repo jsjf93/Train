@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Train.Api.Commands;
 using Train.Api.Models;
 
 namespace Train.Api.Repository
@@ -8,5 +9,7 @@ namespace Train.Api.Repository
     void AddWorkout(Workout workout);
 
     IEnumerable<Workout> GetWorkouts();
+
+    void AddExercise(Exercise exercise);
   }
 }

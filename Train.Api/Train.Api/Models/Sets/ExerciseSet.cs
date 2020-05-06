@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
+﻿using Train.Api.Models.Enums;
 
 namespace Train.Api.Models.Sets
 {
   public abstract class ExerciseSet
   {
-    [JsonProperty("id")]
-    public int Id { get; set; }
+    public int ExerciseSetId { get; set; }
+    public ExerciseType ExerciseType { get; set; }
 
     public int WorkoutExerciseId { get; set; }
     public WorkoutExercise WorkoutExercise { get; set; }

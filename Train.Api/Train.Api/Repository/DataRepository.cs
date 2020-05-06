@@ -26,5 +26,13 @@ namespace Train.Api.Repository
     {
       throw new NotImplementedException();
     }
+
+    public void AddExercise(Exercise exercise)
+    {
+      this.context.Exercises.Add(exercise);
+      this.context.SaveChanges();
+
+      var test = this.context.Exercises.Find(exercise.ExerciseId);
+    }
   }
 }

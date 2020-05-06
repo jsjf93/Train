@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Train.Api", "Train.Api\Train.Api.csproj", "{2FE2AC2A-F173-47BA-91A2-E8F7178F2EEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Train.Api.Tests", "Train.Api.Tests\Train.Api.Tests.csproj", "{00F0E4A6-491C-4A8A-A6E9-BFA5589D80FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Train.Api.Tests", "Train.Api.Tests\Train.Api.Tests.csproj", "{00F0E4A6-491C-4A8A-A6E9-BFA5589D80FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

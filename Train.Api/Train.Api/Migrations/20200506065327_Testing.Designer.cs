@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Train.Api.Data;
 using Train.Api.Models.Enums;
@@ -10,9 +11,10 @@ using Train.Api.Models.Enums;
 namespace Train.Api.Migrations
 {
     [DbContext(typeof(TrainContext))]
-    partial class TrainContextModelSnapshot : ModelSnapshot
+    [Migration("20200506065327_Testing")]
+    partial class Testing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

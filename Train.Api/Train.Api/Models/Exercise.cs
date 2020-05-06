@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Train.Api.Models
 {
   public class Exercise
   {
-    public int Id { get; set; }
+    public int ExerciseId { get; set; }
 
+    [Required]
+    [MaxLength(256)]
     public string ExerciseName { get; set; }
 
-    public IEnumerable<BodyPart> BodyPartsUsed { get; set; }
+    public ICollection<BodyPart> BodyPartsUsed { get; set; }
   }
 }

@@ -14,12 +14,6 @@ namespace Train.Api.Factories
   {
     public Workout Create(CreateWorkoutDto workoutDto)
     {
-      //var test = JsonConvert.DeserializeObject<IEnumerable<WorkoutExercise>>(workoutDto.WorkoutExercises.ToString());
-      //var workout = new Workout
-      //{
-      //  WorkoutName = workoutDto.WorkoutName,
-      //  WorkoutExercises = test
-      //};
       var exercises = new List<WorkoutExercise>();
       var workout = new Workout
       {
@@ -42,7 +36,6 @@ namespace Train.Api.Factories
 
       workout.WorkoutExercises = exercises;
       return workout;
-      //return workout;
     }
 
     private WorkoutExercise GetStrengthWorkoutExercise(JToken token)
@@ -56,7 +49,7 @@ namespace Train.Api.Factories
       foreach (var item in jArray)
       {
         var set = new StrengthSet();
-        set.Id = item.Value<int>("id");
+        set.ExerciseSetId = item.Value<int>("id");
         set.Reps = item.Value<int>("reps");
         set.Weight = item.Value<int>("weight");
         var test = item.Value<JObject>("restDuration");
