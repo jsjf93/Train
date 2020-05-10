@@ -1,11 +1,11 @@
-﻿using Train.Api.DTOs;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Train.Api.Commands
 {
   public class AddWorkoutCommand
   {
     public int UserId { get; set; }
-
-    public CreateWorkoutDto WorkoutDto { get; set; }
+    public string WorkoutName { get; set; }
+    public JArray WorkoutExercises { get; set; }
   }
 }

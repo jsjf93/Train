@@ -33,6 +33,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="DTOs\" />
     <Folder Include="QueryHandlers\" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

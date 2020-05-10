@@ -29,7 +29,7 @@ namespace Train.Api.Api
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
       var command = JsonConvert.DeserializeObject<AddWorkoutCommand>(requestBody);
 
-      if (command?.UserId == null || command?.WorkoutDto == null)
+      if (command?.UserId == null || command?.WorkoutExercises == null)
       {
         // todo: create argumentnullexception
         throw new Exception();

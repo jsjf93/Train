@@ -20,7 +20,7 @@ namespace Train.Api.CommandHandlers
 
     public HttpStatusCode Execute(AddWorkoutCommand command)
     {
-      var workout = this.factory.Create(command.WorkoutDto);
+      var workout = this.factory.Create(command);
 
       this.repository.AddWorkout(workout);
 
