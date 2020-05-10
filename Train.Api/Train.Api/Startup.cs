@@ -15,11 +15,7 @@ namespace Train.Api
   {
     public override void Configure(IFunctionsHostBuilder builder)
     {
-      //builder.Services.AddHttpClient();
 
-      //builder.Services.AddSingleton((s) => {
-      //    return new MyService();
-      //});
       string SqlConnection = Environment.GetEnvironmentVariable("SqlConnection");
       builder.Services.AddDbContext<TrainContext>(
           options => options.UseSqlServer(SqlConnection));

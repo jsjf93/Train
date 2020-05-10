@@ -20,6 +20,5 @@ namespace Train.Api.Models
     public List<ExerciseSet> Sets { get; set; }
 
     public int WorkoutId { get; set; }
-    public Workout Workout { get; set; }
   }
 }

@@ -28,7 +28,6 @@ namespace Train.Api.Data
         .HasValue<StrengthSet>(ExerciseType.Strength)
         .HasValue<DurationSet>(ExerciseType.Duration)
         .HasValue<IntervalSet>(ExerciseType.Interval);
-        
     }
   }
 

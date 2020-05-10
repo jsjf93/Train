@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Train.Api.Data;
 using Train.Api.Models;
 
@@ -24,7 +27,10 @@ namespace Train.Api.Repository
 
     public IEnumerable<Workout> GetWorkouts()
     {
-      throw new NotImplementedException();
+      return this.context.Workouts
+        .Include(p => p.WorkoutExercises)
+        .ThenInclude(p => p.Sets)
+        .ToList();
     }
 
     public void AddExercise(Exercise exercise)
