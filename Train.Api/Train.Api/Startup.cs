@@ -21,6 +21,7 @@ namespace Train.Api
           options => options.UseSqlServer(SqlConnection));
       builder.Services.AddScoped<IAddWorkoutCommandHandler, AddWorkoutCommandHandler>();
       builder.Services.AddScoped<IAddExerciseCommandHandler, AddExerciseCommandHandler>();
+      builder.Services.AddScoped<IUpdateExerciseCommandHandler, UpdateExerciseCommandHandler>();
       builder.Services.AddScoped<IWorkoutFactory, WorkoutFactory>();
       builder.Services.AddScoped<IDataRepository, DataRepository>();
     }

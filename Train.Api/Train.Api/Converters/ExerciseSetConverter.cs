@@ -11,7 +11,7 @@ namespace Train.Api.Converters
     protected override JsonConverter ResolveContractConverter(Type objectType)
     {
       if (typeof(ExerciseSet).IsAssignableFrom(objectType) && !objectType.IsAbstract)
-        return null; // pretend TableSortRuleConvert is not specified (thus avoiding a stack overflow)
+        return null;
       return base.ResolveContractConverter(objectType);
     }
   }
@@ -33,11 +33,11 @@ namespace Train.Api.Converters
       JObject jo = JObject.Load(reader);
       switch (jo["exerciseType"].Value<int>())
       {
-        case 1:
+        case 0:
           return JsonConvert.DeserializeObject<DurationSet>(jo.ToString(), SpecifiedSubclassConversion);
-        case 2:
+        case 1:
           return JsonConvert.DeserializeObject<IntervalSet>(jo.ToString(), SpecifiedSubclassConversion);
-        case 3:
+        case 2:
           return JsonConvert.DeserializeObject<StrengthSet>(jo.ToString(), SpecifiedSubclassConversion);
         default:
           throw new Exception();

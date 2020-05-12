@@ -36,9 +36,9 @@ namespace Train.Api.Data
     public TrainContext CreateDbContext(string[] args)
     {
       IConfigurationRoot configuration = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json")
-            .Build();
+        .SetBasePath(Directory.GetCurrentDirectory())
+        .AddJsonFile("appsettings.json")
+        .Build();
       var connectionString = configuration.GetConnectionString("DefaultConnection");
 
       var optionsBuilder = new DbContextOptionsBuilder<TrainContext>();

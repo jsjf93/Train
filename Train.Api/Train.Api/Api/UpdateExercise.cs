@@ -11,22 +11,22 @@ using Train.Api.Commands;
 
 namespace Train.Api.Api
 {
-  public class AddExercise
+  public class UpdateExercise
   {
-    private readonly IAddExerciseCommandHandler handler;
+    private readonly IUpdateExerciseCommandHandler handler;
 
-    public AddExercise(IAddExerciseCommandHandler handler)
+    public UpdateExercise(IUpdateExerciseCommandHandler handler)
     {
       this.handler = handler;
     }
 
-    [FunctionName("AddExercise")]
+    [FunctionName("UpdateExercise")]
     public async Task<HttpStatusCode> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
         ILogger log)
     {
       string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-      var command = JsonConvert.DeserializeObject<AddExerciseCommand>(requestBody);
+      var command = JsonConvert.DeserializeObject<UpdateExerciseCommand>(requestBody);
 
       return this.handler.Execute(command);
     }

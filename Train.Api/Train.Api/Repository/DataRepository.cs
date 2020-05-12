@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Train.Api.Commands;
 using Train.Api.Data;
 using Train.Api.Models;
 
@@ -21,8 +20,6 @@ namespace Train.Api.Repository
     {
       this.context.Workouts.Add(workout);
       this.context.SaveChanges();
-
-      var test = this.context.Workouts.Find(workout.Id);
     }
 
     public IEnumerable<Workout> GetWorkouts()
@@ -37,8 +34,19 @@ namespace Train.Api.Repository
     {
       this.context.Exercises.Add(exercise);
       this.context.SaveChanges();
+    }
 
-      var test = this.context.Exercises.Find(exercise.ExerciseId);
+    public void UpdateExercise(UpdateExerciseCommand command)
+    {
+      var exercise = this.context.Exercises.Find(command.Id);
+      
+      if (exercise != null)
+      {
+        exercise.ExerciseName = command.Name;
+        exercise.BodyPartsUsed = command.BodyParts;
+
+        this.context.SaveChanges();
+      }
     }
   }
 }

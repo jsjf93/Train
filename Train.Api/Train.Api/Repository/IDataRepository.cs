@@ -11,5 +11,7 @@ namespace Train.Api.Repository
     IEnumerable<Workout> GetWorkouts();
 
     void AddExercise(Exercise exercise);
+
+    void UpdateExercise(UpdateExerciseCommand command);
   }
 }
