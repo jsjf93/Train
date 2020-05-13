@@ -38,8 +38,10 @@ namespace Train.Api.Repository
 
     public void UpdateExercise(UpdateExerciseCommand command)
     {
-      var exercise = this.context.Exercises.Find(command.Id);
-      
+      var exercise = this.context.Exercises
+        .Include(e => e.BodyPartsUsed)
+        .Single(e => e.ExerciseId == command.Id);
+
       if (exercise != null)
       {
         exercise.ExerciseName = command.Name;
@@ -47,6 +49,11 @@ namespace Train.Api.Repository
 
         this.context.SaveChanges();
       }
+    }
+
+    public void DeleteExercise(int id)
+    {
+      //this.context.Exercises.Remove(e => e.ExerciseId == id);
     }
   }
 }
