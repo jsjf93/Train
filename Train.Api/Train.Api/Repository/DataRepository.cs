@@ -30,6 +30,40 @@ namespace Train.Api.Repository
         .ToList();
     }
 
+    public Workout GetWorkout(int id)
+    {
+      return this.context.Workouts
+        .Include(p => p.WorkoutExercises)
+        .ThenInclude(p => p.Sets)
+        .Single(p => p.Id == id);
+    }
+
+    public void UpdateWorkout(UpdateWorkoutCommand command)
+    {
+      var workout = this.context.Workouts
+        .Include(p => p.WorkoutExercises)
+        .ThenInclude(p => p.Sets)
+        .Single(p => p.Id == command.WorkoutId);
+
+      if (workout != null)
+      {
+        workout.WorkoutName = command.WorkoutName;
+        workout.WorkoutExercises = command.WorkoutExercises;
+        this.context.SaveChanges();
+      }
+    }
+
+    public void RemoveWorkout(int id)
+    {
+      var workout = this.context.Workouts
+        .Include(p => p.WorkoutExercises)
+        .ThenInclude(p => p.Sets)
+        .Single(p => p.Id == id);
+
+      this.context.Remove(workout);
+      this.context.SaveChanges();
+    }
+
     public void AddExercise(Exercise exercise)
     {
       this.context.Exercises.Add(exercise);
@@ -51,9 +85,28 @@ namespace Train.Api.Repository
       }
     }
 
-    public void DeleteExercise(int id)
+    public void RemoveExercise(int id)
     {
-      //this.context.Exercises.Remove(e => e.ExerciseId == id);
+      var exercise = this.context.Exercises
+        .Include(e => e.BodyPartsUsed)
+        .Single(e => e.ExerciseId == id);
+
+      this.context.Exercises.Remove(exercise);
+      this.context.SaveChanges();
+    }
+
+    public IEnumerable<Exercise> GetExercises()
+    {
+      return this.context.Exercises
+        .Include(e => e.BodyPartsUsed)
+        .ToList();
+    }
+
+    public Exercise GetExercise(int id)
+    {
+      return this.context.Exercises
+        .Include(e => e.BodyPartsUsed)
+        .Single(e => e.ExerciseId == id);
     }
   }
 }

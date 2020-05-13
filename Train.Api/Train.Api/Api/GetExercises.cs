@@ -7,21 +7,21 @@ using Train.Api.Repository;
 
 namespace Train.Api.Api
 {
-  public class GetWorkouts
+  public class GetExercises
   {
     private readonly IDataRepository repository;
 
-    public GetWorkouts(IDataRepository repository)
+    public GetExercises(IDataRepository repository)
     {
       this.repository = repository;
     }
 
-    [FunctionName("GetWorkouts")]
+    [FunctionName("GetExercises")]
     public IActionResult Run(
         [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
         ILogger log)
     {
-      return new OkObjectResult(this.repository.GetWorkouts());
+      return new OkObjectResult(this.repository.GetExercises());
     }
   }
 }

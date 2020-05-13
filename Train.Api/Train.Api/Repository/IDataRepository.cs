@@ -10,8 +10,20 @@ namespace Train.Api.Repository
 
     IEnumerable<Workout> GetWorkouts();
 
+    Workout GetWorkout(int id);
+
+    void RemoveWorkout(int id);
+
+    void UpdateWorkout(UpdateWorkoutCommand command);
+
     void AddExercise(Exercise exercise);
 
     void UpdateExercise(UpdateExerciseCommand command);
+
+    void RemoveExercise(int id);
+
+    Exercise GetExercise(int id);
+
+    IEnumerable<Exercise> GetExercises();
   }
 }
