@@ -53,12 +53,12 @@ namespace Train.Api.Repository
       }
     }
 
-    public void RemoveWorkout(int id)
+    public void DeleteWorkout(DeleteWorkoutCommand command)
     {
       var workout = this.context.Workouts
         .Include(p => p.WorkoutExercises)
         .ThenInclude(p => p.Sets)
-        .Single(p => p.Id == id);
+        .Single(p => p.Id == command.Id);
 
       this.context.Remove(workout);
       this.context.SaveChanges();
@@ -85,11 +85,11 @@ namespace Train.Api.Repository
       }
     }
 
-    public void RemoveExercise(int id)
+    public void DeleteExercise(DeleteExerciseCommand command)
     {
       var exercise = this.context.Exercises
         .Include(e => e.BodyPartsUsed)
-        .Single(e => e.ExerciseId == id);
+        .Single(e => e.ExerciseId == command.Id);
 
       this.context.Exercises.Remove(exercise);
       this.context.SaveChanges();

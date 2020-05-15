@@ -12,7 +12,7 @@ namespace Train.Api.Repository
 
     Workout GetWorkout(int id);
 
-    void RemoveWorkout(int id);
+    void DeleteWorkout(DeleteWorkoutCommand command);
 
     void UpdateWorkout(UpdateWorkoutCommand command);
 
@@ -20,7 +20,7 @@ namespace Train.Api.Repository
 
     void UpdateExercise(UpdateExerciseCommand command);
 
-    void RemoveExercise(int id);
+    void DeleteExercise(DeleteExerciseCommand command);
 
     Exercise GetExercise(int id);
 

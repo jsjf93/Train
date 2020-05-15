@@ -4,9 +4,15 @@
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="DTOs\**" />
     <Compile Remove="Models\Interfaces\**" />
+    <Compile Remove="QueryHandlers\**" />
+    <EmbeddedResource Remove="DTOs\**" />
     <EmbeddedResource Remove="Models\Interfaces\**" />
+    <EmbeddedResource Remove="QueryHandlers\**" />
+    <None Remove="DTOs\**" />
     <None Remove="Models\Interfaces\**" />
+    <None Remove="QueryHandlers\**" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
@@ -31,10 +37,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DTOs\" />
-    <Folder Include="QueryHandlers\" />
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="copy /Y &quot;$(TargetDir)bin\$(ProjectName).dll&quot; &quot;$(TargetDir)$(ProjectName).dll&quot;" />
