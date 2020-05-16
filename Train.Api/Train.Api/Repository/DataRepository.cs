@@ -41,9 +41,10 @@ namespace Train.Api.Repository
     public void UpdateWorkout(UpdateWorkoutCommand command)
     {
       var workout = this.context.Workouts
+        .Where(p => p.Id == command.WorkoutId)
         .Include(p => p.WorkoutExercises)
         .ThenInclude(p => p.Sets)
-        .Single(p => p.Id == command.WorkoutId);
+        .SingleOrDefault();
 
       if (workout != null)
       {

@@ -22,7 +22,7 @@ namespace Train.Api.Api
       this.repository = repository;
     }
 
-    [FunctionName("UpdateWorkouts")]
+    [FunctionName("UpdateWorkout")]
     public async Task<HttpStatusCode> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
         ILogger log)
