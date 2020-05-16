@@ -9,9 +9,9 @@ type Props = {
 
 const fetchExercises = (): IExercise[] => {
   return [
-    { id: 1, name: 'Pushup', bodyPartsUsed: ['Chest', 'Shoulders', 'Triceps'] },
-    { id: 2, name: 'Pullup', bodyPartsUsed: ['Back', 'Biceps'] },
-    { id: 3, name: 'Squat', bodyPartsUsed: ['Quadriceps'] },
+    { exerciseId: 1, exerciseName: 'Pushup', bodyPartsUsed: ['Chest', 'Shoulders', 'Triceps'] },
+    { exerciseId: 2, exerciseName: 'Pullup', bodyPartsUsed: ['Back', 'Biceps'] },
+    { exerciseId: 3, exerciseName: 'Squat', bodyPartsUsed: ['Quadriceps'] },
   ];
 };
 

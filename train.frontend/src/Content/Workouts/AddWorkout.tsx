@@ -77,10 +77,10 @@ const AddWorkout = () => {
   const [workoutExercises, setWorkoutExercises] = useState<IWorkoutExercise[]>([]);
 
   const handleExerciseAdd = (exercise: IExercise) => {
-    const { id, name, bodyPartsUsed } = exercise;
+    const { exerciseId, exerciseName, bodyPartsUsed } = exercise;
     const workoutExercise: IWorkoutExercise = { 
-      id, 
-      name, 
+      exerciseId, 
+      exerciseName, 
       bodyPartsUsed, 
       exerciseType: ExerciseType.Strength, 
       exerciseData: { sets: [{ id: 1 }] } as IStrengthData 
@@ -90,7 +90,7 @@ const AddWorkout = () => {
   };
 
   const handleWorkoutExerciseUpdate = (updatedExercise: IWorkoutExercise) => {
-    setWorkoutExercises(workoutExercises.map(e => e.id === updatedExercise.id ? updatedExercise : e));
+    setWorkoutExercises(workoutExercises.map(e => e.exerciseId === updatedExercise.exerciseId ? updatedExercise : e));
   }
 
   const handleAddNewSet = (workoutExercise: IWorkoutExercise) => {
@@ -161,13 +161,13 @@ const AddWorkout = () => {
 
       <Container className={classes.exercisesContainer} maxWidth="sm">
         {workoutExercises.map((exercise, key) => (
-          <Grid key={exercise.id + key} container spacing={3} justify="center" alignItems="stretch">
+          <Grid key={exercise.exerciseId + key} container spacing={3} justify="center" alignItems="stretch">
             <Grid item xs={12}>
               <Paper>
                 <Grid container>
                   <Grid item xs={12}>
                     <div className={classes.exerciseNameContainer}>
-                      <strong>{exercise.name}</strong>
+                      <strong>{exercise.exerciseName}</strong>
                       <FormControl className={classes.formControl}>
                         <Select placeholder="Exercise type" value={ExerciseType.Strength}>
                           <MenuItem value={ExerciseType.Duration}>Duration</MenuItem>

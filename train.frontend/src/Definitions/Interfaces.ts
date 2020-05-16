@@ -7,8 +7,8 @@ export interface IWorkout {
 }
 
 export interface IExercise {
-  id: number;
-  name: string;
+  exerciseId: number;
+  exerciseName: string;
   bodyPartsUsed: string[];
 }
 

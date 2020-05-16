@@ -105,8 +105,8 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
     if (newExerciseName && bodyPartsUsed.length) {
       const exercises = props.exercises;
       exercises.push({
-        id: props.exercises[props.exercises.length - 1].id + 1,
-        name: newExerciseName,
+        exerciseId: props.exercises[props.exercises.length - 1].exerciseId + 1,
+        exerciseName: newExerciseName,
         bodyPartsUsed,
       });
 
@@ -122,7 +122,7 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
     }
   };
 
-  const exercises = props.exercises.filter(e => e.name.toLowerCase().includes(searchInput));
+  const exercises = props.exercises.filter(e => e.exerciseName.toLowerCase().includes(searchInput));
 
   const classes = useStyles();
 
@@ -215,9 +215,9 @@ const ExercisesView: React.FC<IProps> = (props: IProps) => {
           </TableHead>
           <TableBody data-testid="tableBody">
             {exercises.map(exercise => (
-              <TableRow key={exercise.name} onClick={() => handleAddToWorkout(exercise)}>
+              <TableRow key={exercise.exerciseName} onClick={() => handleAddToWorkout(exercise)}>
                 <TableCell component="th" scope="row">
-                  {exercise.name}
+                  {exercise.exerciseName}
                 </TableCell>
                 <TableCell>{exercise.bodyPartsUsed.join(', ')}</TableCell>
               </TableRow>

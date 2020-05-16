@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import NavigationBar from './Nav/NavigationBar';
 import { Router, RouteComponentProps } from '@reach/router';
 import HomeView from './Home/Home';
@@ -11,6 +12,18 @@ import AddWorkout from './Workouts/AddWorkout';
 
 const AppRouter = () => {
   const store = useStore();
+
+  const [exercises, setExercises] = useState(store.exercises);
+
+  useEffect(() => {
+    const endpoint = process.env.REACT_APP_TRAIN_API;
+    fetch(endpoint + 'GetExercises', {mode: 'cors'})
+      .then(response => response.json())
+      .then(result => {
+        setExercises(result);
+        console.log(result);
+      });
+  });
 
   return useObserver(() => (
     <div id={'app-container'}>
@@ -28,9 +41,9 @@ const AppRouter = () => {
           path={'/exercises'}
           pageComponent={
             <ExercisesView
-              exercises={store.exercises}
+              exercises={exercises}
               bodyParts={store.bodyParts}
-              onChange={(exercises: IExercise[]) => (store.exercises = exercises)}
+              onChange={(newExercises: IExercise[]) => setExercises(newExercises)}
             />
           }
         />
