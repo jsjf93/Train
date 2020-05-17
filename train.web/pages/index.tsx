@@ -1,9 +1,10 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import Layout from '../components/layout';
 
 export default function Home() {
   return (
-    <div className="container">
+    <Layout>
       <Head>
         <title>Train - Home</title>
         <link rel="icon" href="/favicon.ico" />
@@ -15,6 +16,6 @@ export default function Home() {
           <a>Exercises</a>
         </Link>
       </div>
-    </div>
+    </Layout>
   )
 }
