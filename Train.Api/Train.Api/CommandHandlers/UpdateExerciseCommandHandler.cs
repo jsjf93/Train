@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Train.Api.Commands;
+using Train.Api.Models;
 using Train.Api.Repository;
 
 namespace Train.Api.CommandHandlers
@@ -13,11 +14,9 @@ namespace Train.Api.CommandHandlers
       this.repository = repository;
     }
 
-    public HttpStatusCode Execute(UpdateExerciseCommand command)
+    public Exercise Execute(UpdateExerciseCommand command)
     {
-      this.repository.UpdateExercise(command);
-
-      return HttpStatusCode.OK;
+      return this.repository.UpdateExercise(command);
     }
   }
 }

@@ -3,6 +3,7 @@ import { IExercise } from "../interfaces";
 
 interface IProps {
   exercises: IExercise[];
+  handleClick: (exercise: IExercise) => void;
 }
 
 const ExerciseTable = (props: IProps) => {
@@ -18,7 +19,10 @@ const ExerciseTable = (props: IProps) => {
       </thead>
       <tbody>
         {exercises.map(e => (
-          <tr key={e.exerciseId}>
+          <tr 
+            key={e.exerciseId}
+            onClick={() => props.handleClick(e)}
+          >
             <td>{e.exerciseName}</td>
             <td>{e.bodyPartsUsed.map(b => b.bodyPartName).join(', ')}</td>
           </tr>

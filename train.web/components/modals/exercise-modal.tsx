@@ -1,9 +1,9 @@
-import { Modal, FormControl, Form, Button } from "react-bootstrap";
+import { Modal, FormControl, Form, Button, Row } from "react-bootstrap";
 import { useState } from "react";
-import AddButton from "../exercises/add-button";
-import { IBodyPart } from "../interfaces";
+import SubmitButton from "../exercises/submit-button";
+import { IBodyPart, IExercise } from "../interfaces";
 
-const GetBodyPartCheckBoxes = (): { [bodyPart: string] : { checked: boolean } } => {
+const GetBodyPartCheckBoxes = (selectedExercise?: IExercise): { [bodyPart: string] : { checked: boolean } } => {
   const bodyParts = [
     'Abs',
     'Chest',
@@ -20,19 +20,32 @@ const GetBodyPartCheckBoxes = (): { [bodyPart: string] : { checked: boolean } } 
     'Calves',
   ].sort();
 
-  return Object.assign({}, ...bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } })));
+  const bodyPartsCheckboxes = Object.assign({}, ...bodyParts.map(bodyPart => ({ [bodyPart]: { checked: false } })));
+
+  if (selectedExercise) {
+    selectedExercise.bodyPartsUsed.forEach(b => {
+      if (bodyPartsCheckboxes[b.bodyPartName]) {
+        bodyPartsCheckboxes[b.bodyPartName].checked = true;
+      }
+    });
+  }
+
+  return bodyPartsCheckboxes;
 }
 
 interface IProps {
   show: boolean;
   buttonText: string;
-  handleClick: (name: string, bodyParts: IBodyPart[]) => void;
+  selectedExercise?: IExercise;
+  handleAdd?: (name: string, bodyParts: IBodyPart[]) => void;
+  handleUpdate?: (exercise: IExercise) => void;
+  handleDelete?: (exerciseId: number) => void;
   handleClose: () => void;
 }
 
 export const ExerciseModal = (props: IProps) => {
-  const [exerciseName, setExerciseName] = useState('');
-  const [bodyPartsUsed, setBodyPartsUsed] = useState(GetBodyPartCheckBoxes());
+  const [exerciseName, setExerciseName] = useState(props.selectedExercise?.exerciseName || '');
+  const [bodyPartsUsed, setBodyPartsUsed] = useState(GetBodyPartCheckBoxes(props.selectedExercise));
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setBodyPartsUsed({ ...bodyPartsUsed, [event.target.name]: { checked: event.target.checked } });
@@ -46,7 +59,16 @@ export const ExerciseModal = (props: IProps) => {
       }
     });
 
-    props.handleClick(exerciseName, bodyParts);
+    if (props.selectedExercise) {
+      props.handleUpdate({ exerciseId: props.selectedExercise.exerciseId, exerciseName, bodyPartsUsed: bodyParts })
+    } else {
+      props.handleAdd(exerciseName, bodyParts);
+    }
+    props.handleClose();
+  };
+
+  const deleteExercise = () => {
+    props.handleDelete(props.selectedExercise.exerciseId);
     props.handleClose();
   };
 
@@ -58,6 +80,7 @@ export const ExerciseModal = (props: IProps) => {
             size="lg"
             type="text"
             placeholder="Exercise name..."
+            value={exerciseName}
             onChange={event => setExerciseName(event.target.value)}
           />
         </Modal.Header>
@@ -74,10 +97,19 @@ export const ExerciseModal = (props: IProps) => {
               />
             ))}
           </Form>
-          <AddButton 
-            buttonText={props.buttonText}
-            handleClick={submit}
-          />
+          <Row>
+            <SubmitButton 
+              buttonText={props.buttonText}
+              handleClick={submit}
+            />
+            {props.selectedExercise && <Button
+              variant="danger"
+              onClick={deleteExercise}
+            >
+              Delete Exercise
+            </Button>}
+          </Row>
+          
         </Modal.Body>
       </Modal>
     </>

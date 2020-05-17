@@ -18,7 +18,7 @@ namespace Train.Api.Repository
 
     Exercise AddExercise(Exercise exercise);
 
-    void UpdateExercise(UpdateExerciseCommand command);
+    Exercise UpdateExercise(UpdateExerciseCommand command);
 
     void DeleteExercise(DeleteExerciseCommand command);
 

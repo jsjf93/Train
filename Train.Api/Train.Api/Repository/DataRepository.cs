@@ -73,7 +73,7 @@ namespace Train.Api.Repository
       return exercise;
     }
 
-    public void UpdateExercise(UpdateExerciseCommand command)
+    public Exercise UpdateExercise(UpdateExerciseCommand command)
     {
       var exercise = this.context.Exercises
         .Include(e => e.BodyPartsUsed)
@@ -86,6 +86,8 @@ namespace Train.Api.Repository
 
         this.context.SaveChanges();
       }
+
+      return exercise;
     }
 
     public void DeleteExercise(DeleteExerciseCommand command)

@@ -5,10 +5,10 @@ interface IProps {
   buttonText: string;
 }
 
-const AddButton = (props: IProps) => (
+const SubmitButton = (props: IProps) => (
   <Button variant="primary" onClick={props.handleClick}>
     {props.buttonText}
   </Button>
 );
 
-export default AddButton;
+export default SubmitButton;

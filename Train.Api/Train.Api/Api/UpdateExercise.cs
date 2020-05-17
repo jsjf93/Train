@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Train.Api.CommandHandlers;
 using Train.Api.Commands;
+using Train.Api.Models;
 
 namespace Train.Api.Api
 {
@@ -21,7 +22,7 @@ namespace Train.Api.Api
     }
 
     [FunctionName("UpdateExercise")]
-    public async Task<HttpStatusCode> Run(
+    public async Task<Exercise> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
         ILogger log)
     {

@@ -3,10 +3,10 @@ import { GetStaticProps } from "next";
 import { useState } from "react";
 
 import ExerciseTable from "../components/exercises/exercise-table";
-import AddButton from "../components/exercises/add-button";
 import { IExercise, IBodyPart } from "../components/interfaces";
 import Layout from "../components/layout";
 import { ExerciseModal } from "../components/modals/exercise-modal";
+import SubmitButton from "../components/exercises/submit-button";
 
 interface IProps {
   exercises: IExercise[];
@@ -14,7 +14,9 @@ interface IProps {
 
 export default function(props: IProps) {
   const [exercises, setExercises] = useState(props.exercises);
-  const [showModal, setShowModal] = useState(false);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
+  const [selectedExercise, setSelectedExercise] = useState<IExercise>(undefined);
 
   const addExercise = (exerciseName: string, bodyParts: IBodyPart[]) => (
     fetch('http://localhost:7071/api/AddExercise', {
@@ -27,17 +29,36 @@ export default function(props: IProps) {
     })
   );
 
-  const updateExercise = (exerciseId: number, exerciseName: string, bodyParts: IBodyPart[]) => (
-    fetch('http://localhost:7071/api/AddExercise', {
+  const updateExercise = (exercise: IExercise) => {
+    const { exerciseId, exerciseName, bodyPartsUsed } = exercise;
+    fetch('http://localhost:7071/api/UpdateExercise', {
       method: 'post',
-      body: JSON.stringify({ exerciseId, exerciseName, bodyParts })
+      body: JSON.stringify({ exerciseId, exerciseName, bodyParts: bodyPartsUsed })
     })
     .then(res => res.json())
     .then((exercise: IExercise) => {
-      exercises.map(e => e.exerciseId !== exercise.exerciseId ? e : exercise);
-      setExercises(exercises.concat(exercise))
+      const updated = exercises.map(e => e.exerciseId !== exercise.exerciseId ? e : exercise);
+      setExercises(updated);
+    })
+  };
+
+  const deleteExercise = (id: number) => (
+    fetch('http://localhost:7071/api/DeleteExercise', {
+      method: 'post',
+      body: JSON.stringify({ id })
+    })
+    .then(res => {
+      if (res.status === 200) {
+        const updated = exercises.filter(e => e.exerciseId !== id);
+        setExercises(updated);
+      }
     })
   );
+
+  const handleExerciseSelect = (exercise: IExercise) => {
+    setSelectedExercise(exercise);
+    setShowUpdateModal(true);
+  };
 
   return (
     <Layout>
@@ -46,15 +67,28 @@ export default function(props: IProps) {
         <a>Home</a>
       </Link>
 
-      <ExerciseTable exercises={exercises}/>
+      <ExerciseTable 
+        exercises={exercises}
+        handleClick={exercise => handleExerciseSelect(exercise)}
+      />
 
-      <AddButton buttonText="Add Exercise" handleClick={() => setShowModal(true)}/>
-      {showModal && <ExerciseModal
-        show={showModal}
+      <SubmitButton buttonText="Add Exercise" handleClick={() => setShowAddModal(true)}/>
+      {showAddModal && <ExerciseModal
+        show={showAddModal}
         buttonText="Add Exercise" 
-        handleClick={(name: string, bodyParts: IBodyPart[]) => addExercise(name, bodyParts)}
-        handleClose={() => setShowModal(false)}
+        handleAdd={(name: string, bodyParts: IBodyPart[]) => addExercise(name, bodyParts)}
+        handleClose={() => setShowAddModal(false)}
       />}
+
+      {showUpdateModal && <ExerciseModal 
+        show={showUpdateModal}
+        buttonText="Update Exercise"
+        selectedExercise={selectedExercise}
+        handleUpdate={(exercise: IExercise) => updateExercise(exercise)}
+        handleDelete={(id: number) => deleteExercise(id)}
+        handleClose={() => setShowUpdateModal(false)}
+      />}
+
     </Layout>
   );
 }
