@@ -8,7 +8,7 @@ namespace Train.Api.Models
 
     [Required]
     [MaxLength(256)]
-    public string Name { get; set; }
+    public string BodyPartName { get; set; }
 
     public int ExerciseId { get; set; }
   }

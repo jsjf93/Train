@@ -1,10 +1,14 @@
+export interface IDictionary<T> {
+  [key: string]: T;
+}
+
 export interface IExercise {
-  exerciseId?: number;
+  exerciseId: number;
   exerciseName: string;
   bodyPartsUsed: IBodyPart[];
 }
 
 export interface IBodyPart {
-  bodyPartId: number;
-  name: string;
+  bodyPartId?: number;
+  bodyPartName: string;
 }

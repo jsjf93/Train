@@ -16,7 +16,7 @@ namespace Train.Api.Repository
 
     void UpdateWorkout(UpdateWorkoutCommand command);
 
-    void AddExercise(Exercise exercise);
+    Exercise AddExercise(Exercise exercise);
 
     void UpdateExercise(UpdateExerciseCommand command);
 

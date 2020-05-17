@@ -1,5 +1,4 @@
 using System.IO;
-using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.WebJobs;
@@ -8,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Train.Api.CommandHandlers;
 using Train.Api.Commands;
+using Train.Api.Models;
 
 namespace Train.Api.Api
 {
@@ -21,7 +21,7 @@ namespace Train.Api.Api
     }
 
     [FunctionName("AddExercise")]
-    public async Task<HttpStatusCode> Run(
+    public async Task<Exercise> Run(
         [HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req,
         ILogger log)
     {

@@ -1,9 +1,9 @@
 import { Modal, FormControl, Form, Button } from "react-bootstrap";
 import { useState } from "react";
 import AddButton from "../exercises/add-button";
-import { IExercise } from "../interfaces";
+import { IBodyPart } from "../interfaces";
 
-const GetBodyPartCheckBoxes = () => {
+const GetBodyPartCheckBoxes = (): { [bodyPart: string] : { checked: boolean } } => {
   const bodyParts = [
     'Abs',
     'Chest',
@@ -26,7 +26,7 @@ const GetBodyPartCheckBoxes = () => {
 interface IProps {
   show: boolean;
   buttonText: string;
-  handleClick: (exercise: IExercise) => void;
+  handleClick: (name: string, bodyParts: IBodyPart[]) => void;
   handleClose: () => void;
 }
 
@@ -39,9 +39,15 @@ export const ExerciseModal = (props: IProps) => {
   };
 
   const submit = () => {
-    const exercise: IExercise = { exerciseName, bodyPartsUsed };
+    const bodyParts: IBodyPart[] = [];
+    Object.keys(bodyPartsUsed).forEach(bodyPartName => {
+      if (bodyPartsUsed[bodyPartName].checked) {
+        bodyParts.push({ bodyPartName });
+      }
+    });
 
-    props.handleClick(exercise);
+    props.handleClick(exerciseName, bodyParts);
+    props.handleClose();
   };
 
   return (
@@ -61,6 +67,7 @@ export const ExerciseModal = (props: IProps) => {
               <Form.Check 
                 key={key}
                 label={key}
+                name={key}
                 checked={bodyPartsUsed[key].checked}
                 inline
                 onChange={handleChange}

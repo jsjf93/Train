@@ -65,21 +65,23 @@ namespace Train.Api.Repository
       this.context.SaveChanges();
     }
 
-    public void AddExercise(Exercise exercise)
+    public Exercise AddExercise(Exercise exercise)
     {
       this.context.Exercises.Add(exercise);
       this.context.SaveChanges();
+
+      return exercise;
     }
 
     public void UpdateExercise(UpdateExerciseCommand command)
     {
       var exercise = this.context.Exercises
         .Include(e => e.BodyPartsUsed)
-        .Single(e => e.ExerciseId == command.Id);
+        .Single(e => e.ExerciseId == command.ExerciseId);
 
       if (exercise != null)
       {
-        exercise.ExerciseName = command.Name;
+        exercise.ExerciseName = command.ExerciseName;
         exercise.BodyPartsUsed = command.BodyParts;
 
         this.context.SaveChanges();

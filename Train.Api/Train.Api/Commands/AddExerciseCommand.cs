@@ -5,7 +5,7 @@ namespace Train.Api.Commands
 {
     public class AddExerciseCommand
     {
-        public string Name { get; set; }
+        public string ExerciseName { get; set; }
         public ICollection<BodyPart> BodyParts { get; set; }
     }
 }

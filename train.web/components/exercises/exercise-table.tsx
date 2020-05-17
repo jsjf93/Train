@@ -5,23 +5,27 @@ interface IProps {
   exercises: IExercise[];
 }
 
-const ExerciseTable = (props: IProps) => (
-  <Table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Body parts used</th>
-      </tr>
-    </thead>
-    <tbody>
-      {props.exercises.map(e => (
-        <tr key={e.exerciseId}>
-          <td>{e.exerciseName}</td>
-          <td>{e.bodyPartsUsed.map(b => b.name).join(', ')}</td>
+const ExerciseTable = (props: IProps) => {
+  const exercises = props.exercises.sort((a, b) => a.exerciseName > b.exerciseName ? 1 : -1);
+
+  return (
+    <Table size="sm">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Body parts used</th>
         </tr>
-      ))}
-    </tbody>
-  </Table>
-);
+      </thead>
+      <tbody>
+        {exercises.map(e => (
+          <tr key={e.exerciseId}>
+            <td>{e.exerciseName}</td>
+            <td>{e.bodyPartsUsed.map(b => b.bodyPartName).join(', ')}</td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+};
 
 export default ExerciseTable;
