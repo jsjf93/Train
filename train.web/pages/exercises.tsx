@@ -7,6 +7,7 @@ import { IExercise, IBodyPart } from "../components/interfaces";
 import Layout from "../components/layout";
 import { ExerciseModal } from "../components/modals/exercise-modal";
 import SubmitButton from "../components/exercises/submit-button";
+import NavBar from "../components/navbar/navbar";
 
 interface IProps {
   exercises: IExercise[];
@@ -63,9 +64,7 @@ export default function(props: IProps) {
   return (
     <Layout>
       <h1>Exercises</h1>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
+      <NavBar />
 
       <ExerciseTable 
         exercises={exercises}

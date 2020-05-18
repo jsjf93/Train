@@ -1,6 +1,6 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import Layout from '../components/layout';
+import NavBar from '../components/navbar/navbar';
 
 export default function Home() {
   return (
@@ -12,9 +12,7 @@ export default function Home() {
 
       <div>
         <h1>Home</h1>
-        <Link href='/exercises'>
-          <a>Exercises</a>
-        </Link>
+        <NavBar />
       </div>
     </Layout>
   )
