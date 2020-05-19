@@ -2,6 +2,8 @@ import { GetServerSideProps } from "next";
 import { IWorkout } from "../components/interfaces";
 import Layout from "../components/layout";
 import NavBar from "../components/navbar/navbar";
+import { Row, CardDeck, Card } from "react-bootstrap";
+import WorkoutCards from "../components/workouts/workouts-cards";
 
 interface IProps {
   workouts: IWorkout[];
@@ -12,6 +14,8 @@ export default function(props: IProps) {
     <Layout>
       <h1>Workouts</h1>
       <NavBar />
+
+      <WorkoutCards workouts={props.workouts}/>
     </Layout>
   );
 }
