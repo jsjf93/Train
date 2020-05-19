@@ -26,7 +26,7 @@ export interface IWorkoutExercise extends IExercise{
 }
 
 export interface IDurationSet {
-  id: number;
+  durationSetId: number;
   duration: IDuration;
 }
 

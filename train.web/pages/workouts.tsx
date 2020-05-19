@@ -1,4 +1,4 @@
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { IWorkout } from "../components/interfaces";
 import Layout from "../components/layout";
 import NavBar from "../components/navbar/navbar";
@@ -16,7 +16,7 @@ export default function(props: IProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const res = await fetch('http://localhost:7071/api/GetWorkouts');
   const workouts: IWorkout[] = await res.json();
 

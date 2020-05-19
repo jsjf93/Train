@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GetStaticProps } from "next";
+import { GetServerSideProps } from "next";
 import { useState } from "react";
 
 import ExerciseTable from "../components/exercises/exercise-table";
@@ -92,7 +92,7 @@ export default function(props: IProps) {
   );
 }
 
-export const getStaticProps: GetStaticProps = async context => {
+export const getServerSideProps: GetServerSideProps = async context => {
   const res = await fetch('http://localhost:7071/api/GetExercises');
   const exercises: IExercise[] = await res.json();
 

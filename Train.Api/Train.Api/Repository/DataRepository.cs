@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Train.Api.Commands;
 using Train.Api.Data;
 using Train.Api.Models;
+using Train.Api.Models.Sets;
 
 namespace Train.Api.Repository
 {
@@ -26,7 +27,17 @@ namespace Train.Api.Repository
     {
       return this.context.Workouts
         .Include(p => p.WorkoutExercises)
-        .ThenInclude(p => p.Sets)
+          .ThenInclude(p => p.Sets)
+            .ThenInclude(p => (p as DurationSet).Duration)
+        .Include(p => p.WorkoutExercises)
+          .ThenInclude(p => p.Sets)
+            .ThenInclude(p => (p as IntervalSet).ExerciseDuration)
+        .Include(p => p.WorkoutExercises)
+          .ThenInclude(p => p.Sets)
+            .ThenInclude(p => (p as IntervalSet).RestDuration)
+        .Include(p => p.WorkoutExercises)
+          .ThenInclude(p => p.Sets)
+            .ThenInclude(p => (p as StrengthSet).RestDuration)
         .ToList();
     }
 

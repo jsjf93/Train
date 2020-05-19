@@ -2,8 +2,10 @@
 {
   public class Duration
   {
-    public int Id { get; set; }
+    public int DurationId { get; set; }
     public int Minutes { get; set; }
     public int Seconds { get; set; }
+
+    public int ExerciseSetId { get; set; }
   }
 }

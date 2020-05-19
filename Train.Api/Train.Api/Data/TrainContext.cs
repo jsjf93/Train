@@ -17,9 +17,11 @@ namespace Train.Api.Data
 
     public DbSet<Workout> Workouts { get; set; }
     public DbSet<WorkoutExercise> WorkoutExercises { get; set; }
+    public DbSet<ExerciseSet> ExerciseSets { get; set; }
+    public DbSet<Duration> Durations { get; set; }
+
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<BodyPart> BodyParts { get; set; }
-    public DbSet<ExerciseSet> ExerciseSets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
