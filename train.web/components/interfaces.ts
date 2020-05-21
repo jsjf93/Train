@@ -19,10 +19,10 @@ export interface IWorkout {
   workoutExercises: IWorkoutExercise[];
 }
 
-export interface IWorkoutExercise extends IExercise{
-  workoutExerciseId: number;
-  exerciseType: string;
-  sets: IDurationSet | IIntervalSet | IStrengthSet;
+export interface IWorkoutExercise extends IExercise {
+  workoutExerciseId?: number;
+  exerciseType?: string;
+  sets?: IDurationSet | IIntervalSet | IStrengthSet;
 }
 
 export interface IDurationSet {

@@ -7,7 +7,7 @@ import { IExercise, IBodyPart } from "../components/interfaces";
 import Layout from "../components/layout";
 import { ExerciseModal } from "../components/modals/exercise-modal";
 import SubmitButton from "../components/exercises/submit-button";
-import NavBar from "../components/navbar/navbar";
+import NavBar from "../components/navbar/Navbar";
 
 interface IProps {
   exercises: IExercise[];
