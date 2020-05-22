@@ -22,6 +22,11 @@ export default function AddWorkout(props: IProps) {
     setShowModal(false);
   };
 
+  const handleChange = (workoutExercise: IWorkoutExercise) => {
+    const updated = workoutExercises.map(w => w.exerciseId !== workoutExercise.exerciseId ? w : workoutExercise);
+    setWorkoutExercises(updated);
+  };
+
   return (
     <Layout>
       <h1>Add Workout</h1>
@@ -36,7 +41,11 @@ export default function AddWorkout(props: IProps) {
       />
 
       {workoutExercises.map(e => (
-        <WorkoutExerciseTable key={e.exerciseId} workoutExercise={e} />
+        <WorkoutExerciseTable 
+          key={e.exerciseId} 
+          workoutExercise={e}
+          handleChange={handleChange}
+        />
       ))}
 
       <Button className={styles.button} onClick={() => setShowModal(true)}>

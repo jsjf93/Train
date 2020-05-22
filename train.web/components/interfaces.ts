@@ -1,3 +1,5 @@
+import { ExerciseType } from "./enums";
+
 export interface IDictionary<T> {
   [key: string]: T;
 }
@@ -21,7 +23,7 @@ export interface IWorkout {
 
 export interface IWorkoutExercise extends IExercise {
   workoutExerciseId?: number;
-  exerciseType?: string;
+  exerciseType?: ExerciseType;
   sets?: IDurationSet | IIntervalSet | IStrengthSet;
 }
 
