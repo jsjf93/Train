@@ -1,4 +1,4 @@
-import { IWorkoutExercise } from "../../interfaces";
+import { IWorkoutExercise, IDurationSet, IIntervalSet, IStrengthSet } from "../../interfaces";
 import styles from './WorkoutExerciseTable.module.scss';
 import { Table, Row, Button } from "react-bootstrap";
 import ExerciseTypeDropdown from "../ExerciseTypeDropdown/ExerciseTypeDropdown";
@@ -18,17 +18,27 @@ const WorkoutExerciseTable = (props: IProps) => {
     const exercise = props.workoutExercise;
     exercise.exerciseType = type;
 
+    exercise.sets = [{ id: 1 }];
+
+    props.handleChange(exercise);
+  };
+
+  const handleAddSet = () => {
+    const exercise = props.workoutExercise;
+    const id = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.id)) + 1;
+    exercise.sets.push({ id });
+    
     props.handleChange(exercise);
   };
 
   const renderTable = (workoutExercise: IWorkoutExercise) => {
     switch(workoutExercise.exerciseType) {
       case ExerciseType.Duration:
-        return <DurationTable />;
+        return <DurationTable workoutExercise={workoutExercise} />;
       case ExerciseType.Interval:
-        return <IntervalTable />;
+        return <IntervalTable workoutExercise={workoutExercise} />;
       case ExerciseType.Strength:
-        return <StrengthTable />;
+        return <StrengthTable workoutExercise={workoutExercise} />;
       default:
         return <div>Pick an exercise type</div>;
     }
@@ -43,7 +53,7 @@ const WorkoutExerciseTable = (props: IProps) => {
 
       {renderTable(props.workoutExercise)}
 
-      <Button size="sm">Add Set</Button>
+      <Button onClick={handleAddSet} size="sm">Add Set</Button>
     </div>
   );
 };

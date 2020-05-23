@@ -24,12 +24,12 @@ export interface IWorkout {
 export interface IWorkoutExercise extends IExercise {
   workoutExerciseId?: number;
   exerciseType?: ExerciseType;
-  sets?: IDurationSet | IIntervalSet | IStrengthSet;
+  sets?: IDurationSet[] | IIntervalSet[] | IStrengthSet[];
 }
 
 export interface IDurationSet {
-  durationSetId: number;
-  duration: IDuration;
+  id: number;
+  duration?: IDuration;
 }
 
 export interface IIntervalSet {
