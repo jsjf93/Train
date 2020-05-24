@@ -8,7 +8,7 @@ interface IProps {
 }
 
 const IntervalTable = (props: IProps) => {
-  const sets = props.workoutExercise.sets as Array<IIntervalSet>;
+  let sets = props.workoutExercise.sets as Array<IIntervalSet>;
 
   const handleWeightChange = (setId: number, event: React.ChangeEvent<HTMLInputElement>) => {
     const index = sets.findIndex(s => s.id === setId);
@@ -75,6 +75,13 @@ const IntervalTable = (props: IProps) => {
     }
   };
 
+  const handleRemoveSet = (id: number) => {
+    if (sets.length > 1) {
+      sets = sets.filter(s => s.id !== id);
+      handleChange();
+    }
+  };
+
   const handleChange = () => {
     const exercise = props.workoutExercise;
     exercise.sets = sets;
@@ -89,12 +96,13 @@ const IntervalTable = (props: IProps) => {
           <th>Weight</th>
           <th>Exercise Duration</th>
           <th>Rest</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        {sets.map(s => (
+        {sets.map((s, i) => (
           <tr key={s.id}>
-            <td>{s.id}</td>
+            <td>{i + 1}</td>
             <td>
               <FormControl 
                 type="text" 
@@ -147,6 +155,7 @@ const IntervalTable = (props: IProps) => {
                 </Col>
               </Form.Row>
             </td>
+            <td onClick={() => handleRemoveSet(s.id)}>x</td>
           </tr>
         ))}
       </tbody>

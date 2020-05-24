@@ -8,7 +8,7 @@ interface IProps {
 }
 
 const DurationTable = (props: IProps) => {
-  const sets = props.workoutExercise.sets as Array<IDurationSet>;
+  let sets = props.workoutExercise.sets as Array<IDurationSet>;
 
   const handleDurationChange = (setId: number, event: React.ChangeEvent<HTMLInputElement>, unit: TimeUnit) => {
     const index = sets.findIndex(s => s.id === setId);
@@ -36,6 +36,13 @@ const DurationTable = (props: IProps) => {
     }
   };
 
+  const handleRemoveSet = (id: number) => {
+    if (sets.length > 1) {
+      sets = sets.filter(s => s.id !== id);
+      handleChange();
+    }
+  };
+
   const handleChange = () => {
     const exercise = props.workoutExercise;
     exercise.sets = sets;
@@ -48,12 +55,13 @@ const DurationTable = (props: IProps) => {
         <tr>
           <th>Set</th>
           <th>Duration</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        {sets.map(s => (
+        {sets.map((s, i) => (
           <tr key={s.id}>
-            <td>{s.id}</td>
+            <td>{i + 1}</td>
             <td>
               <Form.Row>
                 <Col>
@@ -76,6 +84,7 @@ const DurationTable = (props: IProps) => {
                 </Col>
               </Form.Row>
             </td>
+            <td onClick={() => handleRemoveSet(s.id)}>x</td>
           </tr>
         ))}
       </tbody>
