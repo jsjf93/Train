@@ -18,7 +18,7 @@ const WorkoutExerciseTable = (props: IProps) => {
     const exercise = props.workoutExercise;
     exercise.exerciseType = type;
 
-    exercise.sets = [{ id: 1, restDuration: {} }];
+    exercise.sets = [{ id: 1 }];
 
     props.handleChange(exercise);
   };
@@ -34,9 +34,9 @@ const WorkoutExerciseTable = (props: IProps) => {
   const renderTable = (workoutExercise: IWorkoutExercise) => {
     switch(workoutExercise.exerciseType) {
       case ExerciseType.Duration:
-        return <DurationTable workoutExercise={workoutExercise} />;
+        return <DurationTable workoutExercise={workoutExercise} handleChange={props.handleChange} />;
       case ExerciseType.Interval:
-        return <IntervalTable workoutExercise={workoutExercise} />;
+        return <IntervalTable workoutExercise={workoutExercise} handleChange={props.handleChange} />;
       case ExerciseType.Strength:
         return <StrengthTable workoutExercise={workoutExercise} handleChange={props.handleChange} />;
       default:

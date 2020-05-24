@@ -43,6 +43,10 @@ const StrengthTable = (props: IProps) => {
     if (index !== -1) {
       const input = parseInt(event.target.value);
       const time = isNaN(input) ? 0 : input;
+
+      if (!sets[index].restDuration) {
+        sets[index].restDuration = {}
+      }
   
       switch(unit) {
         case TimeUnit.Minute:
