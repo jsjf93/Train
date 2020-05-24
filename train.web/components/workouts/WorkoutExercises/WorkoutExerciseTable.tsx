@@ -53,7 +53,8 @@ const WorkoutExerciseTable = (props: IProps) => {
 
       {renderTable(props.workoutExercise)}
 
-      <Button onClick={handleAddSet} size="sm">Add Set</Button>
+      {props.workoutExercise.exerciseType &&
+        <Button onClick={handleAddSet} size="sm">Add Set</Button>}
     </div>
   );
 };
