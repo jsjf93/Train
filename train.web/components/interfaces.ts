@@ -43,7 +43,7 @@ export interface IStrengthSet {
   id: number;
   reps?: number;
   weight?: number;
-  restDuration?: IDuration;
+  restDuration: IDuration;
 }
 
 export interface IDuration {

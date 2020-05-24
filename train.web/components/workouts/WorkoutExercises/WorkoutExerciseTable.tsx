@@ -18,7 +18,7 @@ const WorkoutExerciseTable = (props: IProps) => {
     const exercise = props.workoutExercise;
     exercise.exerciseType = type;
 
-    exercise.sets = [{ id: 1 }];
+    exercise.sets = [{ id: 1, restDuration: {} }];
 
     props.handleChange(exercise);
   };
@@ -26,7 +26,7 @@ const WorkoutExerciseTable = (props: IProps) => {
   const handleAddSet = () => {
     const exercise = props.workoutExercise;
     const id = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.id)) + 1;
-    exercise.sets.push({ id });
+    exercise.sets.push({ id, restDuration: {} });
     
     props.handleChange(exercise);
   };
@@ -38,7 +38,7 @@ const WorkoutExerciseTable = (props: IProps) => {
       case ExerciseType.Interval:
         return <IntervalTable workoutExercise={workoutExercise} />;
       case ExerciseType.Strength:
-        return <StrengthTable workoutExercise={workoutExercise} />;
+        return <StrengthTable workoutExercise={workoutExercise} handleChange={props.handleChange} />;
       default:
         return <div>Pick an exercise type</div>;
     }
