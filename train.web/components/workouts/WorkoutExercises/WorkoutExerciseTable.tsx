@@ -10,6 +10,7 @@ import IntervalTable from "./IntervalTable";
 interface IProps {
   workoutExercise: IWorkoutExercise;
   handleChange: (workoutExercise: IWorkoutExercise) => void;
+  removeWorkoutExercise: (workoutExercise: IWorkoutExercise) => void;
 }
 
 const WorkoutExerciseTable = (props: IProps) => {
@@ -49,6 +50,9 @@ const WorkoutExerciseTable = (props: IProps) => {
       <Row className={styles.row}>
         <h2>{props.workoutExercise.exerciseName}</h2>
         <ExerciseTypeDropdown exerciseType={props.workoutExercise.exerciseType} handleSelect={handleSelect}/>
+        <span className={styles.removeWorkoutExerciseButton} onClick={() => props.removeWorkoutExercise(props.workoutExercise)}>
+          x
+        </span>
       </Row>
 
       {renderTable(props.workoutExercise)}

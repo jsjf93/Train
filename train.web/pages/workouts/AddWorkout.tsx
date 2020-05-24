@@ -27,6 +27,11 @@ export default function AddWorkout(props: IProps) {
     setWorkoutExercises(updated);
   };
 
+  const handleRemove = (workoutExercise: IWorkoutExercise) => {
+    const updated = workoutExercises.filter(w => w.exerciseId !== workoutExercise.exerciseId);
+    setWorkoutExercises(updated);
+  }
+
   return (
     <Layout>
       <h1>Add Workout</h1>
@@ -45,6 +50,7 @@ export default function AddWorkout(props: IProps) {
           key={e.exerciseId} 
           workoutExercise={e}
           handleChange={handleChange}
+          removeWorkoutExercise={handleRemove}
         />
       ))}
 
