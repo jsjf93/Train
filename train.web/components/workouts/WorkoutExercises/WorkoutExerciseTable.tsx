@@ -15,11 +15,11 @@ interface IProps {
 
 const WorkoutExerciseTable = (props: IProps) => {
 
-  const handleSelect = (type: ExerciseType) => {
+  const handleSelect = (exerciseType: ExerciseType) => {
     const exercise = props.workoutExercise;
-    exercise.exerciseType = type;
+    exercise.exerciseType = exerciseType;
 
-    exercise.sets = [{ id: 1 }];
+    exercise.sets = [{ id: 1, orderId: 1, exerciseType }];
 
     props.handleChange(exercise);
   };
@@ -27,7 +27,9 @@ const WorkoutExerciseTable = (props: IProps) => {
   const handleAddSet = () => {
     const exercise = props.workoutExercise;
     const id = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.id)) + 1;
-    exercise.sets.push({ id, restDuration: {} });
+    const orderId = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.orderId)) + 1;
+    
+    exercise.sets.push({ id, orderId, restDuration: {}, exerciseType: exercise.exerciseType });
     
     props.handleChange(exercise);
   };

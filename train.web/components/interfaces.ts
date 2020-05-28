@@ -27,20 +27,25 @@ export interface IWorkoutExercise extends IExercise {
   sets?: IDurationSet[] | IIntervalSet[] | IStrengthSet[];
 }
 
-export interface IDurationSet {
+// exerciseType added here in addition to the workoutExercise for using EF Core's Table-Per-Hierarchy approach
+// in the backend
+export interface IExerciseSet {
   id: number;
+  exerciseType?: ExerciseType;
+  orderId: number;
+}
+
+export interface IDurationSet extends IExerciseSet {
   duration?: IDuration;
 }
 
-export interface IIntervalSet {
-  id: number;
+export interface IIntervalSet extends IExerciseSet {
   weight?: number;
   exerciseDuration?: IDuration;
   restDuration?: IDuration;
 }
 
-export interface IStrengthSet {
-  id: number;
+export interface IStrengthSet extends IExerciseSet {
   reps?: number;
   weight?: number;
   restDuration?: IDuration;

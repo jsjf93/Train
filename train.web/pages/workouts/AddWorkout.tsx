@@ -5,6 +5,7 @@ import { useState } from "react";
 import { IWorkoutExercise, IExercise } from "../../components/interfaces";
 import AddWorkoutExerciseModal from "../../components/modals/AddWorkoutExerciseModal";
 import { GetServerSideProps } from "next";
+import { useRouter } from 'next/router';
 import styles from '../../styles/AddWorkout.module.scss';
 import WorkoutExerciseTable from "../../components/workouts/WorkoutExercises/WorkoutExerciseTable";
 
@@ -16,6 +17,7 @@ export default function AddWorkout(props: IProps) {
   const [workoutName, setWorkoutName] = useState('');
   const [workoutExercises, setWorkoutExercises] = useState<IWorkoutExercise[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
 
   const handleAdd = (exercise: IExercise) => {
     setWorkoutExercises(workoutExercises.concat({ ...exercise }));
@@ -31,6 +33,17 @@ export default function AddWorkout(props: IProps) {
     const updated = workoutExercises.filter(w => w.exerciseId !== workoutExercise.exerciseId);
     setWorkoutExercises(updated);
   }
+
+  const addWorkout = () => {
+    fetch('http://localhost:7071/api/AddWorkout', {
+      method: 'post',
+      body: JSON.stringify({ userId: 1, workoutName, workoutExercises })
+    })
+    .then(res => res.json())
+    .then(data => console.log(data))
+
+    router.push('/workouts');
+  };
 
   return (
     <Layout>
@@ -56,6 +69,10 @@ export default function AddWorkout(props: IProps) {
 
       <Button className={styles.button} onClick={() => setShowModal(true)}>
         Add Exercise
+      </Button>
+
+      <Button className={styles.button} onClick={addWorkout}>
+        Save Workout
       </Button>
 
       <AddWorkoutExerciseModal 

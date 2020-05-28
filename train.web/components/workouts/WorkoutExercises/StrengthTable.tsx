@@ -66,6 +66,7 @@ const StrengthTable = (props: IProps) => {
   const handleRemoveSet = (id: number) => {
     if (sets.length > 1) {
       sets = sets.filter(s => s.id !== id);
+      sets.forEach((s, i) => s.orderId = (i + 1));
       handleChange();
     }
   };
@@ -88,9 +89,9 @@ const StrengthTable = (props: IProps) => {
         </tr>
       </thead>
       <tbody>
-        {sets.map((s, i) => (
+        {sets.map(s => (
           <tr key={s.id}>
-            <td>{i + 1}</td>
+            <td>{s.orderId}</td>
             <td>
               <FormControl 
                 type="text" 
