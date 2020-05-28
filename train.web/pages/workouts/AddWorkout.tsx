@@ -40,9 +40,10 @@ export default function AddWorkout(props: IProps) {
       body: JSON.stringify({ userId: 1, workoutName, workoutExercises })
     })
     .then(res => res.json())
-    .then(data => console.log(data))
-
-    router.push('/workouts');
+    .then(data => {
+      console.log(data);
+      router.push('/workouts')
+    })
   };
 
   return (

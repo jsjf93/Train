@@ -1,7 +1,7 @@
 export enum ExerciseType {
-  Duration = 'duration',
-  Interval = 'interval',
-  Strength = 'strength',
+  Duration = 0,
+  Interval = 1,
+  Strength = 2,
 }
 
 export enum TimeUnit {

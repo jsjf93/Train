@@ -17,7 +17,7 @@ const WorkoutExerciseTable = (props: IProps) => {
 
   const handleSelect = (exerciseType: ExerciseType) => {
     const exercise = props.workoutExercise;
-    exercise.exerciseType = exerciseType;
+    exercise.exerciseType = Number(exerciseType);
 
     exercise.sets = [{ id: 1, orderId: 1, exerciseType }];
 
@@ -28,7 +28,7 @@ const WorkoutExerciseTable = (props: IProps) => {
     const exercise = props.workoutExercise;
     const id = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.id)) + 1;
     const orderId = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.orderId)) + 1;
-    
+
     exercise.sets.push({ id, orderId, restDuration: {}, exerciseType: exercise.exerciseType });
     
     props.handleChange(exercise);
@@ -59,7 +59,7 @@ const WorkoutExerciseTable = (props: IProps) => {
 
       {renderTable(props.workoutExercise)}
 
-      {props.workoutExercise.exerciseType &&
+      {props.workoutExercise.exerciseType !== null && props.workoutExercise.exerciseType !== undefined &&
         <Button onClick={handleAddSet} size="sm">Add Set</Button>}
     </div>
   );

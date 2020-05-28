@@ -6,17 +6,32 @@ interface IProps {
   handleSelect: (type: ExerciseType) => void;
 }
 
-const ExerciseTypeDropdown = (props: IProps) => (
-  <DropdownButton 
-    id="exercise-type-dropdown" 
-    title={props.exerciseType || 'Exercise type'}
-    size="sm"
-    onSelect={props.handleSelect}
-  >
-    <Dropdown.Item eventKey={ExerciseType.Duration}>Duration</Dropdown.Item>
-    <Dropdown.Item eventKey={ExerciseType.Interval}>Interval</Dropdown.Item>
-    <Dropdown.Item eventKey={ExerciseType.Strength}>Strength</Dropdown.Item>
-  </DropdownButton>
-);
+const ExerciseTypeDropdown = (props: IProps) => {
+  const getTitle = () => {
+    switch(props.exerciseType) {
+      case ExerciseType.Duration:
+        return 'Duration';
+      case ExerciseType.Interval:
+        return 'Interval';
+      case ExerciseType.Strength:
+        return 'Strength';
+      default:
+        return 'Exercise type';
+    }
+  };
+
+  return ( 
+    <DropdownButton 
+      id="exercise-type-dropdown" 
+      title={getTitle()}
+      size="sm"
+      onSelect={props.handleSelect}
+    >
+      <Dropdown.Item eventKey={ExerciseType.Duration.toString()}>Duration</Dropdown.Item>
+      <Dropdown.Item eventKey={ExerciseType.Interval.toString()}>Interval</Dropdown.Item>
+      <Dropdown.Item eventKey={ExerciseType.Strength.toString()}>Strength</Dropdown.Item>
+    </DropdownButton>
+  );
+};
 
 export default ExerciseTypeDropdown;
