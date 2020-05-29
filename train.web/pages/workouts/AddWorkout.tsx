@@ -41,8 +41,9 @@ export default function AddWorkout(props: IProps) {
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data);
-      router.push('/workouts')
+      if (data === 200) {
+        router.push('/workouts');
+      }
     })
   };
 

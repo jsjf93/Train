@@ -5,7 +5,7 @@ using Train.Api.Repository;
 
 namespace Train.Api.CommandHandlers
 {
-    public class AddWorkoutCommandHandler : IAddWorkoutCommandHandler
+  public class AddWorkoutCommandHandler : IAddWorkoutCommandHandler
   {
     private readonly IDataRepository repository;
     private readonly IWorkoutFactory factory;

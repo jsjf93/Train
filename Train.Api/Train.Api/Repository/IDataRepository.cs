@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Train.Api.Commands;
 using Train.Api.Models;
+using Train.Api.Queries;
 
 namespace Train.Api.Repository
 {
@@ -10,7 +11,7 @@ namespace Train.Api.Repository
 
     IEnumerable<Workout> GetWorkouts();
 
-    Workout GetWorkout(int id);
+    Workout GetWorkout(GetWorkoutQuery query);
 
     void DeleteWorkout(DeleteWorkoutCommand command);
 
