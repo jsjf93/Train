@@ -8,6 +8,7 @@ import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
 import styles from '../../styles/CreateWorkout.module.scss';
 import WorkoutExerciseTable from "../../components/workouts/WorkoutExercises/WorkoutExerciseTable";
+import shortid from "shortid";
 
 interface IProps {
   exercises: IExercise[];
@@ -20,17 +21,19 @@ export default function (props: IProps) {
   const router = useRouter();
 
   const handleAdd = (exercise: IExercise) => {
-    setWorkoutExercises(workoutExercises.concat({ ...exercise }));
+    setWorkoutExercises(workoutExercises.concat({ ...exercise, reactKey: shortid.generate() }));
     setShowModal(false);
   };
 
   const handleChange = (workoutExercise: IWorkoutExercise) => {
-    const updated = workoutExercises.map(w => w.exerciseId !== workoutExercise.exerciseId ? w : workoutExercise);
+    const updated = workoutExercises.map(w => 
+      w.workoutExerciseId !== workoutExercise.workoutExerciseId || w.reactKey !== workoutExercise.reactKey ? w : workoutExercise);
     setWorkoutExercises(updated);
   };
 
   const handleRemove = (workoutExercise: IWorkoutExercise) => {
-    const updated = workoutExercises.filter(w => w.exerciseId !== workoutExercise.exerciseId);
+    const updated = workoutExercises.filter(w => 
+      w.workoutExerciseId !== workoutExercise.workoutExerciseId || w.reactKey !== workoutExercise.reactKey);
     setWorkoutExercises(updated);
   }
 
@@ -62,7 +65,7 @@ export default function (props: IProps) {
 
       {workoutExercises.map(e => (
         <WorkoutExerciseTable 
-          key={e.exerciseId} 
+          key={e.exerciseId || e.reactKey} 
           workoutExercise={e}
           handleChange={handleChange}
           removeWorkoutExercise={handleRemove}

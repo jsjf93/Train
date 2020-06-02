@@ -10,8 +10,8 @@ interface IProps {
 const DurationTable = (props: IProps) => {
   let sets = props.workoutExercise.sets as Array<IDurationSet>;
 
-  const handleDurationChange = (setId: number, event: React.ChangeEvent<HTMLInputElement>, unit: TimeUnit) => {
-    const index = sets.findIndex(s => s.exerciseSetId === setId);
+  const handleDurationChange = (id: string, event: React.ChangeEvent<HTMLInputElement>, unit: TimeUnit) => {
+    const index = sets.findIndex(s => s.exerciseSetId?.toString() === id || s.reactKey === id);
 
     if (index !== -1) {
       const input = parseInt(event.target.value);
@@ -36,9 +36,9 @@ const DurationTable = (props: IProps) => {
     }
   };
 
-  const handleRemoveSet = (id: number) => {
+  const handleRemoveSet = (id: string) => {
     if (sets.length > 1) {
-      sets = sets.filter(s => s.exerciseSetId !== id);
+      sets = sets.filter(s => s.exerciseSetId?.toString() !== id && s.reactKey !== id);
       sets.forEach((s, i) => s.orderId = (i + 1));
       handleChange();
     }
@@ -60,34 +60,38 @@ const DurationTable = (props: IProps) => {
         </tr>
       </thead>
       <tbody>
-        {sets.map(s => (
-          <tr key={s.exerciseSetId || s.reactKey}>
-            <td>{s.orderId}</td>
-            <td>
-              <Form.Row>
-                <Col>
-                  <FormControl 
-                    type="text" 
-                    defaultValue={s.duration?.minutes}
-                    size="sm"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(s.exerciseSetId, event, TimeUnit.Minute)}
-                    placeholder="Minutes"
-                  />
-                </Col>
-                <Col>
-                  <FormControl 
-                    type="text"
-                    defaultValue={s.duration?.seconds}
-                    size="sm"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(s.exerciseSetId, event, TimeUnit.Second)}
-                    placeholder="Seconds"
-                  />
-                </Col>
-              </Form.Row>
-            </td>
-            <td onClick={() => handleRemoveSet(s.exerciseSetId)}>x</td>
-          </tr>
-        ))}
+        {sets.map(s => {
+          const id = (s.exerciseSetId || s.reactKey).toString();
+
+          return (
+            <tr key={id}>
+              <td>{s.orderId}</td>
+              <td>
+                <Form.Row>
+                  <Col>
+                    <FormControl 
+                      type="text" 
+                      defaultValue={s.duration?.minutes}
+                      size="sm"
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(id, event, TimeUnit.Minute)}
+                      placeholder="Minutes"
+                    />
+                  </Col>
+                  <Col>
+                    <FormControl 
+                      type="text"
+                      defaultValue={s.duration?.seconds}
+                      size="sm"
+                      onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(id, event, TimeUnit.Second)}
+                      placeholder="Seconds"
+                    />
+                  </Col>
+                </Form.Row>
+              </td>
+              <td onClick={() => handleRemoveSet(id)}>x</td>
+            </tr>
+          )}
+        )}
       </tbody>
     </Table>
   )
