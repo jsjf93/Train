@@ -27,12 +27,14 @@ export default function (props: IProps) {
   };
 
   const handleChange = (workoutExercise: IWorkoutExercise) => {
-    const updated = workoutExercises.map(w => w.workoutExerciseId !== workoutExercise.workoutExerciseId ? w : workoutExercise);
+    const updated = workoutExercises.map(w => 
+      w.workoutExerciseId !== workoutExercise.workoutExerciseId || w.reactKey !== workoutExercise.reactKey ? w : workoutExercise);
     setWorkoutExercises(updated);
   };
 
   const handleRemove = (workoutExercise: IWorkoutExercise) => {
-    const updated = workoutExercises.filter(w => w.exerciseId !== workoutExercise.exerciseId);
+    const updated = workoutExercises.filter(w => 
+      w.workoutExerciseId !== workoutExercise.workoutExerciseId || w.reactKey !== workoutExercise.reactKey);
     setWorkoutExercises(updated);
   }
 
