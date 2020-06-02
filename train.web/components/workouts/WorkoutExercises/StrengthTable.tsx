@@ -12,7 +12,7 @@ const StrengthTable = (props: IProps) => {
   let sets = props.workoutExercise.sets as Array<IStrengthSet>;
 
   const handleWeightChange = (setId: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    const index = sets.findIndex(s => s.id === setId);
+    const index = sets.findIndex(s => s.exerciseSetId === setId);
 
     if (index !== -1) {
       const input = parseInt(event.target.value);
@@ -25,7 +25,7 @@ const StrengthTable = (props: IProps) => {
   };
 
   const handleRepsChange = (setId: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    const index = sets.findIndex(s => s.id === setId);
+    const index = sets.findIndex(s => s.exerciseSetId === setId);
 
     if (index !== -1) {
       const input = parseInt(event.target.value);
@@ -38,7 +38,7 @@ const StrengthTable = (props: IProps) => {
   };
 
   const handleDurationChange = (setId: number, event: React.ChangeEvent<HTMLInputElement>, unit: TimeUnit) => {
-    const index = sets.findIndex(s => s.id === setId);
+    const index = sets.findIndex(s => s.exerciseSetId === setId);
 
     if (index !== -1) {
       const input = parseInt(event.target.value);
@@ -65,7 +65,7 @@ const StrengthTable = (props: IProps) => {
 
   const handleRemoveSet = (id: number) => {
     if (sets.length > 1) {
-      sets = sets.filter(s => s.id !== id);
+      sets = sets.filter(s => s.exerciseSetId !== id);
       sets.forEach((s, i) => s.orderId = (i + 1));
       handleChange();
     }
@@ -90,14 +90,14 @@ const StrengthTable = (props: IProps) => {
       </thead>
       <tbody>
         {sets.map(s => (
-          <tr key={s.id}>
+          <tr key={s.exerciseSetId}>
             <td>{s.orderId}</td>
             <td>
               <FormControl 
                 type="text" 
                 defaultValue={s.weight} 
                 size="sm"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleWeightChange(s.id, event)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleWeightChange(s.exerciseSetId, event)}
               />
             </td>
             <td>
@@ -105,7 +105,7 @@ const StrengthTable = (props: IProps) => {
                 type="text" 
                 defaultValue={s.reps} 
                 size="sm"
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleRepsChange(s.id, event)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleRepsChange(s.exerciseSetId, event)}
               />
             </td>
             <td>
@@ -115,7 +115,7 @@ const StrengthTable = (props: IProps) => {
                     type="text" 
                     defaultValue={s.restDuration?.minutes}
                     size="sm"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(s.id, event, TimeUnit.Minute)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(s.exerciseSetId, event, TimeUnit.Minute)}
                     placeholder="Minutes"
                   />
                 </Col>
@@ -124,13 +124,13 @@ const StrengthTable = (props: IProps) => {
                     type="text"
                     defaultValue={s.restDuration?.seconds}
                     size="sm"
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(s.id, event, TimeUnit.Second)}
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => handleDurationChange(s.exerciseSetId, event, TimeUnit.Second)}
                     placeholder="Seconds"
                   />
                 </Col>
               </Form.Row>
             </td>
-            <td onClick={() => handleRemoveSet(s.id)}>x</td>
+            <td onClick={() => handleRemoveSet(s.exerciseSetId)}>x</td>
           </tr>
         ))}
       </tbody>

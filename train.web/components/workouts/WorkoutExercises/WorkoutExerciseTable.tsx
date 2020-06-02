@@ -19,17 +19,17 @@ const WorkoutExerciseTable = (props: IProps) => {
     const exercise = props.workoutExercise;
     exercise.exerciseType = Number(exerciseType);
 
-    exercise.sets = [{ id: 1, orderId: 1, exerciseType }];
+    exercise.sets = [{ exerciseSetId: 1, orderId: 1, exerciseType }];
 
     props.handleChange(exercise);
   };
 
   const handleAddSet = () => {
     const exercise = props.workoutExercise;
-    const id = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.id)) + 1;
+    const exerciseSetId = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.exerciseSetId)) + 1;
     const orderId = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.orderId)) + 1;
 
-    exercise.sets.push({ id, orderId, restDuration: {}, exerciseType: exercise.exerciseType });
+    exercise.sets.push({ exerciseSetId, orderId, restDuration: {}, exerciseType: exercise.exerciseType });
     
     props.handleChange(exercise);
   };

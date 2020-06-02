@@ -13,7 +13,7 @@ interface IProps {
   exercises: IExercise[];
 }
 
-export default function CreateWorkout(props: IProps) {
+export default function (props: IProps) {
   const [workoutName, setWorkoutName] = useState('');
   const [workoutExercises, setWorkoutExercises] = useState<IWorkoutExercise[]>([]);
   const [showModal, setShowModal] = useState(false);

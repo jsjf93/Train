@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { IWorkout, IWorkoutExercise } from "../components/interfaces";
+import { IWorkout } from "../components/interfaces";
 import Layout from "../components/layout";
 import NavBar from "../components/navbar/Navbar";
 import WorkoutCards from "../components/workouts/workout-cards/WorkoutCards";
@@ -7,14 +7,12 @@ import { Button } from "react-bootstrap";
 import styles from '../styles/workouts.module.scss';
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/router";
 
 interface IProps {
   workouts: IWorkout[];
 }
 
 export default function(props: IProps) {
-  const router = useRouter();
   const [workouts, setWorkouts] = useState<IWorkout[]>(props.workouts);
 
   const handleDelete = (id: number) => {
@@ -37,7 +35,7 @@ export default function(props: IProps) {
 
       <WorkoutCards workouts={workouts} deleteWorkout={handleDelete} />
 
-      <Link href="/workouts/createworkout">
+      <Link href="/workouts/create">
         <Button className={styles.workoutButton}>
           New Workout
         </Button>

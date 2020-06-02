@@ -1,7 +1,6 @@
 import { CardDeck, Card } from "react-bootstrap";
 import { IWorkout } from "../../interfaces";
 import styles from "./WorkoutCards.module.scss";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 interface IProps {
