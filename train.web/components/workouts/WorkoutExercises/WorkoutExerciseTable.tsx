@@ -6,6 +6,7 @@ import StrengthTable from "./StrengthTable";
 import { ExerciseType } from "../../enums";
 import DurationTable from "./DurationTable";
 import IntervalTable from "./IntervalTable";
+import shortid from "shortid";
 
 interface IProps {
   workoutExercise: IWorkoutExercise;
@@ -19,17 +20,16 @@ const WorkoutExerciseTable = (props: IProps) => {
     const exercise = props.workoutExercise;
     exercise.exerciseType = Number(exerciseType);
 
-    exercise.sets = [{ exerciseSetId: 1, orderId: 1, exerciseType }];
+    exercise.sets = [{ reactKey: shortid.generate(), orderId: 1, exerciseType }];
 
     props.handleChange(exercise);
   };
 
   const handleAddSet = () => {
     const exercise = props.workoutExercise;
-    const exerciseSetId = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.exerciseSetId)) + 1;
     const orderId = Math.max(...(exercise.sets as Array<IDurationSet | IIntervalSet | IStrengthSet>).map(s => s.orderId)) + 1;
 
-    exercise.sets.push({ exerciseSetId, orderId, restDuration: {}, exerciseType: exercise.exerciseType });
+    exercise.sets.push({ reactKey: shortid.generate(), orderId, restDuration: {}, exerciseType: exercise.exerciseType });
     
     props.handleChange(exercise);
   };

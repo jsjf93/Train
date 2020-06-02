@@ -8,6 +8,7 @@ import WorkoutExerciseTable from "../../components/workouts/WorkoutExercises/Wor
 import AddWorkoutExerciseModal from "../../components/modals/AddWorkoutExerciseModal";
 import styles from '../../styles/CreateWorkout.module.scss';
 import { useRouter } from "next/router";
+import shortid from 'shortid';
 
 interface IProps {
   workout: IWorkout;
@@ -21,12 +22,12 @@ export default function (props: IProps) {
   const router = useRouter();
 
   const handleAdd = (exercise: IExercise) => {
-    setWorkoutExercises(workoutExercises.concat({ ...exercise }));
+    setWorkoutExercises(workoutExercises.concat({ ...exercise, reactKey: shortid.generate() }));
     setShowModal(false);
   };
 
   const handleChange = (workoutExercise: IWorkoutExercise) => {
-    const updated = workoutExercises.map(w => w.exerciseId !== workoutExercise.exerciseId ? w : workoutExercise);
+    const updated = workoutExercises.map(w => w.workoutExerciseId !== workoutExercise.workoutExerciseId ? w : workoutExercise);
     setWorkoutExercises(updated);
   };
 
@@ -64,7 +65,7 @@ export default function (props: IProps) {
 
       {workoutExercises.map(e => (
         <WorkoutExerciseTable 
-          key={e.workoutExerciseId} 
+          key={e.workoutExerciseId || e.reactKey} 
           workoutExercise={e}
           handleChange={handleChange}
           removeWorkoutExercise={handleRemove}

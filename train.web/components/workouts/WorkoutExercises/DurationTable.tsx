@@ -61,7 +61,7 @@ const DurationTable = (props: IProps) => {
       </thead>
       <tbody>
         {sets.map(s => (
-          <tr key={s.exerciseSetId}>
+          <tr key={s.exerciseSetId || s.reactKey}>
             <td>{s.orderId}</td>
             <td>
               <Form.Row>
