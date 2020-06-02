@@ -34,7 +34,7 @@ export default function AddWorkout(props: IProps) {
     setWorkoutExercises(updated);
   }
 
-  const addWorkout = () => {
+  const add = () => {
     fetch('http://localhost:7071/api/AddWorkout', {
       method: 'post',
       body: JSON.stringify({ userId: 1, workoutName, workoutExercises })
@@ -73,7 +73,7 @@ export default function AddWorkout(props: IProps) {
         Add Exercise
       </Button>
 
-      <Button className={styles.button} onClick={addWorkout}>
+      <Button className={styles.button} onClick={add}>
         Save Workout
       </Button>
 
