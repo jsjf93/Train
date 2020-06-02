@@ -10,16 +10,10 @@ interface IProps {
 }
 
 const WorkoutCards = (props: IProps) => {
-  const router = useRouter();
-
-  const goToUpdateWorkout = (id: number) => {
-    router.push('/workouts/[id]', `/workouts/${id}`);
-  };
-
   return (
     <CardDeck>
       {props.workouts.map(w => (
-        <Link key={w.id} href="/workouts/[id]" as={`/workouts/${w.id}`}>
+        <Link key={w.id} href={"/workouts/[id]"} as={`/workouts/${w.id}`}>
           <Card className={styles.card}>
             <Card.Body>
               <Card.Title className={styles.card__titleContainer}>

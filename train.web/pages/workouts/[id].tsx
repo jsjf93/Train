@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { IWorkout } from "../../components/interfaces";
 

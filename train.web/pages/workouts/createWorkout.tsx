@@ -6,14 +6,14 @@ import { IWorkoutExercise, IExercise } from "../../components/interfaces";
 import AddWorkoutExerciseModal from "../../components/modals/AddWorkoutExerciseModal";
 import { GetServerSideProps } from "next";
 import { useRouter } from 'next/router';
-import styles from '../../styles/AddWorkout.module.scss';
+import styles from '../../styles/CreateWorkout.module.scss';
 import WorkoutExerciseTable from "../../components/workouts/WorkoutExercises/WorkoutExerciseTable";
 
 interface IProps {
   exercises: IExercise[];
 }
 
-export default function AddWorkout(props: IProps) {
+export default function CreateWorkout(props: IProps) {
   const [workoutName, setWorkoutName] = useState('');
   const [workoutExercises, setWorkoutExercises] = useState<IWorkoutExercise[]>([]);
   const [showModal, setShowModal] = useState(false);

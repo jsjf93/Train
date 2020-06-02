@@ -37,7 +37,7 @@ export default function(props: IProps) {
 
       <WorkoutCards workouts={workouts} deleteWorkout={handleDelete} />
 
-      <Link href="/workouts/addworkout">
+      <Link href="/workouts/createworkout">
         <Button className={styles.workoutButton}>
           New Workout
         </Button>
