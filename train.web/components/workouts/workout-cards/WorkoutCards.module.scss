@@ -9,18 +9,25 @@
 
   &__titleContainer {
     display: flex;
+    align-items: center;
   }
 
-  &__closeButton {
+  &__menuButton {
     margin-left: auto;
-
-    &:hover {
-      cursor: pointer;
-    }
   }
 
-  .dropdownToggle:after {
-    display: none !important;
+  .dropdownToggle {
+    color: black;
+    background-color: white;
+    border: none;
+
+    &:after {
+      display: none !important;
+    }
+
+    &:focus {
+      border: none;
+    }
   }
 }
 
