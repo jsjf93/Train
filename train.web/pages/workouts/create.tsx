@@ -52,8 +52,7 @@ export default function (props: IProps) {
 
   return (
     <Layout>
-      <h1>Add Workout</h1>
-      <NavBar />
+      <NavBar pageName="Add Workout" />
       
       <FormControl 
         size="lg" 

@@ -30,8 +30,7 @@ export default function(props: IProps) {
 
   return (
     <Layout>
-      <h1>Workouts</h1>
-      <NavBar />
+      <NavBar pageName="Workouts" />
 
       <WorkoutCards workouts={workouts} deleteWorkout={handleDelete} />
 

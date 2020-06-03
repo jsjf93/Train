@@ -63,8 +63,7 @@ export default function(props: IProps) {
 
   return (
     <Layout>
-      <h1>Exercises</h1>
-      <NavBar />
+      <NavBar pageName="Exercises" />
 
       <ExerciseTable 
         exercises={exercises}

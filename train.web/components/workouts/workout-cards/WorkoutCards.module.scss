@@ -18,6 +18,10 @@
       cursor: pointer;
     }
   }
+
+  .dropdownToggle:after {
+    display: none !important;
+  }
 }
 
 .info {
