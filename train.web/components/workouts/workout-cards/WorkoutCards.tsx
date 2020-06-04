@@ -11,7 +11,7 @@ interface IProps {
 
 const WorkoutCards = (props: IProps) => {
   return (
-    <CardDeck className={styles.cards__container}>
+    <CardDeck>
       {props.workouts.map(w => (
         <Card key={w.id} className={styles.card}>
           <Card.Body>

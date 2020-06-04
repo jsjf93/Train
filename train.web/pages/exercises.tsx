@@ -63,8 +63,6 @@ export default function(props: IProps) {
 
   return (
     <Layout>
-      <NavBar pageName="Exercises" />
-
       <ExerciseTable 
         exercises={exercises}
         handleClick={exercise => handleExerciseSelect(exercise)}

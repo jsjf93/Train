@@ -1,16 +1,19 @@
 import { Container } from "react-bootstrap";
 import Head from "next/head";
+import NavBar from "./navbar/Navbar";
 
 function Layout({ children }) {
   return (
-    <Container>
+    <>
       <Head>
         <title>Train</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {children}
-    </Container>
+      <NavBar />
+
+      <Container>{children}</Container>
+    </>
   );
 }
 

@@ -7,20 +7,28 @@ body {
     sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
 .navbar-container {
   display: flex;
   align-items: center;
-  padding: 30px;
+  padding: 0px 50px;
+  margin-bottom: 30px;
+  color: white;
+  background-color: rgb(57, 136, 226);
+  box-shadow: 0 3px 5px -2px grey;
 
   &__link-container {
     margin-left: auto;
   }
 
   &__link {
-    
-    &:not(:last-child) {
-      margin-right: 20px;
+    color: white;
 
+    &:not(:last-child) {
+      margin-right: 40px;
     }
   }
 }

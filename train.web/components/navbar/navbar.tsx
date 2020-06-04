@@ -1,12 +1,8 @@
 import Link from "next/link";
 
-interface IProps {
-  pageName: string;
-}
-
-const NavBar = (props: IProps) => (
+const NavBar = () => (
   <div className="navbar-container">
-    <h1>{props.pageName}</h1>
+    <h1>Train</h1>
 
     <div className="navbar-container__link-container">
       <Link href="/">
