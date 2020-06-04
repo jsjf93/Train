@@ -1,0 +1,34 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  padding: 0px 50px;
+  margin-bottom: 30px;
+  color: white;
+  background-color: rgb(57, 136, 226);
+  box-shadow: 0 3px 5px -2px grey;
+
+  &__link-container {
+    margin-left: auto;
+  }
+
+  &__link {
+    color: white;
+
+    &:not(:last-child) {
+      margin-right: 40px;
+    }
+  }
+}

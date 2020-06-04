@@ -54,7 +54,6 @@ const WorkoutListTable = (props: IProps) => {
             </Table>
         </div>
     );
-    
 }
 
 export default WorkoutListTable;

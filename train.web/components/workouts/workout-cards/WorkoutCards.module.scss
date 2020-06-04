@@ -1,0 +1,36 @@
+.card {
+  -webkit-box-shadow: 0px 0px 4px 1px rgba(158,158,158,0.75);
+  -moz-box-shadow: 0px 0px 4px 1px rgba(158,158,158,0.75);
+  box-shadow: 0px 0px 4px 1px rgba(158,158,158,0.75);
+  max-width: 300px;
+  min-width: 300px;
+  margin-bottom: 40px !important;
+  min-height: 125px;
+
+  &__titleContainer {
+    display: flex;
+    align-items: center;
+  }
+
+  &__menuButton {
+    margin-left: auto;
+  }
+
+  .dropdownToggle {
+    color: black;
+    background-color: white;
+    border: none;
+
+    &:after {
+      display: none !important;
+    }
+
+    &:focus {
+      border: none;
+    }
+  }
+}
+
+.info {
+  font-style: italic;
+}

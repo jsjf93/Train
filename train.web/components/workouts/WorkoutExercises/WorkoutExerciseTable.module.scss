@@ -1,0 +1,28 @@
+.container {
+  margin: 20px 0;
+  padding: 10px;
+  -webkit-box-shadow: 0px 0px 4px 1px rgba(158,158,158,0.75);
+  -moz-box-shadow: 0px 0px 4px 1px rgba(158,158,158,0.75);
+  box-shadow: 0px 0px 4px 1px rgba(158,158,158,0.75);
+  border-radius: 4px;
+  
+  .row {
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+
+    >h2 {
+      font-size: 20px;
+      margin: 0 20px 0 0;
+    }
+
+    .removeWorkoutExerciseButton {
+      margin-left: auto;
+      margin-right: 10px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
