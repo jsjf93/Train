@@ -54,8 +54,6 @@ export default function (props: IProps) {
   
   return (
     <Layout>
-      <NavBar pageName="Update Workout" />
-      
       <FormControl 
         size="lg" 
         type="text" 
