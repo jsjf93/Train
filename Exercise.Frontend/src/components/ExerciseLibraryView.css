@@ -1,9 +1,0 @@
-.exercise-library-view-container {
-    width: 100%;
-}
-
-.exercise-library-search-add-container {
-    width: 100%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
