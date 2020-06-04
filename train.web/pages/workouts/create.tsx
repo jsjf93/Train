@@ -52,8 +52,6 @@ export default function (props: IProps) {
 
   return (
     <Layout>
-      <NavBar pageName="Add Workout" />
-      
       <FormControl 
         size="lg" 
         type="text" 
@@ -75,7 +73,7 @@ export default function (props: IProps) {
         Add Exercise
       </Button>
 
-      <Button className={styles.button} onClick={add}>
+      <Button variant="success" className={styles.button} onClick={add}>
         Save Workout
       </Button>
 

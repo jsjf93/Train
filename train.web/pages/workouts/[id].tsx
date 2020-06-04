@@ -75,7 +75,7 @@ export default function (props: IProps) {
         Add Exercise
       </Button>
 
-      <Button className={styles.button} onClick={update}>
+      <Button variant="success" className={styles.button} onClick={update}>
         Save Workout
       </Button>
 

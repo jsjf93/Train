@@ -60,7 +60,10 @@ const WorkoutExerciseTable = (props: IProps) => {
       {renderTable(props.workoutExercise)}
 
       {props.workoutExercise.exerciseType !== null && props.workoutExercise.exerciseType !== undefined &&
-        <Button onClick={handleAddSet} size="sm">Add Set</Button>}
+        <div className={styles.buttonContainer}>
+          <Button onClick={handleAddSet} size="sm">Add Set</Button>
+        </div>
+      }
     </div>
   );
 };
