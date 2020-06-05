@@ -30,4 +30,13 @@
     display: flex;
     justify-content: center;
   }
+
+  .deleteButton {
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+      cursor: pointer;
+    }
+  }
 }

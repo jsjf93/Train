@@ -1,12 +1,13 @@
 import { IWorkoutExercise, IDurationSet, IIntervalSet, IStrengthSet } from "../../interfaces";
 import styles from './WorkoutExerciseTable.module.scss';
-import { Table, Row, Button } from "react-bootstrap";
+import { Row, Button } from "react-bootstrap";
 import ExerciseTypeDropdown from "../ExerciseTypeDropdown/ExerciseTypeDropdown";
 import StrengthTable from "./StrengthTable";
 import { ExerciseType } from "../../enums";
 import DurationTable from "./DurationTable";
 import IntervalTable from "./IntervalTable";
 import shortid from "shortid";
+import Delete from '@material-ui/icons/Delete';
 
 interface IProps {
   workoutExercise: IWorkoutExercise;
@@ -52,8 +53,8 @@ const WorkoutExerciseTable = (props: IProps) => {
       <Row className={styles.row}>
         <h2>{props.workoutExercise.exerciseName}</h2>
         <ExerciseTypeDropdown exerciseType={props.workoutExercise.exerciseType} handleSelect={handleSelect}/>
-        <span className={styles.removeWorkoutExerciseButton} onClick={() => props.removeWorkoutExercise(props.workoutExercise)}>
-          x
+        <span className={styles.removeWorkoutExerciseButton + " " + styles.deleteButton} onClick={() => props.removeWorkoutExercise(props.workoutExercise)}>
+          <Delete />
         </span>
       </Row>
 

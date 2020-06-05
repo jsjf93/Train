@@ -1,6 +1,8 @@
 import { Table, FormControl, Col, Form } from "react-bootstrap";
 import { IWorkoutExercise, IIntervalSet } from "../../interfaces";
 import { TimeUnit } from "../../enums";
+import Delete from '@material-ui/icons/Delete';
+import styles from './WorkoutExerciseTable.module.scss';
 
 interface IProps {
   workoutExercise: IWorkoutExercise;
@@ -159,7 +161,9 @@ const IntervalTable = (props: IProps) => {
                   </Col>
                 </Form.Row>
               </td>
-              <td onClick={() => handleRemoveSet(id)}>x</td>
+              <td className={styles.deleteButton} onClick={() => handleRemoveSet(id)}>
+                <Delete />
+              </td>
             </tr>
           )
         })}

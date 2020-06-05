@@ -2,6 +2,8 @@ import { Table, FormControl, Col } from "react-bootstrap";
 import { IWorkoutExercise, IStrengthSet } from "../../interfaces";
 import Form from "react-bootstrap/Form";
 import { TimeUnit } from "../../enums";
+import Delete from '@material-ui/icons/Delete';
+import styles from './WorkoutExerciseTable.module.scss';
 
 interface IProps {
   workoutExercise: IWorkoutExercise;
@@ -133,7 +135,9 @@ const StrengthTable = (props: IProps) => {
                   </Col>
                 </Form.Row>
               </td>
-              <td onClick={() => handleRemoveSet(id)}>x</td>
+              <td className={styles.deleteButton} onClick={() => handleRemoveSet(id)}>
+                <Delete />
+              </td>
             </tr>
           );
         })}
